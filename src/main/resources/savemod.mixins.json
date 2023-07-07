@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.rashnain.savemod.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "CreateWorldScreenMixin",
+    "GameMenuScreenMixin",
+    "SessionMixin",
+    "WorldEntryMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

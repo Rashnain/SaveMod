@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "savemod",
+  "version": "${version}",
+  "name": "SaveMod",
+  "description": "Mod that lets you save (and load) your worlds like any other game",
+  "authors": [
+    "Rashnain"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/savemod",
+    "sources": "https://github.com/Rashnain/SaveMod",
+    "issues": "https://github.com/Rashnain/SaveMod/issues"
+  },
+  "license": "LGPL-3.0-only",
+  "icon": "assets/savemod/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.rashnain.savemod.SaveMod"
+    ]
+  },
+  "mixins": [
+    "savemod.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "=1.19.4",
+    "java": ">=17",
+    "fabricloader": ">=0.14.21"
+  }
+}
