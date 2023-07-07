@@ -46,7 +46,6 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         saveDir = Path.of("savemod").resolve(save.getName());
         savePath = saveDir.resolve(save.getSaveFileName());
         this.saveList = saveList;
-
     }
 
     @Override

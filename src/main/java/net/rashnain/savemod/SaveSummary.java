@@ -15,7 +15,7 @@ public class SaveSummary {
     }
 
     public String getDisplayName() {
-        return worldDir;
+        return fileName.substring(20, fileName.length() - 4);
     }
 
     public String getName() {
