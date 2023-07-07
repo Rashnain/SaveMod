@@ -130,18 +130,23 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     }
 
     public void delete() {
-        try {
-            Files.delete(savePath);
-            try (Stream<Path> entries = Files.list(saveDir)) {
-                if (entries.findFirst().isEmpty())
-                    Files.delete(saveDir);
+        client.setScreen(new ConfirmScreen(confirmed -> {
+            if (confirmed) {
+                try {
+                    Files.delete(savePath);
+                    try (Stream<Path> entries = Files.list(saveDir)) {
+                        if (entries.findFirst().isEmpty())
+                            Files.delete(saveDir);
+                    }
+                    saveList.removeEntryWithoutScrolling(this);
+                    client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Successful!"), Text.of("Save deleted.")));
+                } catch (IOException e) {
+                    client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Failed!"), Text.of("Save not deleted.")));
+                    SaveMod.LOGGER.error("Failed to delete save '{}' : {}", savePath, e);
+                }
             }
-            saveList.removeEntryWithoutScrolling(this);
-            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Successful!"), Text.of("Save deleted.")));
-        } catch (IOException e) {
-            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Failed!"), Text.of("Save not deleted.")));
-            SaveMod.LOGGER.error("Failed to delete save '{}' : {}", savePath, e);
-        }
+            client.setScreen(saveList.getParent());
+        }, Text.of("Are you sure you want to delete this save ?"), Text.of("\"" + save.getDisplayName() + "\" will be lost forever ! (A long time !)")));
     }
 
 }

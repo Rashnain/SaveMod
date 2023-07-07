@@ -88,4 +88,7 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
         }
     }
 
+    public Screen getParent() {
+        return parent;
+    }
 }
