@@ -6,7 +6,6 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.rashnain.savemod.SaveMod;
 import net.rashnain.savemod.SaveSummary;
 import net.rashnain.savemod.gui.SelectSaveScreen;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -27,32 +26,52 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        super.mouseClicked(mouseX, mouseY, button);
-
+        boolean result = super.mouseClicked(mouseX, mouseY, button);
         parent.changeButtons(getSelectedOrNull() != null);
+        return result;
+    }
 
-        return true;
+    @Override
+    public boolean removeEntryWithoutScrolling(SaveListEntry entry) {
+        return super.removeEntryWithoutScrolling(entry);
+    }
+
+    public Screen getParent() {
+        return parent;
+    }
+
+    public void refresh() {
+        showSummaries(getSaves());
+    }
+
+    private void showSummaries(List<SaveSummary> summaries) {
+        clearEntries();
+        for (SaveSummary summary : summaries) {
+            addEntry(new SaveListEntry(summary, this));
+        }
     }
 
     private List<SaveSummary> getSaves() {
+        List<SaveSummary> saveList = new ArrayList<>();
+
         if (SaveMod.worldDir == null)
-            return null;
+            return saveList;
 
-        File saveDir = new File(Path.of("savemod").resolve(SaveMod.worldDir).toUri());
+        File savesDir = new File(Path.of("savemod").resolve(SaveMod.worldDir).toUri());
 
-        if (!saveDir.isDirectory())
-            return null;
+        File[] tabFiles = savesDir.listFiles();
 
-        List<SaveSummary> list = new ArrayList<>();
+        if (tabFiles != null) {
+            List<File> files = new ArrayList<>(List.of(tabFiles));
+            Collections.reverse(files);
 
-        List<File> files = new ArrayList<>(List.of(saveDir.listFiles()));
-        Collections.reverse(files);
-        for (File save : files) {
-            SaveSummary saveSum = new SaveSummary(SaveMod.worldDir, save.getName());
-            list.add(saveSum);
+            for (File saveFile : files) {
+                SaveSummary saveSummary = new SaveSummary(saveFile.getName(), SaveMod.worldDir);
+                saveList.add(saveSummary);
+            }
         }
 
-        return list;
+        return saveList;
     }
 
     public Optional<SaveListEntry> getSelectedAsOptional() {
@@ -63,32 +82,4 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
         return Optional.of(entry);
     }
 
-    public void refresh() {
-        show(getSaves());
-    }
-
-    @Override
-    public boolean removeEntryWithoutScrolling(SaveListEntry entry) {
-        boolean result = super.removeEntryWithoutScrolling(entry);
-        if (getSelectedOrNull() == null)
-            parent.changeButtons(false);
-        return result;
-    }
-
-    private void show(@Nullable List<SaveSummary> saves) {
-        if (saves != null) {
-            showSummaries(saves);
-        }
-    }
-
-    private void showSummaries(List<SaveSummary> summaries) {
-        clearEntries();
-        for (SaveSummary summary : summaries) {
-            addEntry(new SaveListEntry(summary, this));
-        }
-    }
-
-    public Screen getParent() {
-        return parent;
-    }
 }

@@ -2,23 +2,28 @@ package net.rashnain.savemod;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 
 public class SaveSummary {
 
-    private final String fileName;
+    private final String saveFileName;
     private final String worldDir;
 
-    public SaveSummary(String worldDir, String backupFileName) {
+    public SaveSummary(String saveFileName, String worldDir) {
+        this.saveFileName = saveFileName;
         this.worldDir = worldDir;
-        fileName = backupFileName;
     }
 
-    public String getDisplayName() {
-        return fileName.substring(20, fileName.length() - 4);
+    public String getSaveFileName() {
+        return saveFileName;
     }
 
-    public String getName() {
+    public String getSaveName() {
+        return saveFileName.substring(20, saveFileName.length() - 4);
+    }
+
+    public String getWorldDir() {
         return worldDir;
     }
 
@@ -29,15 +34,11 @@ public class SaveSummary {
     public long getLastPlayed() {
         Date date;
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss").parse(fileName);
+            date = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss").parse(saveFileName);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            date = Date.from(Instant.EPOCH);
         }
         return date.getTime();
-    }
-
-    public String getSaveFileName() {
-        return fileName;
     }
 
 }
