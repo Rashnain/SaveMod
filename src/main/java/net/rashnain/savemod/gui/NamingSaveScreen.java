@@ -27,6 +27,10 @@ public class NamingSaveScreen extends net.minecraft.client.gui.screen.Screen {
         if (super.keyPressed(keyCode, scanCode, modifiers)) {
             return true;
         }
+        if (keyCode == 257 || keyCode == 335) {
+            pressAction.onPress(nameBox.getText());
+            return true;
+        }
         return nameBox.keyPressed(keyCode, scanCode, modifiers);
     }
 
