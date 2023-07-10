@@ -58,6 +58,7 @@ public class SelectSaveScreen extends Screen {
     @Override
     protected void init() {
         saveList = new SaveListWidget(this, client, width, height, 30, height - 64, 36);
+        addSelectableChild(saveList);
 
         loadButton = addDrawableChild(ButtonWidget.builder(Text.of("Play Selected Save"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::load)
