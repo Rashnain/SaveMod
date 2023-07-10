@@ -115,12 +115,12 @@ public class SelectSaveScreen extends Screen {
     private void save(String saveName) {
         if (client.isIntegratedServerRunning()) {
             client.world.disconnect();
-            client.disconnect(new MessageScreen(Text.of("Closing world and saving...")));
-            client.setScreen(this);
+            client.disconnect(new MessageScreen(Text.of("Closing previous world...")));
         }
         String worldDir = SaveMod.worldDir;
         try {
             LevelStorage.Session session = client.getLevelStorage().createSession(worldDir);
+            client.setScreenAndRender(new MessageScreen(Text.of("Saving...")));
             EditWorldScreen.backupLevel(session);
             client.getToastManager().clear();
             session.close();
@@ -145,6 +145,7 @@ public class SelectSaveScreen extends Screen {
             SystemToast.addWorldDeleteFailureToast(client, worldDir);
             SaveMod.LOGGER.error("Could not delete world '{}' : {}", worldDir, e);
         }
+        client.setScreen(this);
     }
 
 }

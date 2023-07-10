@@ -96,14 +96,17 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     public void load() {
         if (client.isIntegratedServerRunning()) {
             client.world.disconnect();
-            client.disconnect(new MessageScreen(Text.of("Closing and deleting previous world...")));
+            client.disconnect(new MessageScreen(Text.of("Closing previous world...")));
         }
+        client.setScreenAndRender(new MessageScreen(Text.of("Deleting previous world...")));
         String worldDir = save.getWorldDir();
         try (LevelStorage.Session session = client.getLevelStorage().createSession(worldDir)) {
             session.deleteSessionLock();
+            client.setScreenAndRender(new MessageScreen(Text.of("Uncompressing save...")));
             String zipFile = savesDir.resolve(save.getSaveFileName()).toString();
             try {
                 ZipUtil.unzipFile(zipFile, "saves/");
+                client.setScreenAndRender(new MessageScreen(Text.translatable("selectWorld.data_read")));
                 client.createIntegratedServerLoader().start(saveList.getParent(), worldDir);
             } catch (IOException e) {
                 SystemToast.addWorldAccessFailureToast(client, zipFile);
