@@ -138,7 +138,6 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                             Files.delete(saveDir);
                     }
                     saveList.removeEntryWithoutScrolling(this);
-                    client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Successful!"), Text.of("Save deleted.")));
                 } catch (IOException e) {
                     client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Failed!"), Text.of("Save not deleted.")));
                     SaveMod.LOGGER.error("Failed to delete save '{}' : {}", savePath, e);
