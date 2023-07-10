@@ -19,14 +19,10 @@ public abstract class GameMenuScreenMixin extends Screen {
         super(title);
     }
 
-    private void goToSelectSaveScreen() {
-        this.client.setScreen(new SelectSaveScreen(this));
-    }
-
     @Inject(method = "initWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget;refreshPositions()V"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void initWidgets(CallbackInfo ci, GridWidget gridWidget, GridWidget.Adder adder, Text text) {
-        adder.add(ButtonWidget.builder(Text.of("Save list"), (button) ->
-                this.client.getAbuseReportContext().tryShowDraftScreen(this.client, this, this::goToSelectSaveScreen, false)
+        adder.add(ButtonWidget.builder(Text.of("Save list"), button ->
+            client.setScreen(new SelectSaveScreen(this))
         ).width(204).build(), 2);
     }
 

@@ -30,9 +30,9 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
 
     @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/WorldListWidget;setSelected(Lnet/minecraft/client/gui/screen/world/WorldListWidget$Entry;)V", shift = At.Shift.AFTER))
     public void mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
-        SaveMod.worldDir = this.level.getName();
+        SaveMod.worldDir = level.getName();
         if (mouseX - (80 + 270 - 32) >= 0) {
-            MinecraftClient.getInstance().setScreen(new SelectSaveScreen(this.screen));
+            MinecraftClient.getInstance().setScreen(new SelectSaveScreen(screen));
         }
     }
 
@@ -45,19 +45,17 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
 
     @Inject(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V", shift = At.Shift.AFTER))
     public void delete(CallbackInfo ci) {
-        File saveDir = new File(Path.of("savemod").resolve(SaveMod.worldDir).toUri());
+        File savesDir = new File(Path.of("savemod").resolve(SaveMod.worldDir).toUri());
         try {
-            File[] files = saveDir.listFiles();
-
+            File[] files = savesDir.listFiles();
             if (files != null) {
                 for (File save : files) {
                     Files.deleteIfExists(save.toPath());
                 }
-
-                Files.deleteIfExists(saveDir.toPath());
+                Files.deleteIfExists(savesDir.toPath());
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            SaveMod.LOGGER.error("Could not delete save of '{}' : {}", SaveMod.worldDir, e);
         }
     }
 

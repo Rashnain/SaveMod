@@ -19,8 +19,8 @@ import java.util.Optional;
 public abstract class CreateWorldScreenMixin {
 
     @Inject(method = "startServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/CreateWorldScreen;clearDataPackTempDir()V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-    private void startServer(LevelProperties.SpecialProperty specialProperty, CombinedDynamicRegistries<ServerDynamicRegistryType> combinedDynamicRegistries, Lifecycle lifecycle, CallbackInfo ci, Optional<LevelStorage.Session>  optional) {
-        SaveMod.worldDir = optional.get().getDirectoryName();
+    private void startServer(LevelProperties.SpecialProperty specialProperty, CombinedDynamicRegistries<ServerDynamicRegistryType> combinedDynamicRegistries, Lifecycle lifecycle, CallbackInfo ci, Optional<LevelStorage.Session> optional) {
+        optional.ifPresent(session -> SaveMod.worldDir = session.getDirectoryName());
     }
 
 }

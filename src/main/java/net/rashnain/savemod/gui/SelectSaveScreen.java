@@ -83,8 +83,7 @@ public class SelectSaveScreen extends Screen {
         ).dimensions(width / 2 + 4, height - 28, 72, 20).build());
         duplicateButton.active = false;
 
-        addDrawableChild(ButtonWidget.builder(Text.of("Done"), button ->
-            close()
+        addDrawableChild(ButtonWidget.builder(Text.of("Done"), button -> close()
         ).dimensions(width / 2 + 82, height - 28, 72, 20).build());
     }
 
