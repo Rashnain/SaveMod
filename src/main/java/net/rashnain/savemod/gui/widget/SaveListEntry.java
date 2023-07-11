@@ -96,13 +96,13 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     public void load() {
         if (client.isIntegratedServerRunning()) {
             client.world.disconnect();
-            client.disconnect(new MessageScreen(Text.of("Closing previous world...")));
+            client.disconnect(new MessageScreen(Text.translatable("savemod.message.closing")));
         }
-        client.setScreenAndRender(new MessageScreen(Text.of("Deleting previous world...")));
+        client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.deleting")));
         String worldDir = save.getWorldDir();
         try (LevelStorage.Session session = client.getLevelStorage().createSession(worldDir)) {
             session.deleteSessionLock();
-            client.setScreenAndRender(new MessageScreen(Text.of("Uncompressing save...")));
+            client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.uncompressing")));
             String zipFile = savesDir.resolve(save.getSaveFileName()).toString();
             try {
                 ZipUtil.unzipFile(zipFile, "saves/");
@@ -127,8 +127,8 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
             try {
                 Files.move(saveFile, savesDir.resolve(saveFileName), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Failed!"), Text.of("Name is invalid.")));
-                SaveMod.LOGGER.error("Failed to rename the save '{}' : {}", saveFile, e);
+                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.rename")));
+                SaveMod.LOGGER.error("Failed to rename save '{}' : {}", saveFile, e);
             }
             client.setScreen(saveList.getParent());
         }));
@@ -141,13 +141,13 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                 Files.copy(saveFile, savesDir.resolve(file.toString()), StandardCopyOption.REPLACE_EXISTING);
                 ((SelectSaveScreen) saveList.getParent()).changeButtons(false);
                 saveList.refresh();
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Successful!"), Text.of("Save duplicated.")));
+                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.duplicate")));
             } else {
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Failed!"), Text.of("File already exists.")));
+                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.copy")));
             }
         } catch (IOException e) {
-            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Failed!"), Text.of("Save not duplicated.")));
             SaveMod.LOGGER.error("Failed to duplicate save '{}' : {}", saveFile, e);
+            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.duplicate")));
         }
     }
 
@@ -162,12 +162,12 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                     }
                     saveList.removeEntryWithoutScrolling(this);
                 } catch (IOException e) {
-                    client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Failed!"), Text.of("Save not deleted.")));
                     SaveMod.LOGGER.error("Failed to delete the save '{}' : {}", saveFile, e);
+                    client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.delete")));
                 }
             }
             client.setScreen(saveList.getParent());
-        }, Text.of("Are you sure you want to delete this save ?"), Text.of("\"" + save.getSaveName() + "\" will be lost forever ! (A long time !)")));
+        }, Text.translatable("savemod.delete.question"), Text.translatable("selectWorld.deleteWarning", save.getSaveName())));
     }
 
 }

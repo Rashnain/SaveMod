@@ -41,11 +41,11 @@ public class NamingSaveScreen extends net.minecraft.client.gui.screen.Screen {
         if (previousName != null && !previousName.equals(worldName))
             nameBox.setText(previousName);
 
-        addDrawableChild(ButtonWidget.builder(Text.of("Apply"), button ->
+        addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.name.apply"), button ->
             pressAction.onPress(nameBox.getText())
         ).dimensions(width / 2 - 150 - 5, height / 2 + 25, 150, 20).build());
 
-        addDrawableChild(ButtonWidget.builder(Text.of("Cancel"), button ->
+        addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.name.cancel"), button ->
             close()
         ).dimensions(width / 2 + 5, height / 2 + 25, 150, 20).build());
 
@@ -61,11 +61,11 @@ public class NamingSaveScreen extends net.minecraft.client.gui.screen.Screen {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackgroundTexture(matrices);
         if (previousName != null && !previousName.isEmpty()) {
-            drawCenteredTextWithShadow(matrices, textRenderer, Text.of("Rename your save"), width / 2, height / 2 - 45, 16777215);
+            drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.rename"), width / 2, height / 2 - 45, 16777215);
         } else {
-            drawCenteredTextWithShadow(matrices, textRenderer, Text.of("Name your new save"), width / 2, height / 2 - 45, 16777215);
+            drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.new"), width / 2, height / 2 - 45, 16777215);
         }
-        drawCenteredTextWithShadow(matrices, textRenderer, Text.of("Leave blank for \"" + worldName + "\""), width / 2, height / 2 - 30, 8421504);
+        drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, 8421504);
         super.render(matrices, mouseX, mouseY, delta);
     }
 

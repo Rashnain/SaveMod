@@ -30,7 +30,7 @@ public class SelectSaveScreen extends Screen {
     private ButtonWidget deleteButton;
 
     public SelectSaveScreen(Screen parent) {
-        super(Text.of("Save list"));
+        super(Text.translatable("savemod.list.title"));
         this.parent = parent;
     }
 
@@ -60,31 +60,31 @@ public class SelectSaveScreen extends Screen {
         saveList = new SaveListWidget(this, client, width, height, 30, height - 64, 36);
         addSelectableChild(saveList);
 
-        loadButton = addDrawableChild(ButtonWidget.builder(Text.of("Play Selected Save"), button ->
+        loadButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.play"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::load)
         ).dimensions(width / 2 - 154, height - 52, 150, 20).build());
         loadButton.active = false;
 
-        addDrawableChild(ButtonWidget.builder(Text.of("Create New Save"), button ->
+        addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.create"), button ->
             client.setScreen(new NamingSaveScreen(this, "", SaveMod.worldDir, this::save))
         ).dimensions(width / 2 + 4, height - 52, 150, 20).build());
 
-        renameButton = addDrawableChild(ButtonWidget.builder(Text.of("Rename"), button ->
+        renameButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.rename"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::rename)
         ).dimensions(width / 2 - 154, height - 28, 72, 20).build());
         renameButton.active = false;
 
-        deleteButton = addDrawableChild(ButtonWidget.builder(Text.of("Delete"), button ->
+        deleteButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.delete"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::delete)
         ).dimensions(width / 2 - 76, height - 28, 72, 20).build());
         deleteButton.active = false;
 
-        duplicateButton = addDrawableChild(ButtonWidget.builder(Text.of("Duplicate"), button ->
+        duplicateButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.duplicate"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::duplicate)
         ).dimensions(width / 2 + 4, height - 28, 72, 20).build());
         duplicateButton.active = false;
 
-        addDrawableChild(ButtonWidget.builder(Text.of("Done"), button -> close()
+        addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.done"), button -> close()
         ).dimensions(width / 2 + 82, height - 28, 72, 20).build());
     }
 
@@ -115,12 +115,12 @@ public class SelectSaveScreen extends Screen {
     private void save(String saveName) {
         if (client.isIntegratedServerRunning()) {
             client.world.disconnect();
-            client.disconnect(new MessageScreen(Text.of("Closing previous world...")));
+            client.disconnect(new MessageScreen(Text.translatable("savemod.message.closing")));
         }
         String worldDir = SaveMod.worldDir;
         try {
             LevelStorage.Session session = client.getLevelStorage().createSession(worldDir);
-            client.setScreenAndRender(new MessageScreen(Text.of("Saving...")));
+            client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
             EditWorldScreen.backupLevel(session);
             client.getToastManager().clear();
             session.close();
@@ -136,10 +136,10 @@ public class SelectSaveScreen extends Screen {
             try {
                 Files.move(backupsDir.resolve(SaveMod.backupName), savesDir.resolve(saveFileName), StandardCopyOption.REPLACE_EXISTING);
                 saveList.refresh();
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Successful!"), Text.of("Save created.")));
+                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.save")));
             } catch (IOException e) {
                 Files.delete(backupsDir.resolve(SaveMod.backupName));
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Failed!"), Text.of("Name is invalid.")));
+                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.rename")));
             }
         } catch (IOException e) {
             SystemToast.addWorldDeleteFailureToast(client, worldDir);
