@@ -112,6 +112,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                 SaveMod.LOGGER.error("Could not extract file '{}' : {}", zipFile, e);
             }
         } catch (IOException e) {
+            client.setScreen(saveList.getParent());
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.load")));
             SaveMod.LOGGER.error("Could not delete world '{}' : {}", worldDir, e);
         }
