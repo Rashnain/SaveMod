@@ -18,7 +18,6 @@ import net.rashnain.savemod.gui.widget.SaveListWidget;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 public class SelectSaveScreen extends Screen {
 
@@ -134,16 +133,17 @@ public class SelectSaveScreen extends Screen {
                 Files.createDirectories(savesDir);
             }
             try {
-                Files.move(backupsDir.resolve(SaveMod.backupName), savesDir.resolve(saveFileName), StandardCopyOption.REPLACE_EXISTING);
+                Files.move(backupsDir.resolve(SaveMod.backupName), savesDir.resolve(saveFileName));
                 saveList.refresh();
                 client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.save")));
             } catch (IOException e) {
                 Files.delete(backupsDir.resolve(SaveMod.backupName));
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.rename")));
+                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.name")));
+                SaveMod.LOGGER.error("Could not move save '{}' : {}", SaveMod.backupName, e);
             }
         } catch (IOException e) {
-            SystemToast.addWorldDeleteFailureToast(client, worldDir);
-            SaveMod.LOGGER.error("Could not delete world '{}' : {}", worldDir, e);
+            SystemToast.addWorldAccessFailureToast(client, worldDir);
+            SaveMod.LOGGER.error("Could not close world '{}' : {}", worldDir, e);
         }
         client.setScreen(this);
     }

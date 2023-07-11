@@ -37,6 +37,7 @@ public class SaveSummary {
             date = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss").parse(saveFileName);
         } catch (ParseException e) {
             date = Date.from(Instant.EPOCH);
+            SaveMod.LOGGER.error("Could not parse save date from '{}' : {}", saveFileName, e);
         }
         return date.getTime();
     }

@@ -21,7 +21,6 @@ import net.rashnain.savemod.util.ZipUtil;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -109,12 +108,12 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                 client.setScreenAndRender(new MessageScreen(Text.translatable("selectWorld.data_read")));
                 client.createIntegratedServerLoader().start(saveList.getParent(), worldDir);
             } catch (IOException e) {
-                SystemToast.addWorldAccessFailureToast(client, zipFile);
-                SaveMod.LOGGER.error("Could not extract '{}' : {}", zipFile, e);
+                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.uncompress")));
+                SaveMod.LOGGER.error("Could not extract file '{}' : {}", zipFile, e);
             }
         } catch (IOException e) {
-            SystemToast.addWorldDeleteFailureToast(client, worldDir);
-            SaveMod.LOGGER.error("Failed to delete world '{}' : {}", worldDir, e);
+            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.load")));
+            SaveMod.LOGGER.error("Could not delete world '{}' : {}", worldDir, e);
         }
     }
 
@@ -125,9 +124,9 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                 newName = save.getWorldDir();
             saveFileName = saveFileName.substring(0, 20) + newName + ".zip";
             try {
-                Files.move(saveFile, savesDir.resolve(saveFileName), StandardCopyOption.REPLACE_EXISTING);
+                Files.move(saveFile, savesDir.resolve(saveFileName));
             } catch (IOException e) {
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.rename")));
+                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.name")));
                 SaveMod.LOGGER.error("Failed to rename save '{}' : {}", saveFile, e);
             }
             client.setScreen(saveList.getParent());
@@ -137,17 +136,13 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     public void duplicate() {
         Path file = Path.of(save.getSaveFileName().replaceFirst(".zip$", " Copy.zip"));
         try {
-            if (!Files.exists(savesDir.resolve(file.toString()))) {
-                Files.copy(saveFile, savesDir.resolve(file.toString()), StandardCopyOption.REPLACE_EXISTING);
-                ((SelectSaveScreen) saveList.getParent()).changeButtons(false);
-                saveList.refresh();
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.duplicate")));
-            } else {
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.copy")));
-            }
+            Files.copy(saveFile, savesDir.resolve(file.toString()));
+            ((SelectSaveScreen) saveList.getParent()).changeButtons(false);
+            saveList.refresh();
+            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.duplicate")));
         } catch (IOException e) {
-            SaveMod.LOGGER.error("Failed to duplicate save '{}' : {}", saveFile, e);
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.duplicate")));
+            SaveMod.LOGGER.error("Could not duplicate save '{}' : {}", saveFile, e);
         }
     }
 
@@ -162,8 +157,8 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                     }
                     saveList.removeEntryWithoutScrolling(this);
                 } catch (IOException e) {
-                    SaveMod.LOGGER.error("Failed to delete the save '{}' : {}", saveFile, e);
                     client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.delete")));
+                    SaveMod.LOGGER.error("Could not delete save '{}' : {}", saveFile, e);
                 }
             }
             client.setScreen(saveList.getParent());

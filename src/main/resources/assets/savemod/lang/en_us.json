@@ -20,8 +20,9 @@
   "savemod.toast.succesful.save": "Save created.",
   "savemod.toast.succesful.duplicate": "Save duplicated.",
   "savemod.toast.failed": "Failed!",
-  "savemod.toast.failed.rename": "Name is invalid.",
+  "savemod.toast.failed.name": "Name is invalid.",
   "savemod.toast.failed.delete": "Save not deleted.",
+  "savemod.toast.failed.load": "Could not load.",
   "savemod.toast.failed.duplicate": "Save not duplicated.",
-  "savemod.toast.failed.copy": "File already exists."
+  "savemod.toast.failed.uncompress": "Could not uncompress."
 }
