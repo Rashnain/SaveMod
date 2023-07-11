@@ -16,6 +16,7 @@
   "savemod.name.hint": "Leave blank for \"%s\"",
   "savemod.name.apply": "Apply",
   "savemod.name.cancel": "Cancel",
+  "savemod.name.copy": "Copy",
   "savemod.toast.succesful": "Successful!",
   "savemod.toast.succesful.save": "Save created.",
   "savemod.toast.succesful.duplicate": "Save duplicated.",

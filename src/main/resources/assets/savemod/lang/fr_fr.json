@@ -16,6 +16,7 @@
   "savemod.name.hint": "Laisser vide pour \"%s\"",
   "savemod.name.apply": "Appliquer",
   "savemod.name.cancel": "Annuler",
+  "savemod.name.copy": "Copie",
   "savemod.toast.succesful": "Réussite!",
   "savemod.toast.succesful.save": "Sauvegarde créée.",
   "savemod.toast.succesful.duplicate": "Sauvegarde dupliquée.",

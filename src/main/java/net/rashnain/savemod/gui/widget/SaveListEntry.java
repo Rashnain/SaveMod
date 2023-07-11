@@ -135,7 +135,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     }
 
     public void duplicate() {
-        Path file = Path.of(save.getSaveFileName().replaceFirst(".zip$", " Copy.zip"));
+        Path file = Path.of(save.getSaveFileName().replaceFirst(".zip$", " " + Text.translatable("savemod.name.copy").getString() + ".zip"));
         try {
             Files.copy(saveFile, savesDir.resolve(file.toString()));
             ((SelectSaveScreen) saveList.getParent()).changeButtons(false);
