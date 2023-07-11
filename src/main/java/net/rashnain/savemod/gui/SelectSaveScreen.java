@@ -66,7 +66,7 @@ public class SelectSaveScreen extends Screen {
         loadButton.active = false;
 
         addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.create"), button ->
-            client.setScreen(new NamingSaveScreen(this, "", SaveMod.worldDir, this::save))
+            client.setScreen(new NameSaveScreen(this, "", SaveMod.worldDir, this::save))
         ).dimensions(width / 2 + 4, height - 52, 150, 20).build());
 
         renameButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.rename"), button ->

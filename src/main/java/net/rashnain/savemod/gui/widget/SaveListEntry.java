@@ -14,7 +14,7 @@ import net.minecraft.util.Util;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.rashnain.savemod.SaveMod;
 import net.rashnain.savemod.SaveSummary;
-import net.rashnain.savemod.gui.NamingSaveScreen;
+import net.rashnain.savemod.gui.NameSaveScreen;
 import net.rashnain.savemod.gui.SelectSaveScreen;
 import net.rashnain.savemod.util.ZipUtil;
 
@@ -119,7 +119,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     }
 
     public void rename() {
-        client.setScreen(new NamingSaveScreen(saveList.getParent(), save.getSaveName(), savesDir.getFileName().toString(), newName -> {
+        client.setScreen(new NameSaveScreen(saveList.getParent(), save.getSaveName(), savesDir.getFileName().toString(), newName -> {
             String saveFileName = saveFile.getFileName().toString();
             if (newName.isEmpty())
                 newName = save.getWorldDir();
