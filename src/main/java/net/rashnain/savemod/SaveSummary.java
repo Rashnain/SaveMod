@@ -9,6 +9,7 @@ public class SaveSummary {
 
     private final String saveFileName;
     private final String worldDir;
+    private long lastPlayed = -1;
 
     public SaveSummary(String saveFileName, String worldDir) {
         this.saveFileName = saveFileName;
@@ -32,14 +33,17 @@ public class SaveSummary {
     }
 
     public long getLastPlayed() {
-        Date date;
-        try {
-            date = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss").parse(saveFileName);
-        } catch (ParseException e) {
-            date = Date.from(Instant.EPOCH);
-            SaveMod.LOGGER.error("Could not parse save date from '{}' : {}", saveFileName, e);
+        if (lastPlayed == -1) {
+            Date date;
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss").parse(saveFileName);
+            } catch (ParseException e) {
+                date = Date.from(Instant.EPOCH);
+                SaveMod.LOGGER.error("Could not parse save date from '{}' : {}", saveFileName, e);
+            }
+            lastPlayed = date.getTime();
         }
-        return date.getTime();
+        return lastPlayed;
     }
 
 }
