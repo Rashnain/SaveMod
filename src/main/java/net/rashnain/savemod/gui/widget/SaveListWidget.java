@@ -59,7 +59,7 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
 
         File savesDir = new File(Path.of("savemod").resolve(SaveMod.worldDir).toUri());
 
-        File[] tabFiles = savesDir.listFiles();
+        File[] tabFiles = savesDir.listFiles(pathname -> pathname.isFile() && pathname.getName().endsWith(".zip") && pathname.getName().length() > 24);
 
         if (tabFiles != null) {
             List<File> files = new ArrayList<>(List.of(tabFiles));
