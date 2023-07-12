@@ -31,7 +31,7 @@ public class SaveModOptionsScreen extends GameOptionsScreen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         optionList.render(matrices, mouseX, mouseY, delta);
-        drawCenteredTextWithShadow(matrices, textRenderer, title, width / 2, 12, 0xffffff);
+        drawCenteredTextWithShadow(matrices, textRenderer, title, width / 2, 12, 0xFFFFFF);
         super.render(matrices, mouseX, mouseY, delta);
     }
 

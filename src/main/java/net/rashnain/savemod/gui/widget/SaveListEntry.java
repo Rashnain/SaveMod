@@ -85,7 +85,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
 
         if (client.options.getTouchscreen().getValue() || hovered) {
             RenderSystem.setShaderTexture(0, WORLD_SELECTION_LOCATION);
-            DrawableHelper.fill(matrices, x, y, x + 32, y + 32, -1601138544);
+            DrawableHelper.fill(matrices, x, y, x + 32, y + 32, 0x5F6F6F70);
             int pixelsBeforeStartButton = mouseX - x;
             int textureY = pixelsBeforeStartButton <= 32 ? 32 : 0;
             DrawableHelper.drawTexture(matrices, x, y, 0.0f, textureY, 32, 32, 256, 256);
