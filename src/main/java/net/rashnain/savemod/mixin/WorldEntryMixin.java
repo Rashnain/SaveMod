@@ -7,6 +7,7 @@ import net.minecraft.client.gui.screen.world.WorldListWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.world.level.storage.LevelSummary;
 import net.rashnain.savemod.SaveMod;
+import net.rashnain.savemod.config.SaveModConfig;
 import net.rashnain.savemod.gui.SelectSaveScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,16 +32,18 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
     @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/WorldListWidget;setSelected(Lnet/minecraft/client/gui/screen/world/WorldListWidget$Entry;)V", shift = At.Shift.AFTER))
     public void mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
         SaveMod.worldDir = level.getName();
-        if (mouseX - (80 + 270 - 32) >= 0) {
+        if (mouseX - (80 + 270 - 32) >= 0 && SaveModConfig.worldEntries.getValue()) {
             MinecraftClient.getInstance().setScreen(new SelectSaveScreen(screen));
         }
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawableHelper;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIFFIIII)V", ordinal = 6, shift = At.Shift.AFTER))
     public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta, CallbackInfo ci) {
-        int pixelsAfterSaveListButton = mouseX - (x + entryWidth - 32);
-        float textureY = pixelsAfterSaveListButton >= 0 ? 32 : 0;
-        DrawableHelper.drawTexture(matrices, x + entryWidth - 32, y, 0, textureY, 32, 32, 256, 256);
+        if (SaveModConfig.worldEntries.getValue()) {
+            int pixelsAfterSaveListButton = mouseX - (x + entryWidth - 32);
+            float textureY = pixelsAfterSaveListButton >= 0 ? 32 : 0;
+            DrawableHelper.drawTexture(matrices, x + entryWidth - 32, y, 0, textureY, 32, 32, 256, 256);
+        }
     }
 
     @Inject(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V", shift = At.Shift.AFTER))

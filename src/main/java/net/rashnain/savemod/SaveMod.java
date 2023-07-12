@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.rashnain.savemod.config.SaveModConfig;
 import net.rashnain.savemod.gui.SelectSaveScreen;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
@@ -26,6 +27,8 @@ public class SaveMod implements ClientModInitializer {
 			if (openList.isPressed())
 				client.setScreen(new SelectSaveScreen(null));
 		});
+
+		SaveModConfig.load();
 	}
 
 }
