@@ -6,20 +6,22 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
+import java.util.function.Consumer;
+
 public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
 
     private final Screen parent;
     private final String previousName;
     private final String worldName;
-    private final PressAction pressAction;
+    private final Consumer<String> consumer;
     private TextFieldWidget nameBox;
 
-    public NameSaveScreen(Screen parent, String previousName, String worldName, PressAction pressAction) {
+    public NameSaveScreen(Screen parent, String previousName, String worldName, Consumer<String> consumer) {
         super(Text.empty());
         this.parent = parent;
         this.previousName = previousName;
         this.worldName = worldName;
-        this.pressAction = pressAction;
+        this.consumer = consumer;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
             return true;
         }
         if (keyCode == 257 || keyCode == 335) {
-            pressAction.onPress(nameBox.getText());
+            consumer.accept(nameBox.getText());
             return true;
         }
         return nameBox.keyPressed(keyCode, scanCode, modifiers);
@@ -43,7 +45,7 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
             nameBox.setText(previousName);
 
         addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.name.apply"), button ->
-            pressAction.onPress(nameBox.getText())
+            consumer.accept(nameBox.getText())
         ).dimensions(width / 2 - 150 - 5, height / 2 + 25, 150, 20).build());
 
         addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.name.cancel"), button ->
@@ -73,10 +75,6 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
     @Override
     public void close() {
         client.setScreen(parent);
-    }
-
-    public interface PressAction {
-        void onPress(String var1);
     }
 
 }
