@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.OptionListWidget;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.rashnain.savemod.config.SaveModConfig;
 
@@ -24,7 +25,7 @@ public class OptionsScreen extends GameOptionsScreen {
         optionList.addSingleOptionEntry(SaveModConfig.worldEntries);
         addSelectableChild(optionList);
 
-        addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.done"), button -> close()
+        addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> close()
         ).dimensions(width / 2 - 100, height - 27,200, 20).build());
     }
 

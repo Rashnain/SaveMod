@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.rashnain.savemod.SaveMod;
@@ -83,7 +84,7 @@ public class SelectSaveScreen extends Screen {
         ).dimensions(width / 2 + 4, height - 28, 72, 20).build());
         duplicateButton.active = false;
 
-        addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.done"), button -> close()
+        addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> close()
         ).dimensions(width / 2 + 82, height - 28, 72, 20).build());
     }
 

@@ -5,7 +5,6 @@
   "savemod.list.rename": "Rename",
   "savemod.list.delete": "Delete",
   "savemod.list.duplicate": "Duplicate",
-  "savemod.list.done": "Done",
 
   "savemod.message.closing": "Closing world...",
   "savemod.message.deleting": "Deleting previous world...",
@@ -18,7 +17,6 @@
   "savemod.name.rename": "Rename your save",
   "savemod.name.hint": "Leave blank for \"%s\"",
   "savemod.name.apply": "Apply",
-  "savemod.name.cancel": "Cancel",
   "savemod.name.copy": "Copy",
 
   "savemod.toast.succesful": "Successful!",

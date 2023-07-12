@@ -4,6 +4,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
 import java.util.function.Consumer;
@@ -48,7 +49,7 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
             consumer.accept(nameBox.getText())
         ).dimensions(width / 2 - 150 - 5, height / 2 + 25, 150, 20).build());
 
-        addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.name.cancel"), button ->
+        addDrawableChild(ButtonWidget.builder(ScreenTexts.CANCEL, button ->
             close()
         ).dimensions(width / 2 + 5, height / 2 + 25, 150, 20).build());
 
