@@ -56,7 +56,7 @@ public class SelectSaveScreen extends Screen {
 
     @Override
     protected void init() {
-        saveList = new SaveListWidget(this, client, width, height, 30, height - 64, 36);
+        saveList = new SaveListWidget(this, client, width, height, 32, height - 64, 36);
         addSelectableChild(saveList);
 
         loadButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.play"), button ->
@@ -90,7 +90,7 @@ public class SelectSaveScreen extends Screen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         saveList.render(matrices, mouseX, mouseY, delta);
-        drawCenteredTextWithShadow(matrices, textRenderer, title, width / 2, 10, 16777215);
+        drawCenteredTextWithShadow(matrices, textRenderer, title, width / 2, 12, 16777215);
         super.render(matrices, mouseX, mouseY, delta);
     }
 

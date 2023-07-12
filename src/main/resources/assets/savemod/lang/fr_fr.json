@@ -6,17 +6,21 @@
   "savemod.list.delete": "Supprimer",
   "savemod.list.duplicate": "Dupliquer",
   "savemod.list.done": "Terminé",
+
   "savemod.message.closing": "Fermeture du monde...",
   "savemod.message.deleting": "Supression du monde précédent...",
   "savemod.message.uncompressing": "Décompression de la sauvegarde...",
   "savemod.message.saving": "Sauvegarde...",
+
   "savemod.delete.question" : "Êtes vous sûr de vouloir supprimer cette sauvegarde ?",
+
   "savemod.name.new": "Nommer votre nouvelle sauvegarde",
   "savemod.name.rename": "Renommer votre sauvegarde",
   "savemod.name.hint": "Laisser vide pour \"%s\"",
   "savemod.name.apply": "Appliquer",
   "savemod.name.cancel": "Annuler",
   "savemod.name.copy": "Copie",
+
   "savemod.toast.succesful": "Réussite!",
   "savemod.toast.succesful.save": "Sauvegarde créée.",
   "savemod.toast.succesful.duplicate": "Sauvegarde dupliquée.",
@@ -26,8 +30,10 @@
   "savemod.toast.failed.load": "Echec du chargement.",
   "savemod.toast.failed.duplicate": "Sauvegarde pas dupliquée.",
   "savemod.toast.failed.uncompress": "Echec de l'extraction.",
-  "key.savemod.open_list": "Ouvrir la liste des sauvegardes",
+
   "key.category.savemod": "SaveMod",
+  "key.savemod.open_list": "Ouvrir la liste des sauvegardes",
+
   "savemod.options": "Options de SaveMod",
   "options.savemod.gameMenu": "Bouton au menu pause",
   "options.savemod.gameMenu.tooltip": "Ajoute un bouton au menu pause pour ouvrir la liste des sauvegardes",

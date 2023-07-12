@@ -6,17 +6,21 @@
   "savemod.list.delete": "Delete",
   "savemod.list.duplicate": "Duplicate",
   "savemod.list.done": "Done",
+
   "savemod.message.closing": "Closing world...",
   "savemod.message.deleting": "Deleting previous world...",
   "savemod.message.uncompressing": "Uncompressing save...",
   "savemod.message.saving": "Saving...",
+
   "savemod.delete.question" : "Are you sure you want to delete this save ?",
+
   "savemod.name.new": "Name your new save",
   "savemod.name.rename": "Rename your save",
   "savemod.name.hint": "Leave blank for \"%s\"",
   "savemod.name.apply": "Apply",
   "savemod.name.cancel": "Cancel",
   "savemod.name.copy": "Copy",
+
   "savemod.toast.succesful": "Successful!",
   "savemod.toast.succesful.save": "Save created.",
   "savemod.toast.succesful.duplicate": "Save duplicated.",
@@ -26,8 +30,10 @@
   "savemod.toast.failed.load": "Could not load.",
   "savemod.toast.failed.duplicate": "Save not duplicated.",
   "savemod.toast.failed.uncompress": "Could not uncompress.",
-  "key.savemod.open_list": "Open Saves list",
+
   "key.category.savemod": "SaveMod",
+  "key.savemod.open_list": "Open Saves list",
+
   "savemod.options": "SaveMod Options",
   "options.savemod.gameMenu": "Game menu button",
   "options.savemod.gameMenu.tooltip": "Add a button on the game pause menu to open the save list",
