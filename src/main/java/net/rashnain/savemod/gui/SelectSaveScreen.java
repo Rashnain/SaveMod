@@ -137,7 +137,7 @@ public class SelectSaveScreen extends Screen {
             try {
                 Files.move(backupsDir.resolve(SaveMod.backupName), savesDir.resolve(saveFileName));
                 client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.save")));
-                if (SaveModConfig.autoReload.getValue()) {
+                if (SaveModConfig.autoReload.getValue() && (parent == null || parent instanceof GameMenuScreen)) {
                     client.createIntegratedServerLoader().start(null, worldDir);
                 } else {
                     saveList.refresh();
