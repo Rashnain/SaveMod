@@ -9,11 +9,11 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.rashnain.savemod.config.SaveModConfig;
 
-public class SaveModOptionsScreen extends GameOptionsScreen {
+public class OptionsScreen extends GameOptionsScreen {
 
     private OptionListWidget optionList;
 
-    public SaveModOptionsScreen(Screen parent) {
+    public OptionsScreen(Screen parent) {
         super(parent, MinecraftClient.getInstance().options, Text.translatable("savemod.options"));
     }
 
@@ -22,6 +22,7 @@ public class SaveModOptionsScreen extends GameOptionsScreen {
         optionList = new OptionListWidget(client, width, height, 32, height - 32, 25);
         optionList.addSingleOptionEntry(SaveModConfig.gameMenu);
         optionList.addSingleOptionEntry(SaveModConfig.worldEntries);
+//        optionList.addSingleOptionEntry(SaveModConfig.autoReload);
         addSelectableChild(optionList);
 
         addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.done"), button -> close()
