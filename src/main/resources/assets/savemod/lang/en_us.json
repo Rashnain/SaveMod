@@ -25,5 +25,7 @@
   "savemod.toast.failed.delete": "Save not deleted.",
   "savemod.toast.failed.load": "Could not load.",
   "savemod.toast.failed.duplicate": "Save not duplicated.",
-  "savemod.toast.failed.uncompress": "Could not uncompress."
+  "savemod.toast.failed.uncompress": "Could not uncompress.",
+  "key.savemod.open_list": "Open Saves list",
+  "key.category.savemod": "SaveMod"
 }
