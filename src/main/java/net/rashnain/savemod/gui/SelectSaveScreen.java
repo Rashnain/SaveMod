@@ -141,6 +141,7 @@ public class SelectSaveScreen extends Screen {
                     client.createIntegratedServerLoader().start(null, worldDir);
                 } else {
                     saveList.refresh();
+                    client.setScreen(this);
                 }
             } catch (IOException e) {
                 Files.delete(backupsDir.resolve(SaveMod.backupName));
@@ -151,7 +152,6 @@ public class SelectSaveScreen extends Screen {
             SystemToast.addWorldAccessFailureToast(client, worldDir);
             SaveMod.LOGGER.error("Could not close world '{}' : {}", worldDir, e);
         }
-        client.setScreen(this);
     }
 
 }
