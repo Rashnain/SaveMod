@@ -15,6 +15,7 @@ public class SaveModConfig {
 
     public static final SimpleOption<Boolean> gameMenu = SimpleOption.ofBoolean("options.savemod.gameMenu", value -> Tooltip.of(Text.translatable("options.savemod.gameMenu.tooltip")), true);
     public static final SimpleOption<Boolean> worldEntries = SimpleOption.ofBoolean("options.savemod.worldEntries", value -> Tooltip.of(Text.translatable("options.savemod.worldEntries.tooltip")), true);
+    public static final SimpleOption<Boolean> autoReload = SimpleOption.ofBoolean("options.savemod.autoReload", false);
 
     private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve("savemod.properties");
     private static final Properties properties = new Properties();
@@ -27,6 +28,7 @@ public class SaveModConfig {
             properties.load(Files.newInputStream(configPath));
             gameMenu.setValue(Boolean.valueOf((String)properties.get("show-button-on-game-menu")));
             worldEntries.setValue(Boolean.valueOf((String)properties.get("show-button-on-world-entries")));
+            autoReload.setValue(Boolean.valueOf((String)properties.get("reload-after-saving")));
         } catch (IOException e) {
             SaveMod.LOGGER.error("Could not load config : {}", e.getMessage());
         }
@@ -42,6 +44,7 @@ public class SaveModConfig {
         }
         properties.setProperty("show-button-on-game-menu", String.valueOf(gameMenu.getValue()));
         properties.setProperty("show-button-on-world-entries", String.valueOf(worldEntries.getValue()));
+        properties.setProperty("reload-after-saving", String.valueOf(autoReload.getValue()));
         try {
             properties.store(Files.newOutputStream(configPath), "Configuration file for SaveMod");
         } catch (IOException e) {

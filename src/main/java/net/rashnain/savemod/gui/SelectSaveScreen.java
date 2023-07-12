@@ -13,6 +13,7 @@ import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.rashnain.savemod.SaveMod;
+import net.rashnain.savemod.config.SaveModConfig;
 import net.rashnain.savemod.gui.widget.SaveListEntry;
 import net.rashnain.savemod.gui.widget.SaveListWidget;
 
@@ -97,7 +98,7 @@ public class SelectSaveScreen extends Screen {
 
     @Override
     public void close() {
-        if (parent instanceof GameMenuScreen && !client.isIntegratedServerRunning()) {
+        if (!client.isIntegratedServerRunning() && (parent == null || parent instanceof GameMenuScreen)) {
             client.setScreen(new SelectWorldScreen(new TitleScreen()));
         } else {
             client.setScreen(parent);
@@ -135,8 +136,12 @@ public class SelectSaveScreen extends Screen {
             }
             try {
                 Files.move(backupsDir.resolve(SaveMod.backupName), savesDir.resolve(saveFileName));
-                saveList.refresh();
                 client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.save")));
+                if (SaveModConfig.autoReload.getValue()) {
+                    client.createIntegratedServerLoader().start(null, worldDir);
+                } else {
+                    saveList.refresh();
+                }
             } catch (IOException e) {
                 Files.delete(backupsDir.resolve(SaveMod.backupName));
                 client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.name")));

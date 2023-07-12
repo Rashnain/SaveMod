@@ -37,4 +37,5 @@
   "options.savemod.gameMenu.tooltip": "Add a button on the game pause menu to open the save list",
   "options.savemod.worldEntries": "World entries button",
   "options.savemod.worldEntries.tooltip": "Add a button on each world entry of the world list to open their save list",
+  "options.savemod.autoReload": "Reload the world after saving"
 }
