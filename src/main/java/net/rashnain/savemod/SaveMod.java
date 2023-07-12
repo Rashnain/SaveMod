@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.rashnain.savemod.config.SaveModConfig;
+import net.rashnain.savemod.gui.NameSaveScreen;
 import net.rashnain.savemod.gui.SelectSaveScreen;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
@@ -22,10 +23,17 @@ public class SaveMod implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		KeyBinding openList = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.open_list", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.savemod"));
+		KeyBinding save = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.save", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.savemod"));
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (openList.isPressed())
 				client.setScreen(new SelectSaveScreen(null));
+			if (save.isPressed())
+				client.setScreen(new NameSaveScreen(null, "", SaveMod.worldDir, saveName -> {
+					SelectSaveScreen saveScreen = new SelectSaveScreen(null);
+					client.setScreen(saveScreen);
+					saveScreen.save(saveName);
+				}));
 		});
 
 		SaveModConfig.load();

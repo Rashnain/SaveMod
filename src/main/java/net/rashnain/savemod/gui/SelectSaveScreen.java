@@ -113,7 +113,7 @@ public class SelectSaveScreen extends Screen {
         focusOn(null);
     }
 
-    private void save(String saveName) {
+    public void save(String saveName) {
         if (client.isIntegratedServerRunning()) {
             client.world.disconnect();
             client.disconnect(new MessageScreen(Text.translatable("savemod.message.closing")));

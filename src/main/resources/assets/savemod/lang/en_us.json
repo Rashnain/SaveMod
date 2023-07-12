@@ -30,7 +30,8 @@
   "savemod.toast.failed.uncompress": "Could not uncompress.",
 
   "key.category.savemod": "SaveMod",
-  "key.savemod.open_list": "Open Saves list",
+  "key.savemod.open_list": "Open saves list",
+  "key.savemod.save": "Open save screen",
 
   "savemod.options": "SaveMod Options",
   "options.savemod.gameMenu": "Game menu button",
