@@ -18,6 +18,9 @@
   "entrypoints": {
     "client": [
       "net.rashnain.savemod.SaveMod"
+    ],
+    "modmenu": [
+      "net.rashnain.savemod.config.ModMenuCompat"
     ]
   },
   "mixins": [

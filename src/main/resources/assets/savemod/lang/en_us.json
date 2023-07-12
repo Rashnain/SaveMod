@@ -27,5 +27,10 @@
   "savemod.toast.failed.duplicate": "Save not duplicated.",
   "savemod.toast.failed.uncompress": "Could not uncompress.",
   "key.savemod.open_list": "Open Saves list",
-  "key.category.savemod": "SaveMod"
+  "key.category.savemod": "SaveMod",
+  "savemod.options": "SaveMod Options",
+  "options.savemod.gameMenu": "Game menu button",
+  "options.savemod.gameMenu.tooltip": "Add a button on the game pause menu to open the save list",
+  "options.savemod.worldEntries": "World entries button",
+  "options.savemod.worldEntries.tooltip": "Add a button on each world entry of the world list to open their save list",
 }
