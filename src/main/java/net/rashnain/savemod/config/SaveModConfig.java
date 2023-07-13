@@ -14,8 +14,8 @@ import java.util.Properties;
 public class SaveModConfig {
 
     public static final SimpleOption<Boolean> gameMenu = SimpleOption.ofBoolean("options.savemod.gameMenu", value -> Tooltip.of(Text.translatable("options.savemod.gameMenu.tooltip")), true);
-    public static final SimpleOption<Boolean> worldEntries = SimpleOption.ofBoolean("options.savemod.worldEntries", value -> Tooltip.of(Text.translatable("options.savemod.worldEntries.tooltip")), true);
-    public static final SimpleOption<Boolean> autoReload = SimpleOption.ofBoolean("options.savemod.autoReload", false);
+    public static final SimpleOption<Boolean> worldEntries = SimpleOption.ofBoolean("options.savemod.worldEntries", value -> Tooltip.of(Text.translatable("options.savemod.worldEntries.tooltip")), false);
+    public static final SimpleOption<Boolean> autoReload = SimpleOption.ofBoolean("options.savemod.autoReload", true);
 
     private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve("savemod.properties");
     private static final Properties properties = new Properties();
