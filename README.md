@@ -19,12 +19,12 @@
 - A config to turn off/on some buttons and the option to auto reload after a save
 - A config screen (need [Mod Menu](https://modrinth.com/mod/modmenu/versions?g=1.19.4))
 
-## Dependencies
+## Dependency
 
 <a href="https://modrinth.com/mod/fabric-api/versions?g=1.19.4">
 <img width="150" src="readme_assets/req_fabric_api.png" alt="Requires Fabric API">
 </a>
 
-## Optional dependencies
+## Optional dependency
 
 You may use [Mod Menu](https://modrinth.com/mod/modmenu/versions?g=1.19.4) to configure the mod in-game, but it can also be configured by editing the `savemod.properties` file, located in the `config` directory.
