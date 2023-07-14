@@ -1,31 +1,36 @@
 package net.rashnain.savemod.util;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.io.*;
+import java.util.Enumeration;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.zip.ZipFile;
 
 public class ZipUtil {
 
     public static void unzipFile(String zipFile, String targetDir) throws IOException {
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
-            ZipEntry zipEntry = zis.getNextEntry();
-            while (zipEntry != null) {
-                Path path = Path.of(targetDir).resolve(zipEntry.getName());
-                if (zipEntry.isDirectory()) {
-                    Files.createDirectories(path);
-                } else {
-                    if (Files.notExists(path.getParent())) {
-                        Files.createDirectories(path.getParent());
-                    }
-                    Files.copy(zis, path, StandardCopyOption.REPLACE_EXISTING);
+        byte[] buffer = new byte[65536];
+        int length;
+        File previous = null;
+        File current;
+        try (ZipFile zip = new ZipFile(zipFile)) {
+            Enumeration<? extends ZipEntry> entries = zip.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                File file = new File(targetDir, entry.getName());
+                current = file.getParentFile();
+                if (!current.equals(previous)) {
+                    if (!current.exists())
+                        current.mkdirs();
+                    previous = current;
                 }
-                zipEntry = zis.getNextEntry();
+                InputStream in = new BufferedInputStream(zip.getInputStream(entry), 65536);
+                OutputStream out = new BufferedOutputStream(new FileOutputStream(file), 65536);
+                while ((length = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, length);
+                }
+                out.close();
+                in.close();
             }
-            zis.closeEntry();
         }
     }
 
