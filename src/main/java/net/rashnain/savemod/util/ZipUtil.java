@@ -1,7 +1,13 @@
 package net.rashnain.savemod.util;
 
+import org.apache.commons.compress.archivers.zip.*;
+import org.apache.commons.compress.parallel.InputStreamSupplier;
+import org.apache.commons.io.FileUtils;
+
 import java.io.*;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -31,6 +37,47 @@ public class ZipUtil {
                 out.close();
                 in.close();
             }
+        }
+    }
+
+    public static void createBackup(String worldDir, String targetFile) throws IOException, ExecutionException, InterruptedException {
+
+        ParallelScatterZipCreator scatterZipCreator = new ParallelScatterZipCreator();
+
+        try (ZipArchiveOutputStream archive = new ZipArchiveOutputStream(new FileOutputStream(targetFile))) {
+
+            File sourceDir = new File(worldDir);
+
+            Iterator<File> fileIterator = FileUtils.iterateFiles(sourceDir, null, true);
+
+            archive.setUseZip64(Zip64Mode.AsNeeded);
+
+            int sourceDirLength = sourceDir.getParentFile().getAbsolutePath().length() + 1;
+
+            while (fileIterator.hasNext()) {
+
+                File file = fileIterator.next();
+
+                if (file.getName().equals("session.lock"))
+                    continue;
+
+                String relativePath = file.getAbsolutePath().substring(sourceDirLength);
+
+                InputStreamSupplier streamSupplier = () -> {
+                    try {
+                        return new FileInputStream(file);
+                    } catch (FileNotFoundException e) {
+                        return InputStream.nullInputStream();
+                    }
+                };
+
+                ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry(relativePath);
+
+                zipArchiveEntry.setMethod(ZipEntry.DEFLATED);
+
+                scatterZipCreator.addArchiveEntry(zipArchiveEntry, streamSupplier);
+            }
+            scatterZipCreator.writeTo(archive);
         }
     }
 

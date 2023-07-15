@@ -26,6 +26,7 @@
   "savemod.toast.failed.name": "Le nom est invalide.",
   "savemod.toast.failed.delete": "Sauvegarde pas supprimée.",
   "savemod.toast.failed.load": "Echec du chargement.",
+  "savemod.toast.failed.save": "Echec de la sauvegarde.",
   "savemod.toast.failed.duplicate": "Sauvegarde pas dupliquée.",
   "savemod.toast.failed.uncompress": "Echec de l'extraction.",
 

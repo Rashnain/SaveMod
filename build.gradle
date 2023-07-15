@@ -17,10 +17,15 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
 	modCompileOnly fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
 	modCompileOnly fabricApi.module("fabric-key-binding-api-v1", project.fabric_api_version)
 	modCompileOnly fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version)
+
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+	implementation "org.apache.commons:commons-compress:1.23.0"
+	implementation 'commons-io:commons-io:2.13.0'
 }
 
 processResources {

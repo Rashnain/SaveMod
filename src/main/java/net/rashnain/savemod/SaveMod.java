@@ -18,8 +18,6 @@ public class SaveMod implements ClientModInitializer {
 
 	public static String worldDir;
 
-	public static String backupName;
-
 	@Override
 	public void onInitializeClient() {
 		KeyBinding openList = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.open_list", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.savemod"));

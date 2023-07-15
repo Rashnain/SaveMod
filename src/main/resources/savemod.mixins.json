@@ -6,8 +6,8 @@
   "client": [
     "CreateWorldScreenMixin",
     "GameMenuScreenMixin",
-    "SessionMixin",
-    "WorldEntryMixin"
+    "WorldEntryMixin",
+    "SessionAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

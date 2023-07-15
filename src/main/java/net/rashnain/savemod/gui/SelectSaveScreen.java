@@ -4,22 +4,30 @@ import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.world.EditWorldScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
+import net.minecraft.util.PathUtil;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.rashnain.savemod.SaveMod;
 import net.rashnain.savemod.config.SaveModConfig;
 import net.rashnain.savemod.gui.widget.SaveListEntry;
 import net.rashnain.savemod.gui.widget.SaveListWidget;
+import net.rashnain.savemod.mixin.SessionAccessor;
+import net.rashnain.savemod.util.ZipUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import java.util.concurrent.ExecutionException;
 
 public class SelectSaveScreen extends Screen {
 
@@ -119,38 +127,47 @@ public class SelectSaveScreen extends Screen {
             client.disconnect(new MessageScreen(Text.translatable("savemod.message.closing")));
         }
         String worldDir = SaveMod.worldDir;
+        client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
         try {
             LevelStorage.Session session = client.getLevelStorage().createSession(worldDir);
-            client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
-            EditWorldScreen.backupLevel(session);
-            client.getToastManager().clear();
-            session.close();
-            String saveFileName = SaveMod.backupName;
+
+            ((SessionAccessor) session).invokeCheckValid();
+
+            DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
+                .appendValue(ChronoField.YEAR, 4).appendLiteral('-')
+                .appendValue(ChronoField.MONTH_OF_YEAR, 2).appendLiteral('-')
+                .appendValue(ChronoField.DAY_OF_MONTH, 2).appendLiteral('_')
+                .appendValue(ChronoField.HOUR_OF_DAY, 2).appendLiteral('-')
+                .appendValue(ChronoField.MINUTE_OF_HOUR, 2).appendLiteral('-')
+                .appendValue(ChronoField.SECOND_OF_MINUTE, 2).toFormatter();
+
+            String backupName = LocalDateTime.now().format(TIME_FORMATTER) + "_" + worldDir;
             if (!saveName.isEmpty()) {
-                saveFileName = saveFileName.substring(0, 20) + saveName + ".zip";
+                backupName = backupName.substring(0, 20) + saveName;
             }
-            Path backupsDir = Path.of("backups");
+
             Path savesDir = Path.of("savemod").resolve(worldDir);
             if (Files.notExists(savesDir)) {
                 Files.createDirectories(savesDir);
             }
-            try {
-                Files.move(backupsDir.resolve(SaveMod.backupName), savesDir.resolve(saveFileName));
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.save")));
-                if (SaveModConfig.autoReload.getValue() && (parent == null || parent instanceof GameMenuScreen)) {
-                    client.createIntegratedServerLoader().start(null, worldDir);
-                } else {
-                    saveList.refresh();
-                    client.setScreen(this);
-                }
-            } catch (IOException e) {
-                Files.delete(backupsDir.resolve(SaveMod.backupName));
-                client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.name")));
-                SaveMod.LOGGER.error("Could not move save '{}' : {}", SaveMod.backupName, e);
+
+            Path backupFileName = savesDir.resolve(PathUtil.getNextUniqueName(savesDir, backupName, ".zip"));
+
+            ZipUtil.createBackup("saves/" + worldDir, backupFileName.toString());
+
+            session.close();
+
+            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.save")));
+
+            if (SaveModConfig.autoReload.getValue() && (parent == null || parent instanceof GameMenuScreen)) {
+                client.createIntegratedServerLoader().start(null, worldDir);
+            } else {
+                saveList.refresh();
+                client.setScreen(this);
             }
-        } catch (IOException e) {
-            SystemToast.addWorldAccessFailureToast(client, worldDir);
-            SaveMod.LOGGER.error("Could not close world '{}' : {}", worldDir, e);
+        } catch (IOException | ExecutionException | InterruptedException e) {
+            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.save")));
+            SaveMod.LOGGER.error("Could not save : {}", e.getMessage());
         }
     }
 
