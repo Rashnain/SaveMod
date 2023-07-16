@@ -127,7 +127,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                 Files.move(saveFile, savesDir.resolve(saveFileName));
             } catch (IOException e) {
                 client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.name")));
-                SaveMod.LOGGER.error("Failed to rename save '{}' : {}", saveFile, e);
+                SaveMod.LOGGER.error("Could not rename save '{}' : {}", saveFile, e);
             }
             client.setScreen(saveList.getParent());
         }));
