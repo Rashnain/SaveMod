@@ -39,7 +39,6 @@
   "options.savemod.gameMenu.tooltip": "Ajoute un bouton au menu pause pour ouvrir la liste des sauvegardes",
   "options.savemod.worldEntries": "Bouton aux mondes",
   "options.savemod.worldEntries.tooltip": "Ajoute un bouton à chaque monde de la liste des mondes pour ouvrir leur liste de sauvegarde",
-  "options.savemod.autoReload": "Recharger le monde après avoir sauvegarder",
   "options.savemod.compression": "Compresser les sauvegardes",
   "options.savemod.compression.tooltip": "La compression est plus lente mais prend 20% d'espace en moins"
 }

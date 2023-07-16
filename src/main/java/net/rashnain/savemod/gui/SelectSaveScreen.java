@@ -1,23 +1,16 @@
 package net.rashnain.savemod.gui;
 
-import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.PathUtil;
-import net.minecraft.util.Util;
-import net.minecraft.world.level.storage.LevelStorage;
 import net.rashnain.savemod.SaveMod;
-import net.rashnain.savemod.config.SaveModConfig;
 import net.rashnain.savemod.gui.widget.SaveListEntry;
 import net.rashnain.savemod.gui.widget.SaveListWidget;
-import net.rashnain.savemod.mixin.SessionAccessor;
 import net.rashnain.savemod.util.ZipUtil;
 
 import java.io.IOException;
@@ -106,11 +99,7 @@ public class SelectSaveScreen extends Screen {
 
     @Override
     public void close() {
-        if (!client.isIntegratedServerRunning() && (parent == null || parent instanceof GameMenuScreen)) {
-            client.setScreen(new SelectWorldScreen(new TitleScreen()));
-        } else {
-            client.setScreen(parent);
-        }
+        client.setScreen(parent);
     }
 
     public void changeButtons(boolean buttonsActive) {
@@ -123,16 +112,11 @@ public class SelectSaveScreen extends Screen {
 
     public void save(String saveName) {
         if (client.isIntegratedServerRunning()) {
-            client.world.disconnect();
-            client.disconnect(new MessageScreen(Text.translatable("savemod.message.closing")));
+            client.getServer().saveAll(false, true, false);
         }
         String worldDir = SaveMod.worldDir;
         client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
         try {
-            LevelStorage.Session session = client.getLevelStorage().createSession(worldDir);
-
-            ((SessionAccessor) session).invokeCheckValid();
-
             DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
                 .appendValue(ChronoField.YEAR, 4).appendLiteral('-')
                 .appendValue(ChronoField.MONTH_OF_YEAR, 2).appendLiteral('-')
@@ -155,21 +139,14 @@ public class SelectSaveScreen extends Screen {
 
             ZipUtil.createBackup("saves/" + worldDir, backupFileName.toString());
 
-            session.close();
-
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.save")));
 
-            if (SaveModConfig.autoReload.getValue() && (parent == null || parent instanceof GameMenuScreen)) {
-                client.createIntegratedServerLoader().start(null, worldDir);
-            } else {
-                saveList.refresh();
-                client.setScreen(this);
-            }
+            saveList.refresh();
         } catch (IOException | ExecutionException | InterruptedException e) {
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.save")));
             SaveMod.LOGGER.error("Could not save : {}", e.getMessage());
-            client.setScreen(this);
         }
+        client.setScreen(this);
     }
 
 }
