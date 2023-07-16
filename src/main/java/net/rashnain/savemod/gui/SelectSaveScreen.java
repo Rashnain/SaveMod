@@ -58,6 +58,13 @@ public class SelectSaveScreen extends Screen {
     }
 
     @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        boolean result = super.keyPressed(keyCode, scanCode, modifiers) || saveList.keyPressed(keyCode, scanCode, modifiers);
+        changeButtons(saveList.getSelectedOrNull() != null);
+        return result;
+    }
+
+    @Override
     protected void init() {
         saveList = new SaveListWidget(this, client, width, height, 32, height - 64, 36);
         addSelectableChild(saveList);
@@ -107,7 +114,6 @@ public class SelectSaveScreen extends Screen {
         renameButton.active = buttonsActive;
         duplicateButton.active = buttonsActive;
         deleteButton.active = buttonsActive;
-        focusOn(null);
     }
 
     public void save(String saveName) {

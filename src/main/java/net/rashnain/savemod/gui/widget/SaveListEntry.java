@@ -139,8 +139,8 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         Path file = Path.of(save.getSaveFileName().replaceFirst(".zip$", " " + Text.translatable("savemod.name.copy").getString() + ".zip"));
         try {
             Files.copy(saveFile, savesDir.resolve(file.toString()));
-            ((SelectSaveScreen) saveList.getParent()).changeButtons(false);
             saveList.refresh();
+            client.setScreen(saveList.getParent());
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.duplicate")));
         } catch (IOException e) {
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.duplicate")));
