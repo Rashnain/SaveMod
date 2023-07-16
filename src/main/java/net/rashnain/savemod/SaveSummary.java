@@ -28,10 +28,6 @@ public class SaveSummary {
         return worldDir;
     }
 
-    public String getDetails() {
-        return "";
-    }
-
     public long getLastPlayed() {
         if (lastPlayed == -1) {
             Date date;
