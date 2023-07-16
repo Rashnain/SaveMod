@@ -29,6 +29,9 @@ public class ZipUtil {
 
                 ZipEntry entry = entries.nextElement();
 
+                if (entry.isDirectory())
+                    continue;
+
                 File file = new File(targetDir, entry.getName());
 
                 current = file.getParentFile();
