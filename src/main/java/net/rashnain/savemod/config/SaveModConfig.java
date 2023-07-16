@@ -43,6 +43,7 @@ public class SaveModConfig {
                 SaveMod.LOGGER.error("Could not create config file : {}", e.getMessage());
             }
         }
+        properties.clear();
         properties.setProperty("show-button-on-game-menu", String.valueOf(gameMenu.getValue()));
         properties.setProperty("show-button-on-world-entries", String.valueOf(worldEntries.getValue()));
         properties.setProperty("compress-saves", String.valueOf(compression.getValue()));
