@@ -23,14 +23,15 @@ public class SaveModConfig {
     public static void load() {
         if (Files.notExists(configPath)) {
             save();
-        }
-        try {
-            properties.load(Files.newInputStream(configPath));
-            gameMenu.setValue(Boolean.valueOf((String)properties.get("show-button-on-game-menu")));
-            worldEntries.setValue(Boolean.valueOf((String)properties.get("show-button-on-world-entries")));
-            autoReload.setValue(Boolean.valueOf((String)properties.get("reload-after-saving")));
-        } catch (IOException e) {
-            SaveMod.LOGGER.error("Could not load config : {}", e.getMessage());
+        } else {
+            try {
+                properties.load(Files.newInputStream(configPath));
+                gameMenu.setValue(Boolean.valueOf((String) properties.get("show-button-on-game-menu")));
+                worldEntries.setValue(Boolean.valueOf((String) properties.get("show-button-on-world-entries")));
+                autoReload.setValue(Boolean.valueOf((String) properties.get("reload-after-saving")));
+            } catch (IOException e) {
+                SaveMod.LOGGER.error("Could not load config : {}", e.getMessage());
+            }
         }
     }
 

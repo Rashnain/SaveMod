@@ -110,11 +110,12 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
             } catch (IOException e) {
                 client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.uncompress")));
                 SaveMod.LOGGER.error("Could not extract file '{}' : {}", zipFile, e);
+                client.setScreen(saveList.getParent());
             }
         } catch (IOException e) {
-            client.setScreen(saveList.getParent());
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.load")));
             SaveMod.LOGGER.error("Could not delete world '{}' : {}", worldDir, e);
+            client.setScreen(saveList.getParent());
         }
     }
 

@@ -168,6 +168,7 @@ public class SelectSaveScreen extends Screen {
         } catch (IOException | ExecutionException | InterruptedException e) {
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.save")));
             SaveMod.LOGGER.error("Could not save : {}", e.getMessage());
+            client.setScreen(this);
         }
     }
 
