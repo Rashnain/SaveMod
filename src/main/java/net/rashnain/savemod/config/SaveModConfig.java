@@ -27,10 +27,10 @@ public class SaveModConfig {
         } else {
             try {
                 properties.load(Files.newInputStream(configPath));
-                gameMenu.setValue(Boolean.valueOf((String) properties.get("show-button-on-game-menu")));
-                worldEntries.setValue(Boolean.valueOf((String) properties.get("show-button-on-world-entries")));
                 autoReload.setValue(Boolean.valueOf((String) properties.get("reload-after-saving")));
-                compression.setValue(Boolean.valueOf((String) properties.get("compress-saves")));
+                gameMenu.setValue(Boolean.valueOf(properties.getProperty("show-button-on-game-menu", "true")));
+                worldEntries.setValue(Boolean.valueOf(properties.getProperty("show-button-on-world-entries", "false")));
+                compression.setValue(Boolean.valueOf(properties.getProperty("compress-saves", "true")));
             } catch (IOException e) {
                 SaveMod.LOGGER.error("Could not load config : {}", e.getMessage());
             }
