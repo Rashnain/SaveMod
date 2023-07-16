@@ -1,5 +1,6 @@
 package net.rashnain.savemod.util;
 
+import net.rashnain.savemod.config.SaveModConfig;
 import org.apache.commons.compress.archivers.zip.*;
 import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.apache.commons.io.FileUtils;
@@ -82,7 +83,10 @@ public class ZipUtil {
 
                 ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry(relativePath);
 
-                zipArchiveEntry.setMethod(ZipEntry.DEFLATED);
+                if (SaveModConfig.compression.getValue())
+                    zipArchiveEntry.setMethod(ZipEntry.DEFLATED);
+                else
+                    zipArchiveEntry.setMethod(ZipEntry.STORED);
 
                 scatterZipCreator.addArchiveEntry(zipArchiveEntry, streamSupplier);
             }

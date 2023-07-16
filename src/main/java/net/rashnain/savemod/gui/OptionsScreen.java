@@ -24,6 +24,7 @@ public class OptionsScreen extends GameOptionsScreen {
         optionList.addSingleOptionEntry(SaveModConfig.gameMenu);
         optionList.addSingleOptionEntry(SaveModConfig.worldEntries);
         optionList.addSingleOptionEntry(SaveModConfig.autoReload);
+        optionList.addSingleOptionEntry(SaveModConfig.compression);
         addSelectableChild(optionList);
 
         addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> close()
