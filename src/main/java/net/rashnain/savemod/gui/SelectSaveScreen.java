@@ -37,27 +37,6 @@ public class SelectSaveScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (saveList.isMouseOver(mouseX, mouseY)) {
-            return saveList.mouseClicked(mouseX, mouseY, button);
-        }
-        return super.mouseClicked(mouseX, mouseY, button);
-    }
-
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        return saveList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-    }
-
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        if (saveList.isMouseOver(mouseX, mouseY)) {
-            return saveList.mouseScrolled(mouseX, mouseY, amount);
-        }
-        return super.mouseScrolled(mouseX, mouseY, amount);
-    }
-
-    @Override
     protected void init() {
         saveList = new SaveListWidget(this, client, width, height, 32, height - 64, 36);
         addSelectableChild(saveList);
