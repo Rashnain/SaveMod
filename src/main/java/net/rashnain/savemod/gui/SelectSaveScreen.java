@@ -111,11 +111,11 @@ public class SelectSaveScreen extends Screen {
     }
 
     public void save(String saveName) {
+        client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
         if (client.isIntegratedServerRunning()) {
             client.getServer().saveAll(false, true, false);
         }
         String worldDir = SaveMod.worldDir;
-        client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
         try {
             DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
                 .appendValue(ChronoField.YEAR, 4).appendLiteral('-')
@@ -142,6 +142,11 @@ public class SelectSaveScreen extends Screen {
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.save")));
 
             saveList.refresh();
+
+            if (client.isIntegratedServerRunning()) {
+                client.setScreen(null);
+                return;
+            }
         } catch (IOException | ExecutionException | InterruptedException e) {
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.save")));
             SaveMod.LOGGER.error("Could not save : {}", e.getMessage());
