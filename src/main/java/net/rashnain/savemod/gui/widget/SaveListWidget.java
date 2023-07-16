@@ -6,6 +6,7 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.rashnain.savemod.SaveMod;
 import net.rashnain.savemod.SaveSummary;
 import net.rashnain.savemod.gui.SelectSaveScreen;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -25,10 +26,9 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        boolean result = super.mouseClicked(mouseX, mouseY, button);
-        parent.changeButtons(getSelectedOrNull() != null);
-        return result;
+    public void setSelected(@Nullable SaveListEntry entry) {
+        super.setSelected(entry);
+        parent.changeButtons(entry != null);
     }
 
     @Override
