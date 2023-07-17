@@ -43,7 +43,7 @@ public class SelectSaveScreen extends Screen {
         searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, null, Text.empty());
         searchBox.setChangedListener(search -> {
             saveList.setSearch(search);
-            changeButtons(false);
+            changeButtons(saveList.getSelectedOrNull() != null);
         });
         addDrawableChild(searchBox);
 

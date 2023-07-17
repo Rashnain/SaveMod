@@ -86,8 +86,10 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
     }
 
     public void setSearch(String search) {
-        this.search = search;
-        showSummaries(search, levels);
+        if (!search.equals(this.search)) {
+            showSummaries(search, levels);
+            this.search = search;
+        }
     }
 
     private boolean shouldShow(String search, SaveSummary summary) {
