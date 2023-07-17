@@ -12,6 +12,7 @@ import net.rashnain.savemod.gui.SelectSaveScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -29,10 +30,14 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
 
     @Shadow @Final private SelectWorldScreen screen;
 
+    @Unique private int x = 80;
+
+    @Unique private int entryWidth = 270;
+
     @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/WorldListWidget;setSelected(Lnet/minecraft/client/gui/screen/world/WorldListWidget$Entry;)V", shift = At.Shift.AFTER))
     public void mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
         SaveMod.worldDir = level.getName();
-        if (mouseX - (80 + 270 - 32) >= 0 && SaveModConfig.worldEntries.getValue()) {
+        if (mouseX - (x + entryWidth - 32) >= 0 && SaveModConfig.worldEntries.getValue()) {
             MinecraftClient.getInstance().setScreen(new SelectSaveScreen(screen));
         }
     }
@@ -40,6 +45,8 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawableHelper;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIFFIIII)V", ordinal = 6, shift = At.Shift.AFTER))
     public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta, CallbackInfo ci) {
         if (SaveModConfig.worldEntries.getValue()) {
+            this.x = x;
+            this.entryWidth = entryWidth;
             int pixelsAfterSaveListButton = mouseX - (x + entryWidth - 32);
             float textureY = pixelsAfterSaveListButton >= 0 ? 32 : 0;
             DrawableHelper.drawTexture(matrices, x + entryWidth - 32, y, 0, textureY, 32, 32, 256, 256);
