@@ -1,9 +1,9 @@
 package net.rashnain.savemod.gui;
 
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
@@ -62,15 +62,15 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackgroundTexture(matrices);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderBackgroundTexture(context);
         if (previousName == null || previousName.isEmpty()) {
-            drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.new"), width / 2, height / 2 - 45, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.new"), width / 2, height / 2 - 45, 0xFFFFFF);
         } else {
-            drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.rename"), width / 2, height / 2 - 45, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.rename"), width / 2, height / 2 - 45, 0xFFFFFF);
         }
-        drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, 0x808080);
-        super.render(matrices, mouseX, mouseY, delta);
+        context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, 0x808080);
+        super.render(context, mouseX, mouseY, delta);
     }
 
     @Override

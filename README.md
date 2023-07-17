@@ -17,14 +17,14 @@
 - A keybind to quickly access the saves list
 - Another to quickly access the save function
 - A config to turn off/on some buttons and the option to disable compression
-- A config screen (need [Mod Menu](https://modrinth.com/mod/modmenu/versions?g=1.19.4))
+- A config screen (need [Mod Menu](https://modrinth.com/mod/modmenu/versions?g=1.20.1))
 
 ## Dependency
 
-<a href="https://modrinth.com/mod/fabric-api/versions?g=1.19.4">
+<a href="https://modrinth.com/mod/fabric-api/versions?g=1.20.1">
 <img width="150" src="readme_assets/req_fabric_api.png" alt="Requires Fabric API">
 </a>
 
 ## Optional dependency
 
-You may use [Mod Menu](https://modrinth.com/mod/modmenu/versions?g=1.19.4) to configure the mod in-game, but it can also be configured by editing the `savemod.properties` file, located in the `config` directory.
+You may use [Mod Menu](https://modrinth.com/mod/modmenu/versions?g=1.20.1) to configure the mod in-game, but it can also be configured by editing the `savemod.properties` file, located in the `config` directory.

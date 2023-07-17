@@ -1,10 +1,10 @@
 package net.rashnain.savemod.mixin;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.screen.world.WorldListWidget;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.level.storage.LevelSummary;
 import net.rashnain.savemod.SaveMod;
 import net.rashnain.savemod.config.SaveModConfig;
@@ -37,12 +37,12 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
         }
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawableHelper;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIFFIIII)V", ordinal = 6, shift = At.Shift.AFTER))
-    public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta, CallbackInfo ci) {
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIFFIIII)V", ordinal = 8, shift = At.Shift.AFTER))
+    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta, CallbackInfo ci) {
         if (SaveModConfig.worldEntries.getValue()) {
             int pixelsAfterSaveListButton = mouseX - (x + entryWidth - 32);
             float textureY = pixelsAfterSaveListButton >= 0 ? 32 : 0;
-            DrawableHelper.drawTexture(matrices, x + entryWidth - 32, y, 0, textureY, 32, 32, 256, 256);
+            context.drawTexture(new Identifier("textures/gui/world_selection.png"), x + entryWidth - 32, y, 0, textureY, 32, 32, 256, 256);
         }
     }
 

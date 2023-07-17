@@ -2,20 +2,20 @@ package net.rashnain.savemod.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.toast.SystemToast;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.path.SymlinkValidationException;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.rashnain.savemod.SaveMod;
 import net.rashnain.savemod.SaveSummary;
 import net.rashnain.savemod.gui.NameSaveScreen;
-import net.rashnain.savemod.gui.SelectSaveScreen;
 import net.rashnain.savemod.util.ZipUtil;
 
 import java.io.IOException;
@@ -69,24 +69,22 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     }
 
     @Override
-    public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         String displayName = save.getSaveName();
         String folderNameAndLastPlayedDate = save.getWorldDir() + " (" + DATE_FORMAT.format(new Date(save.getLastPlayed())) + ")";
 
-        client.textRenderer.draw(matrices, displayName, x + 32 + 3, y + 1, 0xFFFFFF);
-        client.textRenderer.draw(matrices, folderNameAndLastPlayedDate, x + 32 + 3, y + client.textRenderer.fontHeight + 3, 0x808080);
+        context.drawText(client.textRenderer, displayName, x + 32 + 3, y + 1, 0xFFFFFF, false);
+        context.drawText(client.textRenderer, folderNameAndLastPlayedDate, x + 32 + 3, y + client.textRenderer.fontHeight + 3, 0x808080, false);
 
-        RenderSystem.setShaderTexture(0, UNKNOWN_SERVER_LOCATION);
         RenderSystem.enableBlend();
-        DrawableHelper.drawTexture(matrices, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
+        context.drawTexture(UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
         RenderSystem.disableBlend();
 
         if (client.options.getTouchscreen().getValue() || hovered) {
-            RenderSystem.setShaderTexture(0, WORLD_SELECTION_LOCATION);
-            DrawableHelper.fill(matrices, x, y, x + 32, y + 32, 0x5F6F6F70);
+            context.fill(x, y, x + 32, y + 32, -0x5F6F6F70);
             int pixelsBeforeStartButton = mouseX - x;
             int textureY = pixelsBeforeStartButton <= 32 ? 32 : 0;
-            DrawableHelper.drawTexture(matrices, x, y, 0.0f, textureY, 32, 32, 256, 256);
+            context.drawTexture(WORLD_SELECTION_LOCATION, x, y, 0.0f, textureY, 32, 32, 256, 256);
         }
     }
 
@@ -110,7 +108,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                 SaveMod.LOGGER.error("Could not extract file '{}' : {}", zipFile, e);
                 client.setScreen(saveList.getParent());
             }
-        } catch (IOException e) {
+        } catch (IOException | SymlinkValidationException e) {
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.load")));
             SaveMod.LOGGER.error("Could not delete world '{}' : {}", worldDir, e);
             client.setScreen(saveList.getParent());
