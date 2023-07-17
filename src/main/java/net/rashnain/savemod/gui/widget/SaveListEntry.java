@@ -138,7 +138,6 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         try {
             Files.copy(saveFile, savesDir.resolve(file.toString()));
             saveList.refresh();
-            client.setScreen(saveList.getParent());
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.duplicate")));
         } catch (IOException e) {
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.duplicate")));

@@ -3,6 +3,7 @@ package net.rashnain.savemod.gui;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
@@ -26,6 +27,7 @@ public class SelectSaveScreen extends Screen {
 
     protected final Screen parent;
     private SaveListWidget saveList;
+    private TextFieldWidget searchBox;
     private ButtonWidget loadButton;
     private ButtonWidget renameButton;
     private ButtonWidget duplicateButton;
@@ -38,7 +40,14 @@ public class SelectSaveScreen extends Screen {
 
     @Override
     protected void init() {
-        saveList = new SaveListWidget(this, client, width, height, 32, height - 64, 36);
+        searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, null, Text.empty());
+        searchBox.setChangedListener(search -> {
+            saveList.setSearch(search);
+            changeButtons(false);
+        });
+        addDrawableChild(searchBox);
+
+        saveList = new SaveListWidget(this, client, width, height, 48, height - 64, 36);
         addSelectableChild(saveList);
 
         loadButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.play"), button ->
@@ -67,12 +76,19 @@ public class SelectSaveScreen extends Screen {
 
         addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> close()
         ).dimensions(width / 2 + 82, height - 28, 72, 20).build());
+
+        setInitialFocus(searchBox);
+    }
+
+    @Override
+    public void tick() {
+        searchBox.tick();
     }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         saveList.render(matrices, mouseX, mouseY, delta);
-        drawCenteredTextWithShadow(matrices, textRenderer, title, width / 2, 12, 16777215);
+        drawCenteredTextWithShadow(matrices, textRenderer, title, width / 2, 8, 16777215);
         super.render(matrices, mouseX, mouseY, delta);
     }
 

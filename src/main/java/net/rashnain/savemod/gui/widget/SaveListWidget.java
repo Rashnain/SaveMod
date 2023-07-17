@@ -10,18 +10,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry> {
 
     private final SelectSaveScreen parent;
+    private List<SaveSummary> levels;
+    private String search;
 
     public SaveListWidget(SelectSaveScreen parent, MinecraftClient client, int width, int height, int top, int bottom, int itemHeight) {
         super(client, width, height, top, bottom, itemHeight);
         this.parent = parent;
+        search = "";
         refresh();
     }
 
@@ -41,12 +41,15 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
     }
 
     public void refresh() {
-        showSummaries(getSaves());
+        showSummaries(search, getSaves());
     }
 
-    private void showSummaries(List<SaveSummary> summaries) {
+    private void showSummaries(String search, List<SaveSummary> summaries) {
         clearEntries();
+        levels = summaries;
+        search = search.toLowerCase(Locale.ROOT);
         for (SaveSummary summary : summaries) {
+            if (!shouldShow(search, summary)) continue;
             addEntry(new SaveListEntry(summary, this));
         }
     }
@@ -80,6 +83,15 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
             return Optional.empty();
         }
         return Optional.of(entry);
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+        showSummaries(search, levels);
+    }
+
+    private boolean shouldShow(String search, SaveSummary summary) {
+        return summary.getSaveName().toLowerCase(Locale.ROOT).contains(search) || summary.getWorldDir().toLowerCase(Locale.ROOT).contains(search);
     }
 
 }
