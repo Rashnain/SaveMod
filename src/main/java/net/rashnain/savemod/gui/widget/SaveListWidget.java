@@ -47,7 +47,6 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
     private void showSummaries(String search, List<SaveSummary> summaries) {
         clearEntries();
         levels = summaries;
-        search = search.toLowerCase(Locale.ROOT);
         for (SaveSummary summary : summaries) {
             if (!shouldShow(search, summary)) continue;
             addEntry(new SaveListEntry(summary, this));
@@ -94,7 +93,7 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
     }
 
     private boolean shouldShow(String search, SaveSummary summary) {
-        return summary.getSaveName().toLowerCase(Locale.ROOT).contains(search) || summary.getWorldDir().toLowerCase(Locale.ROOT).contains(search);
+        return summary.getSaveName().toLowerCase(Locale.ROOT).contains(search.toLowerCase(Locale.ROOT));
     }
 
 }
