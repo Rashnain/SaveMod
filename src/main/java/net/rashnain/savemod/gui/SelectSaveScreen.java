@@ -39,6 +39,18 @@ public class SelectSaveScreen extends Screen {
     }
 
     @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        boolean result =  super.keyPressed(keyCode, scanCode, modifiers);
+
+        if (keyCode == 257 || keyCode == 32 || keyCode == 335) {
+            saveList.getSelectedAsOptional().ifPresent(SaveListEntry::load);
+            return true;
+        }
+
+        return result;
+    }
+
+    @Override
     protected void init() {
         searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, null, Text.empty());
         searchBox.setChangedListener(search -> {
