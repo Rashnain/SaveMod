@@ -119,9 +119,9 @@ public class SelectSaveScreen extends Screen {
 
     public void save(String saveName) {
         client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
-        if (client.isIntegratedServerRunning()) {
+        if (client.isIntegratedServerRunning())
             client.getServer().saveAll(false, true, false);
-        }
+
         String worldDir = SaveMod.worldDir;
         try {
             DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
@@ -133,14 +133,12 @@ public class SelectSaveScreen extends Screen {
                 .appendValue(ChronoField.SECOND_OF_MINUTE, 2).toFormatter();
 
             String backupName = LocalDateTime.now().format(TIME_FORMATTER) + "_" + worldDir;
-            if (!saveName.isEmpty()) {
+            if (!saveName.isEmpty())
                 backupName = backupName.substring(0, 20) + saveName;
-            }
 
             Path savesDir = Path.of("savemod").resolve(worldDir);
-            if (Files.notExists(savesDir)) {
+            if (Files.notExists(savesDir))
                 Files.createDirectories(savesDir);
-            }
 
             Path backupFileName = savesDir.resolve(PathUtil.getNextUniqueName(savesDir, backupName, ".zip"));
 

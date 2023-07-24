@@ -21,9 +21,9 @@ public class SaveModConfig {
     private static final Properties properties = new Properties();
 
     public static void load() {
-        if (Files.notExists(configPath)) {
+        if (Files.notExists(configPath))
             save();
-        } else {
+        else {
             try {
                 properties.load(Files.newInputStream(configPath));
                 gameMenu.setValue(Boolean.valueOf(properties.getProperty("show-button-on-game-menu", "true")));

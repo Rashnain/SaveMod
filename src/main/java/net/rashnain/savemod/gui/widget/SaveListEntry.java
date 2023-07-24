@@ -15,7 +15,6 @@ import net.minecraft.world.level.storage.LevelStorage;
 import net.rashnain.savemod.SaveMod;
 import net.rashnain.savemod.SaveSummary;
 import net.rashnain.savemod.gui.NameSaveScreen;
-import net.rashnain.savemod.gui.SelectSaveScreen;
 import net.rashnain.savemod.util.ZipUtil;
 
 import java.io.IOException;
