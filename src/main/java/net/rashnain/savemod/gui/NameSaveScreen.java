@@ -65,11 +65,11 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         renderBackgroundTexture(context);
-        if (previousName == null || previousName.isEmpty()) {
+        if (previousName == null || previousName.isEmpty())
             context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.new"), width / 2, height / 2 - 45, 0xFFFFFF);
-        } else {
+        else
             context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.rename"), width / 2, height / 2 - 45, 0xFFFFFF);
-        }
+
         context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, 0x808080);
         super.render(context, mouseX, mouseY, delta);
     }

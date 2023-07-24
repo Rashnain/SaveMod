@@ -37,9 +37,8 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
     @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/WorldListWidget;setSelected(Lnet/minecraft/client/gui/screen/world/WorldListWidget$Entry;)V", shift = At.Shift.AFTER))
     public void mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
         SaveMod.worldDir = level.getName();
-        if (mouseX - (x + entryWidth - 32) >= 0 && SaveModConfig.worldEntries.getValue()) {
+        if (mouseX - (x + entryWidth - 32) >= 0 && SaveModConfig.worldEntries.getValue())
             MinecraftClient.getInstance().setScreen(new SelectSaveScreen(screen));
-        }
     }
 
     @Override @Unique
@@ -73,9 +72,9 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
         try {
             File[] files = savesDir.listFiles();
             if (files != null) {
-                for (File save : files) {
+                for (File save : files)
                     Files.deleteIfExists(save.toPath());
-                }
+
                 Files.deleteIfExists(savesDir.toPath());
             }
         } catch (IOException e) {
