@@ -44,13 +44,16 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
 
     @Override @Unique
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        boolean result =  super.keyPressed(keyCode, scanCode, modifiers);
+        if (super.keyPressed(keyCode, scanCode, modifiers))
+            return true;
+
         if (keyCode == 262 || keyCode == 326) {
             SaveMod.worldDir = level.getName();
             MinecraftClient.getInstance().setScreen(new SelectSaveScreen(screen));
             return true;
         }
-        return result;
+
+        return false;
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIFFIIII)V", ordinal = 8, shift = At.Shift.AFTER))

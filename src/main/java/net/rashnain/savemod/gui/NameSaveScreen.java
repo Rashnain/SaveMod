@@ -27,14 +27,15 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (super.keyPressed(keyCode, scanCode, modifiers)) {
+        if (super.keyPressed(keyCode, scanCode, modifiers))
             return true;
-        }
-        if (keyCode == 257 || keyCode == 335) {
+
+        if (getFocused() == nameBox && keyCode == 257 || keyCode == 335) {
             consumer.accept(nameBox.getText());
             return true;
         }
-        return nameBox.keyPressed(keyCode, scanCode, modifiers);
+
+        return false;
     }
 
     @Override
