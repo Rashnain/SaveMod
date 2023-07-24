@@ -40,14 +40,15 @@ public class SelectSaveScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        boolean result =  super.keyPressed(keyCode, scanCode, modifiers);
+        if (super.keyPressed(keyCode, scanCode, modifiers))
+            return true;
 
         if (keyCode == 257 || keyCode == 32 || keyCode == 335) {
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::load);
             return true;
         }
 
-        return result;
+        return false;
     }
 
     @Override
