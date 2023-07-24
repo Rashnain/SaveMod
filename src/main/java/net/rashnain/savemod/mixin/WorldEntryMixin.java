@@ -42,6 +42,17 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
         }
     }
 
+    @Override @Unique
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        boolean result =  super.keyPressed(keyCode, scanCode, modifiers);
+        if (keyCode == 262 || keyCode == 326) {
+            SaveMod.worldDir = level.getName();
+            MinecraftClient.getInstance().setScreen(new SelectSaveScreen(screen));
+            return true;
+        }
+        return result;
+    }
+
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIFFIIII)V", ordinal = 8, shift = At.Shift.AFTER))
     public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta, CallbackInfo ci) {
         if (SaveModConfig.worldEntries.getValue()) {
