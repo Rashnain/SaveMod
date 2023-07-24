@@ -1,0 +1,43 @@
+{
+  "savemod.list.title": "存档列表",
+  "savemod.list.play": "使用所选存档",
+  "savemod.list.create": "创建新存档",
+  "savemod.list.rename": "重命名",
+  "savemod.list.delete": "删除",
+  "savemod.list.duplicate": "复制",
+
+  "savemod.message.closing": "正在关闭世界…",
+  "savemod.message.deleting": "正在删除以前的世界…",
+  "savemod.message.uncompressing": "正在解压存档…",
+  "savemod.message.saving": "正在保存…",
+
+  "savemod.delete.question": "您确定要删除这个存档吗？",
+
+  "savemod.name.new": "为新存档命名",
+  "savemod.name.rename": "重命名您的存档",
+  "savemod.name.hint": "留空默认为\"%s\"",
+  "savemod.name.apply": "应用",
+  "savemod.name.copy": "复制",
+
+  "savemod.toast.succesful": "成功！",
+  "savemod.toast.succesful.save": "存档已创建。",
+  "savemod.toast.succesful.duplicate": "存档已复制。",
+  "savemod.toast.failed": "失败！",
+  "savemod.toast.failed.name": "名称无效。",
+  "savemod.toast.failed.delete": "存档删除失败。",
+  "savemod.toast.failed.load": "无法加载。",
+  "savemod.toast.failed.save": "无法保存。",
+  "savemod.toast.failed.duplicate": "存档未复制。",
+  "savemod.toast.failed.uncompress": "无法解压。",
+
+  "key.savemod.open_list": "打开存档列表",
+  "key.savemod.save": "打开存档界面",
+
+  "savemod.options": "Savemod 模组选项",
+  "options.savemod.gameMenu": "游戏菜单按钮",
+  "options.savemod.gameMenu.tooltip": "在游戏暂停菜单添加一个按钮来打开存档列表",
+  "options.savemod.worldEntries": "单人游戏世界条目按钮",
+  "options.savemod.worldEntries.tooltip": "为单人游戏的世界列表的每个世界条目中添加一个按钮来打开其存档列表",
+  "options.savemod.compression": "压缩存档",
+  "options.savemod.compression.tooltip": "压缩较慢，但可以节省20%的空间"
+}
