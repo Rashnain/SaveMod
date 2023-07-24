@@ -20,8 +20,8 @@ public class SaveMod implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		KeyBinding openList = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.open_list", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.savemod"));
-		KeyBinding save = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.save", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.savemod"));
+		KeyBinding openList = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.open_list", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "SaveMod"));
+		KeyBinding save = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.save", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "SaveMod"));
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (openList.isPressed() && client.isIntegratedServerRunning())
