@@ -30,7 +30,6 @@
   "savemod.toast.failed.duplicate": "Sauvegarde pas dupliquée.",
   "savemod.toast.failed.uncompress": "Echec de l'extraction.",
 
-  "key.category.savemod": "SaveMod",
   "key.savemod.open_list": "Ouvrir la liste des sauvegardes",
   "key.savemod.save": "Ouvrir l'écran de sauvegarde",
 
