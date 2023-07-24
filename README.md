@@ -21,6 +21,7 @@
 - A keybind to quickly access the saves list
 - Another to quickly access the save function
 - A search bar to quickly find a save
+- Keyboard navigation
 - A config to turn off/on some buttons and the option to disable compression
 - A config screen (need [Mod Menu](https://modrinth.com/mod/modmenu/versions?g=1.20.1))
 
