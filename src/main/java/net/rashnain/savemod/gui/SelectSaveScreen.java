@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.KeyCodes;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
@@ -36,6 +37,18 @@ public class SelectSaveScreen extends Screen {
     public SelectSaveScreen(Screen parent) {
         super(Text.translatable("savemod.list.title"));
         this.parent = parent;
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        boolean result =  super.keyPressed(keyCode, scanCode, modifiers);
+
+        if (KeyCodes.isToggle(keyCode)) {
+            saveList.getSelectedAsOptional().ifPresent(SaveListEntry::load);
+            return true;
+        }
+
+        return result;
     }
 
     @Override
