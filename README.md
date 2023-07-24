@@ -6,6 +6,10 @@
 
 ---
 
+<a href="https://modrinth.com/mod/savemod">
+<img width="150" src="readme_assets/available_on_modrinth.png" alt="Requires Fabric API">
+</a>
+
 ## Features
 
 - Saving your world (from the pause menu)
@@ -23,7 +27,7 @@
 ## Dependency
 
 <a href="https://modrinth.com/mod/fabric-api/versions?g=1.19.4">
-<img width="150" src="readme_assets/req_fabric_api.png" alt="Requires Fabric API">
+<img width="150" src="readme_assets/requires_fabric_api.png" alt="Requires Fabric API">
 </a>
 
 ## Optional dependency
