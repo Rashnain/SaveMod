@@ -78,10 +78,8 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
 
     public Optional<SaveListEntry> getSelectedAsOptional() {
         SaveListEntry entry = getSelectedOrNull();
-
         if (entry == null)
             return Optional.empty();
-
         return Optional.of(entry);
     }
 

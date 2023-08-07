@@ -122,7 +122,6 @@ public class SelectSaveScreen extends Screen {
         client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
         if (client.isIntegratedServerRunning())
             client.getServer().saveAll(false, true, false);
-
         String worldDir = SaveMod.worldDir;
         try {
             DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()

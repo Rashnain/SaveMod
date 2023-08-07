@@ -94,6 +94,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         }
         client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.deleting")));
         String worldDir = save.getWorldDir();
+
         try (LevelStorage.Session session = client.getLevelStorage().createSession(worldDir)) {
             session.deleteSessionLock();
             client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.uncompressing")));
