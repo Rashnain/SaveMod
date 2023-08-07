@@ -1,11 +1,11 @@
-package net.rashnain.savemod.gui.widget;
+package com.github.rashnain.savemod.gui.widget;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.rashnain.savemod.SaveMod;
-import net.rashnain.savemod.SaveSummary;
-import net.rashnain.savemod.gui.SelectSaveScreen;
+import com.github.rashnain.savemod.SaveMod;
+import com.github.rashnain.savemod.SaveSummary;
+import com.github.rashnain.savemod.gui.SelectSaveScreen;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;

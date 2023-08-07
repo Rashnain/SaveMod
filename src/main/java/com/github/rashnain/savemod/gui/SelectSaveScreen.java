@@ -1,5 +1,7 @@
-package net.rashnain.savemod.gui;
+package com.github.rashnain.savemod.gui;
 
+import com.github.rashnain.savemod.gui.widget.SaveListEntry;
+import com.github.rashnain.savemod.gui.widget.SaveListWidget;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -10,10 +12,8 @@ import net.minecraft.client.toast.SystemToast;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.PathUtil;
-import net.rashnain.savemod.SaveMod;
-import net.rashnain.savemod.gui.widget.SaveListEntry;
-import net.rashnain.savemod.gui.widget.SaveListWidget;
-import net.rashnain.savemod.util.ZipUtil;
+import com.github.rashnain.savemod.SaveMod;
+import com.github.rashnain.savemod.util.ZipUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;

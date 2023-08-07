@@ -1,4 +1,4 @@
-package net.rashnain.savemod.gui.widget;
+package com.github.rashnain.savemod.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
@@ -12,10 +12,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.path.SymlinkValidationException;
 import net.minecraft.world.level.storage.LevelStorage;
-import net.rashnain.savemod.SaveMod;
-import net.rashnain.savemod.SaveSummary;
-import net.rashnain.savemod.gui.NameSaveScreen;
-import net.rashnain.savemod.util.ZipUtil;
+import com.github.rashnain.savemod.SaveMod;
+import com.github.rashnain.savemod.SaveSummary;
+import com.github.rashnain.savemod.gui.NameSaveScreen;
+import com.github.rashnain.savemod.util.ZipUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;

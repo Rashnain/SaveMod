@@ -1,6 +1,6 @@
-package net.rashnain.savemod.util;
+package com.github.rashnain.savemod.util;
 
-import net.rashnain.savemod.config.SaveModConfig;
+import com.github.rashnain.savemod.config.SaveModConfig;
 import org.apache.commons.compress.archivers.zip.*;
 import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.apache.commons.io.FileUtils;
