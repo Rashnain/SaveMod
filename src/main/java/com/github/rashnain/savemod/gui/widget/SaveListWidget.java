@@ -1,15 +1,14 @@
 package com.github.rashnain.savemod.gui.widget;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import com.github.rashnain.savemod.SaveMod;
 import com.github.rashnain.savemod.SaveSummary;
 import com.github.rashnain.savemod.gui.SelectSaveScreen;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.*;
 
 public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry> {
@@ -59,7 +58,7 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
         if (SaveMod.worldDir == null)
             return saveList;
 
-        File savesDir = Path.of("savemod").resolve(SaveMod.worldDir).toFile();
+        File savesDir = SaveMod.DIR.resolve(SaveMod.worldDir).toFile();
 
         File[] files = savesDir.listFiles(file -> file.isFile() && file.getName().endsWith(".zip") && file.getName().length() > 24);
 

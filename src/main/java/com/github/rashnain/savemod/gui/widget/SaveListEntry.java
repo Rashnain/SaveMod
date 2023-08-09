@@ -1,5 +1,9 @@
 package com.github.rashnain.savemod.gui.widget;
 
+import com.github.rashnain.savemod.SaveMod;
+import com.github.rashnain.savemod.SaveSummary;
+import com.github.rashnain.savemod.gui.NameSaveScreen;
+import com.github.rashnain.savemod.util.ZipUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -12,10 +16,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.path.SymlinkValidationException;
 import net.minecraft.world.level.storage.LevelStorage;
-import com.github.rashnain.savemod.SaveMod;
-import com.github.rashnain.savemod.SaveSummary;
-import com.github.rashnain.savemod.gui.NameSaveScreen;
-import com.github.rashnain.savemod.util.ZipUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,7 +41,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         this.save = save;
         saveList = parent;
         client = MinecraftClient.getInstance();
-        savesDir = Path.of("savemod").resolve(save.getWorldDir());
+        savesDir = SaveMod.DIR.resolve(save.getWorldDir());
         saveFile = savesDir.resolve(save.getSaveFileName());
     }
 
@@ -131,9 +131,9 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     }
 
     public void duplicate() {
-        Path file = Path.of(save.getSaveFileName().replaceFirst(".zip$", " " + Text.translatable("savemod.name.copy").getString() + ".zip"));
+        String newSaveName = save.getSaveFileName().replaceFirst(".zip$", " " + Text.translatable("savemod.name.copy").getString() + ".zip");
         try {
-            Files.copy(saveFile, savesDir.resolve(file.toString()));
+            Files.copy(saveFile, savesDir.resolve(newSaveName));
             saveList.refresh();
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.duplicate")));
         } catch (IOException e) {
