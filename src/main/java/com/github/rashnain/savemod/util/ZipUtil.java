@@ -41,14 +41,12 @@ public class ZipUtil {
                     previous = current;
                 }
 
-                InputStream in = new BufferedInputStream(archive.getInputStream(entry), 65536);
-                OutputStream out = new BufferedOutputStream(new FileOutputStream(file), 65536);
+                try (InputStream in = new BufferedInputStream(archive.getInputStream(entry), 65536);
+                     OutputStream out = new BufferedOutputStream(new FileOutputStream(file), 65536)) {
 
-                while ((length = in.read(buffer)) != -1)
-                    out.write(buffer, 0, length);
-
-                out.close();
-                in.close();
+                    while ((length = in.read(buffer)) != -1)
+                        out.write(buffer, 0, length);
+                }
             }
         }
     }
