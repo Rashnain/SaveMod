@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.stream.Stream;
 
 public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListEntry> {
 
@@ -148,10 +147,10 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
             if (confirmed) {
                 try {
                     Files.delete(saveFile);
-                    try (Stream<Path> entries = Files.list(savesDir)) {
-                        if (entries.findFirst().isEmpty())
-                            Files.delete(savesDir);
-                    }
+                    try {
+                        Files.delete(savesDir);
+                        Files.delete(SaveMod.DIR);
+                    } catch (IOException ignored) {}
                     saveList.removeEntryWithoutScrolling(this);
                 } catch (IOException e) {
                     client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.delete")));

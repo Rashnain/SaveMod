@@ -75,6 +75,9 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
                 for (File save : files)
                     Files.deleteIfExists(save.toPath());
                 Files.deleteIfExists(savesDir.toPath());
+                try {
+                    Files.delete(SaveMod.DIR);
+                } catch (IOException ignored) {}
             }
         } catch (IOException e) {
             SaveMod.LOGGER.error("Could not delete save of '{}' : {}", SaveMod.worldDir, e);
