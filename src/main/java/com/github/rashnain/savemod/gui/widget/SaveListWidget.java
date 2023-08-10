@@ -66,7 +66,7 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
             Arrays.sort(files, Collections.reverseOrder());
 
             for (File saveFile : files) {
-                SaveSummary saveSummary = new SaveSummary(saveFile.getName(), SaveMod.worldDir);
+                SaveSummary saveSummary = new SaveSummary(saveFile.getName(), SaveMod.worldDir, saveFile.length());
                 saveList.add(saveSummary);
             }
         }

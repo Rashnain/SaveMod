@@ -9,11 +9,13 @@ public class SaveSummary {
 
     private final String saveFileName;
     private final String worldDir;
+    private final long size;
     private long lastPlayed = -1;
 
-    public SaveSummary(String saveFileName, String worldDir) {
+    public SaveSummary(String saveFileName, String worldDir, long size) {
         this.saveFileName = saveFileName;
         this.worldDir = worldDir;
+        this.size = size;
     }
 
     public String getSaveFileName() {
@@ -40,6 +42,15 @@ public class SaveSummary {
             lastPlayed = date.getTime();
         }
         return lastPlayed;
+    }
+
+    public String getSizeInMB() {
+        long megaByte = 1000000;
+
+        if (size < megaByte)
+            return "< 1";
+
+        return String.valueOf(size / megaByte);
     }
 
 }

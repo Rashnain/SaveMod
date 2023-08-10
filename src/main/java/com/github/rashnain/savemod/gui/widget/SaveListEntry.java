@@ -70,9 +70,11 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         String displayName = save.getSaveName();
         String folderNameAndLastPlayedDate = save.getWorldDir() + " (" + DATE_FORMAT.format(new Date(save.getLastPlayed())) + ")";
+        String fileSize = save.getSizeInMB() + " MB";
 
         client.textRenderer.draw(matrices, displayName, x + 32 + 3, y + 1, 0xFFFFFF);
-        client.textRenderer.draw(matrices, folderNameAndLastPlayedDate, x + 32 + 3, y + client.textRenderer.fontHeight + 3, 0x808080);
+        client.textRenderer.draw(matrices, folderNameAndLastPlayedDate, x + 32 + 3, y + 1 + 2 + client.textRenderer.fontHeight, 0x808080);
+        client.textRenderer.draw(matrices, fileSize, x + 32 + 3, y + 1 + (2 + client.textRenderer.fontHeight) * 2, 0x808080);
 
         RenderSystem.setShaderTexture(0, UNKNOWN_SERVER_LOCATION);
         RenderSystem.enableBlend();
