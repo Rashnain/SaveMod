@@ -1,5 +1,5 @@
 {
-  "savemod.list.title": "Saves list",
+  "savemod.list.title": "Save list",
   "savemod.list.play": "Play Selected Save",
   "savemod.list.create": "Create New Save",
   "savemod.list.rename": "Rename",
@@ -30,7 +30,7 @@
   "savemod.toast.failed.duplicate": "Save not duplicated.",
   "savemod.toast.failed.uncompress": "Could not uncompress.",
 
-  "key.savemod.open_list": "Open saves list",
+  "key.savemod.open_list": "Open save list",
   "key.savemod.save": "Open save screen",
 
   "savemod.options": "SaveMod Options",
