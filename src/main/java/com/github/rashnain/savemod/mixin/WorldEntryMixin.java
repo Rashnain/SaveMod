@@ -67,13 +67,13 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
 
     @Inject(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V", shift = At.Shift.AFTER))
     public void delete(CallbackInfo ci) {
-        File savesDir = SaveMod.DIR.resolve(SaveMod.worldDir).toFile();
+        File saveDir = SaveMod.DIR.resolve(SaveMod.worldDir).toFile();
         try {
-            File[] files = savesDir.listFiles(file -> file.isFile() && file.getName().endsWith(".zip") && file.getName().length() > 24);
+            File[] files = saveDir.listFiles(file -> file.isFile() && file.getName().endsWith(".zip") && file.getName().length() > 24);
             if (files != null) {
                 for (File save : files)
                     Files.delete(save.toPath());
-                Files.delete(savesDir.toPath());
+                Files.delete(saveDir.toPath());
                 try {
                     Files.delete(SaveMod.DIR);
                 } catch (IOException ignored) {}
