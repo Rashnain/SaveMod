@@ -70,7 +70,7 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
     public void delete(CallbackInfo ci) {
         File savesDir = new File(Path.of("savemod").resolve(SaveMod.worldDir).toUri());
         try {
-            File[] files = savesDir.listFiles();
+            File[] files = savesDir.listFiles(pathname -> pathname.isFile() && pathname.getName().endsWith(".zip") && pathname.getName().length() > 24);
             if (files != null) {
                 for (File save : files)
                     Files.deleteIfExists(save.toPath());
