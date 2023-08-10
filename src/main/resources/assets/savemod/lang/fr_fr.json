@@ -1,5 +1,5 @@
 {
-  "savemod.list.title": "Liste des sauvegardes",
+  "savemod.list.title": "Liste de sauvegarde",
   "savemod.list.play": "Lancer cette sauvegarde",
   "savemod.list.create": "Créer une sauvegarde",
   "savemod.list.rename": "Renommer",
@@ -30,12 +30,12 @@
   "savemod.toast.failed.duplicate": "Sauvegarde pas dupliquée.",
   "savemod.toast.failed.uncompress": "Echec de l'extraction.",
 
-  "key.savemod.open_list": "Ouvrir la liste des sauvegardes",
+  "key.savemod.open_list": "Ouvrir la liste de sauvegarde",
   "key.savemod.save": "Ouvrir l'écran de sauvegarde",
 
   "savemod.options": "Options de SaveMod",
   "options.savemod.gameMenu": "Bouton au menu pause",
-  "options.savemod.gameMenu.tooltip": "Ajoute un bouton au menu pause pour ouvrir la liste des sauvegardes",
+  "options.savemod.gameMenu.tooltip": "Ajoute un bouton au menu pause pour ouvrir la liste de sauvegarde",
   "options.savemod.worldEntries": "Bouton aux mondes",
   "options.savemod.worldEntries.tooltip": "Ajoute un bouton à chaque monde de la liste des mondes pour ouvrir leur liste de sauvegarde",
   "options.savemod.compression": "Compresser les sauvegardes",
