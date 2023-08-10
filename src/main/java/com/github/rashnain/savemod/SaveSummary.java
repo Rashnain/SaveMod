@@ -1,4 +1,4 @@
-package net.rashnain.savemod;
+package com.github.rashnain.savemod;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

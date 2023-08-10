@@ -17,10 +17,10 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "net.rashnain.savemod.SaveMod"
+      "com.github.rashnain.savemod.SaveMod"
     ],
     "modmenu": [
-      "net.rashnain.savemod.config.ModMenuCompat"
+      "com.github.rashnain.savemod.config.ModMenuCompat"
     ]
   },
   "mixins": [

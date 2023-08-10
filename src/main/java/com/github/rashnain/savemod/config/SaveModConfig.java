@@ -1,10 +1,10 @@
-package net.rashnain.savemod.config;
+package com.github.rashnain.savemod.config;
 
+import com.github.rashnain.savemod.SaveMod;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.Text;
-import net.rashnain.savemod.SaveMod;
 
 import java.io.IOException;
 import java.nio.file.Files;

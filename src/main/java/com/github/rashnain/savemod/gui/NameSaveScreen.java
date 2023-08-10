@@ -1,4 +1,4 @@
-package net.rashnain.savemod.gui;
+package com.github.rashnain.savemod.gui;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;

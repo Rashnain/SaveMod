@@ -1,4 +1,4 @@
-package net.rashnain.savemod.gui;
+package com.github.rashnain.savemod.gui;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -8,7 +8,7 @@ import net.minecraft.client.gui.widget.OptionListWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
-import net.rashnain.savemod.config.SaveModConfig;
+import com.github.rashnain.savemod.config.SaveModConfig;
 
 public class OptionsScreen extends GameOptionsScreen {
 
