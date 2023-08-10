@@ -33,7 +33,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     private final MinecraftClient client;
     private final SaveListWidget saveList;
     private final SaveSummary save;
-    private final Path savesDir;
+    private final Path saveDir;
     private final Path saveFile;
     private long time;
 
@@ -41,8 +41,8 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         this.save = save;
         saveList = parent;
         client = MinecraftClient.getInstance();
-        savesDir = SaveMod.DIR.resolve(save.getWorldDir());
-        saveFile = savesDir.resolve(save.getSaveFileName());
+        saveDir = SaveMod.DIR.resolve(save.getWorldDir());
+        saveFile = saveDir.resolve(save.getSaveFileName());
     }
 
     @Override
@@ -99,7 +99,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         try (LevelStorage.Session session = client.getLevelStorage().createSession(worldDir)) {
             session.deleteSessionLock();
             client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.uncompressing")));
-            String zipFile = savesDir.resolve(save.getSaveFileName()).toString();
+            String zipFile = saveDir.resolve(save.getSaveFileName()).toString();
             try {
                 ZipUtil.unzipFile(zipFile, "saves/");
                 client.setScreenAndRender(new MessageScreen(Text.translatable("selectWorld.data_read")));
@@ -117,13 +117,13 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     }
 
     public void rename() {
-        client.setScreen(new NameSaveScreen(saveList.getParent(), save.getSaveName(), savesDir.getFileName().toString(), newName -> {
+        client.setScreen(new NameSaveScreen(saveList.getParent(), save.getSaveName(), saveDir.getFileName().toString(), newName -> {
             String saveFileName = saveFile.getFileName().toString();
             if (newName.isEmpty())
                 newName = save.getWorldDir();
             saveFileName = saveFileName.substring(0, 20) + newName + ".zip";
             try {
-                Files.move(saveFile, savesDir.resolve(saveFileName));
+                Files.move(saveFile, saveDir.resolve(saveFileName));
             } catch (IOException e) {
                 client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.name")));
                 SaveMod.LOGGER.error("Could not rename save '{}' : {}", saveFile, e);
@@ -135,7 +135,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     public void duplicate() {
         String newSaveName = save.getSaveFileName().replaceFirst(".zip$", " " + Text.translatable("savemod.name.copy").getString() + ".zip");
         try {
-            Files.copy(saveFile, savesDir.resolve(newSaveName));
+            Files.copy(saveFile, saveDir.resolve(newSaveName));
             saveList.refresh();
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.duplicate")));
         } catch (IOException e) {
@@ -150,7 +150,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                 try {
                     Files.delete(saveFile);
                     try {
-                        Files.delete(savesDir);
+                        Files.delete(saveDir);
                         Files.delete(SaveMod.DIR);
                     } catch (IOException ignored) {}
                     saveList.removeEntryWithoutScrolling(this);
