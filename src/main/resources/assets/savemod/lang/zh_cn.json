@@ -13,10 +13,9 @@
 
   "savemod.delete.question": "您确定要删除这个存档吗？",
 
-  "savemod.name.new": "为新存档命名",
-  "savemod.name.rename": "重命名您的存档",
+  "savemod.name.title.new": "为新存档命名",
+  "savemod.name.title.rename": "重命名您的存档",
   "savemod.name.hint": "留空默认为\"%s\"",
-  "savemod.name.apply": "应用",
   "savemod.name.copy": "复制",
 
   "savemod.toast.succesful": "成功！",
