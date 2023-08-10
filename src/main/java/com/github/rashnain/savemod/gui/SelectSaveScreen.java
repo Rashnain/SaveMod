@@ -1,7 +1,9 @@
 package com.github.rashnain.savemod.gui;
 
+import com.github.rashnain.savemod.SaveMod;
 import com.github.rashnain.savemod.gui.widget.SaveListEntry;
 import com.github.rashnain.savemod.gui.widget.SaveListWidget;
+import com.github.rashnain.savemod.util.ZipUtil;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -11,8 +13,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.PathUtil;
-import com.github.rashnain.savemod.SaveMod;
-import com.github.rashnain.savemod.util.ZipUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -135,7 +135,7 @@ public class SelectSaveScreen extends Screen {
             if (!saveName.isEmpty())
                 backupName = backupName.substring(0, 20) + saveName;
 
-            Path savesDir = Path.of("savemod").resolve(worldDir);
+            Path savesDir = SaveMod.DIR.resolve(worldDir);
             if (Files.notExists(savesDir))
                 Files.createDirectories(savesDir);
 

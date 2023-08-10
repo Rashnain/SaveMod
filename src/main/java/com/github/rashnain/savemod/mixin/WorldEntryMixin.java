@@ -1,14 +1,14 @@
 package com.github.rashnain.savemod.mixin;
 
+import com.github.rashnain.savemod.SaveMod;
+import com.github.rashnain.savemod.config.SaveModConfig;
+import com.github.rashnain.savemod.gui.SelectSaveScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.screen.world.WorldListWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.world.level.storage.LevelSummary;
-import com.github.rashnain.savemod.SaveMod;
-import com.github.rashnain.savemod.config.SaveModConfig;
-import com.github.rashnain.savemod.gui.SelectSaveScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,7 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 @Mixin(WorldListWidget.WorldEntry.class)
 public abstract class WorldEntryMixin extends WorldListWidget.Entry implements AutoCloseable {
@@ -68,19 +67,19 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
 
     @Inject(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V", shift = At.Shift.AFTER))
     public void delete(CallbackInfo ci) {
-        File savesDir = new File(Path.of("savemod").resolve(SaveMod.worldDir).toUri());
+        File savesDir = SaveMod.DIR.resolve(SaveMod.worldDir).toFile();
         try {
-            File[] files = savesDir.listFiles(pathname -> pathname.isFile() && pathname.getName().endsWith(".zip") && pathname.getName().length() > 24);
+            File[] files = savesDir.listFiles(file -> file.isFile() && file.getName().endsWith(".zip") && file.getName().length() > 24);
             if (files != null) {
                 for (File save : files)
-                    Files.deleteIfExists(save.toPath());
-                Files.deleteIfExists(savesDir.toPath());
+                    Files.delete(save.toPath());
+                Files.delete(savesDir.toPath());
                 try {
                     Files.delete(SaveMod.DIR);
                 } catch (IOException ignored) {}
             }
         } catch (IOException e) {
-            SaveMod.LOGGER.error("Could not delete save of '{}' : {}", SaveMod.worldDir, e);
+            SaveMod.LOGGER.error("Could not delete save folder '{}' : {}", SaveMod.worldDir, e);
         }
     }
 
