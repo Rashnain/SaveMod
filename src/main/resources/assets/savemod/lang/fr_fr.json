@@ -13,10 +13,11 @@
 
   "savemod.delete.question" : "Êtes vous sûr de vouloir supprimer cette sauvegarde ?",
 
-  "savemod.name.new": "Nommer votre nouvelle sauvegarde",
-  "savemod.name.rename": "Renommer votre sauvegarde",
+  "savemod.name.title.new": "Nommer votre nouvelle sauvegarde",
+  "savemod.name.title.rename": "Renommer votre sauvegarde",
   "savemod.name.hint": "Laisser vide pour \"%s\"",
-  "savemod.name.apply": "Appliquer",
+  "savemod.name.rename": "Renommer",
+  "savemod.name.create": "Créer",
   "savemod.name.copy": "Copie",
 
   "savemod.toast.succesful": "Réussite!",

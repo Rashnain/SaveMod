@@ -43,15 +43,18 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
         nameBox = new TextFieldWidget(textRenderer, width / 2 - 100, height / 2 - 10, 200, 20, null, Text.empty());
         addDrawableChild(nameBox);
 
-        if (previousName != null && !previousName.equals(worldName))
-            nameBox.setText(previousName);
+        Text message;
 
-        addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.name.apply"), button ->
-            consumer.accept(nameBox.getText())
+        if (previousName != null && !previousName.equals(worldName)) {
+            nameBox.setText(previousName);
+            message = Text.translatable("savemod.name.create");
+        } else
+            message = Text.translatable("savemod.name.rename");
+
+        addDrawableChild(ButtonWidget.builder(message, button -> consumer.accept(nameBox.getText())
         ).dimensions(width / 2 - 150 - 5, height / 2 + 25, 150, 20).build());
 
-        addDrawableChild(ButtonWidget.builder(ScreenTexts.CANCEL, button ->
-            close()
+        addDrawableChild(ButtonWidget.builder(ScreenTexts.CANCEL, button -> close()
         ).dimensions(width / 2 + 5, height / 2 + 25, 150, 20).build());
 
         setInitialFocus(nameBox);
@@ -66,9 +69,9 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackgroundTexture(matrices);
         if (previousName == null || previousName.isEmpty())
-            drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.new"), width / 2, height / 2 - 45, 0xFFFFFF);
+            drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.title.new"), width / 2, height / 2 - 45, 0xFFFFFF);
         else
-            drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.rename"), width / 2, height / 2 - 45, 0xFFFFFF);
+            drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.title.rename"), width / 2, height / 2 - 45, 0xFFFFFF);
         drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, 0x808080);
         super.render(matrices, mouseX, mouseY, delta);
     }
