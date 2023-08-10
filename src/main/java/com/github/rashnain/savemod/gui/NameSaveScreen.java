@@ -43,12 +43,13 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
         nameBox = new TextFieldWidget(textRenderer, width / 2 - 100, height / 2 - 10, 200, 20, null, Text.empty());
         addDrawableChild(nameBox);
 
-        Text message;
-
-        if (previousName != null && !previousName.equals(worldName)) {
+        if (previousName != null && !previousName.equals(worldName))
             nameBox.setText(previousName);
+
+        Text message;
+        if (previousName == null || previousName.isEmpty())
             message = Text.translatable("savemod.name.create");
-        } else
+        else
             message = Text.translatable("savemod.name.rename");
 
         addDrawableChild(ButtonWidget.builder(message, button -> consumer.accept(nameBox.getText())
