@@ -135,11 +135,11 @@ public class SelectSaveScreen extends Screen {
             if (!saveName.isEmpty())
                 backupName = backupName.substring(0, 20) + saveName;
 
-            Path savesDir = SaveMod.DIR.resolve(worldDir);
-            if (Files.notExists(savesDir))
-                Files.createDirectories(savesDir);
+            Path saveDir = SaveMod.DIR.resolve(worldDir);
+            if (Files.notExists(saveDir))
+                Files.createDirectories(saveDir);
 
-            Path backupFileName = savesDir.resolve(PathUtil.getNextUniqueName(savesDir, backupName, ".zip"));
+            Path backupFileName = saveDir.resolve(PathUtil.getNextUniqueName(saveDir, backupName, ".zip"));
 
             ZipUtil.createBackup("saves/" + worldDir, backupFileName.toString());
 

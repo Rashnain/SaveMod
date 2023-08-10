@@ -14,7 +14,7 @@ import java.util.*;
 public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry> {
 
     private final SelectSaveScreen parent;
-    private List<SaveSummary> levels;
+    private List<SaveSummary> saves;
     private String search;
 
     public SaveListWidget(SelectSaveScreen parent, MinecraftClient client, int width, int height, int top, int bottom, int itemHeight) {
@@ -45,7 +45,7 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
 
     private void showSummaries(String search, List<SaveSummary> summaries) {
         clearEntries();
-        levels = summaries;
+        saves = summaries;
         for (SaveSummary summary : summaries) {
             if (!shouldShow(search, summary)) continue;
             addEntry(new SaveListEntry(summary, this));
@@ -83,7 +83,7 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
 
     public void setSearch(String search) {
         if (!search.equals(this.search)) {
-            showSummaries(search, levels);
+            showSummaries(search, saves);
             this.search = search;
         }
     }
