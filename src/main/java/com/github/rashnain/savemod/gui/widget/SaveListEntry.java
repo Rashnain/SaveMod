@@ -70,9 +70,11 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         String displayName = save.getSaveName();
         String folderNameAndLastPlayedDate = save.getWorldDir() + " (" + DATE_FORMAT.format(new Date(save.getLastPlayed())) + ")";
+        String fileSize = save.getSizeInMB() + " MB";
 
         context.drawText(client.textRenderer, displayName, x + 32 + 3, y + 1, 0xFFFFFF, false);
-        context.drawText(client.textRenderer, folderNameAndLastPlayedDate, x + 32 + 3, y + client.textRenderer.fontHeight + 3, 0x808080, false);
+        context.drawText(client.textRenderer, folderNameAndLastPlayedDate, x + 32 + 3, y + 1 + 2 + client.textRenderer.fontHeight, 0x808080, false);
+        context.drawText(client.textRenderer, fileSize, x + 32 + 3, y + 1 + (2 + client.textRenderer.fontHeight) * 2, 0x808080, false);
 
         RenderSystem.enableBlend();
         context.drawTexture(UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
