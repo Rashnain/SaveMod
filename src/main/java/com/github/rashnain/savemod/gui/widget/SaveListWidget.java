@@ -58,9 +58,9 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
         if (SaveMod.worldDir == null)
             return saveList;
 
-        File savesDir = SaveMod.DIR.resolve(SaveMod.worldDir).toFile();
+        File saveDir = SaveMod.DIR.resolve(SaveMod.worldDir).toFile();
 
-        File[] files = savesDir.listFiles(file -> file.isFile() && file.getName().endsWith(".zip") && file.getName().length() > 24);
+        File[] files = saveDir.listFiles(file -> file.isFile() && file.getName().endsWith(".zip") && file.getName().length() > 24);
 
         if (files != null) {
             Arrays.sort(files, Collections.reverseOrder());
