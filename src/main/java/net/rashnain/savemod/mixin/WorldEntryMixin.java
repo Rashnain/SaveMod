@@ -74,7 +74,6 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
             if (files != null) {
                 for (File save : files)
                     Files.deleteIfExists(save.toPath());
-
                 Files.deleteIfExists(savesDir.toPath());
             }
         } catch (IOException e) {

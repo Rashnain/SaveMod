@@ -69,7 +69,6 @@ public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
             drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.new"), width / 2, height / 2 - 45, 0xFFFFFF);
         else
             drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.rename"), width / 2, height / 2 - 45, 0xFFFFFF);
-
         drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, 0x808080);
         super.render(matrices, mouseX, mouseY, delta);
     }
