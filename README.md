@@ -7,7 +7,7 @@
 ---
 
 <a href="https://modrinth.com/mod/savemod">
-<img width="150" src="readme_assets/available_on_modrinth.png" alt="Requires Fabric API">
+<img width="150" src="readme_assets/available_on_modrinth.png" alt="Available on Modrinth">
 </a>
 
 ## Features
