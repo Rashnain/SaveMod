@@ -6,7 +6,7 @@
 
 ---
 
-<a href="https://modrinth.com/mod/savemod">
+<a href="https://modrinth.com/mod/savemod/versions?g=1.19.4">
 <img width="150" src="readme_assets/available_on_modrinth.png" alt="Available on Modrinth">
 </a>
 
