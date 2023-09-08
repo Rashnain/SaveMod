@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 
 import java.util.function.Consumer;
 
-public class NameSaveScreen extends net.minecraft.client.gui.screen.Screen {
+public class NameSaveScreen extends Screen {
 
     private final Screen parent;
     private final String previousName;
