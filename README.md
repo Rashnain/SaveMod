@@ -23,14 +23,14 @@
 - A search bar to quickly find a save
 - Keyboard navigation
 - A config to turn off/on some buttons and the option to disable compression
-- A config screen (need [Mod Menu](https://modrinth.com/mod/modmenu/versions?g=1.20.1))
+- A config screen (need [Mod Menu](https://modrinth.com/mod/modmenu/versions))
 
 ## Dependency
 
-<a href="https://modrinth.com/mod/fabric-api/versions?g=1.20.1">
+<a href="https://modrinth.com/mod/fabric-api/versions">
 <img width="150" src="readme_assets/requires_fabric_api.png" alt="Requires Fabric API">
 </a>
 
 ## Optional dependency
 
-You may use [Mod Menu](https://modrinth.com/mod/modmenu/versions?g=1.20.1) to configure the mod in-game, but it can also be configured by editing the `savemod.properties` file, located in the `config` directory.
+You may use [Mod Menu](https://modrinth.com/mod/modmenu/versions) to configure the mod in-game, but it can also be configured by editing the `savemod.properties` file, located in the `config` directory.
