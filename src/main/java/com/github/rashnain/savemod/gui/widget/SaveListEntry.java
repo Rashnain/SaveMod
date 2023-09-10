@@ -162,7 +162,12 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                 }
             }
             client.setScreen(saveList.getParent());
-        }, Text.translatable("savemod.delete.question"), Text.translatable("selectWorld.deleteWarning", save.getSaveName())));
+        }, Text.translatable("savemod.delete.question"), Text.translatable("selectWorld.deleteWarning", save.getSaveName())) {
+            @Override
+            public void renderBackground(MatrixStack matrices) {
+                renderBackgroundTexture(matrices);
+            }
+        });
     }
 
 }
