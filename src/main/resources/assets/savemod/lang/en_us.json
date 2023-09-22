@@ -40,5 +40,5 @@
   "options.savemod.worldEntries": "World entries button",
   "options.savemod.worldEntries.tooltip": "Add a button on each world entry of the world list to open their save list",
   "options.savemod.compression": "Compress saves",
-  "options.savemod.compression.tooltip": "Compression is slower but takes 20% less space"
+  "options.savemod.compression.tooltip": "Compression is slower but takes ~20% less space"
 }
