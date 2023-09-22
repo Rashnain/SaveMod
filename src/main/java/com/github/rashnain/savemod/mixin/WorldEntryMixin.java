@@ -22,6 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import static com.github.rashnain.savemod.gui.widget.SaveListEntry.JOIN_HIGHLIGHTED_TEXTURE;
+import static com.github.rashnain.savemod.gui.widget.SaveListEntry.JOIN_TEXTURE;
+
 @Mixin(WorldListWidget.WorldEntry.class)
 public abstract class WorldEntryMixin extends WorldListWidget.Entry implements AutoCloseable {
 
@@ -60,8 +63,8 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
             this.x = x;
             this.entryWidth = entryWidth;
             int pixelsAfterSaveListButton = mouseX - (x + entryWidth - 32);
-            float textureY = pixelsAfterSaveListButton >= 0 ? 32 : 0;
-            context.drawTexture(new Identifier("textures/gui/world_selection.png"), x + entryWidth - 32, y, 0, textureY, 32, 32, 256, 256);
+            Identifier texture = pixelsAfterSaveListButton >= 0 ? JOIN_HIGHLIGHTED_TEXTURE : JOIN_TEXTURE;
+            context.drawGuiTexture(texture, x + entryWidth - 32, y, 32, 32);
         }
     }
 

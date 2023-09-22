@@ -28,7 +28,8 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat();
     private static final Identifier UNKNOWN_SERVER_LOCATION = new Identifier("textures/misc/unknown_server.png");
-    private static final Identifier WORLD_SELECTION_LOCATION = new Identifier("textures/gui/world_selection.png");
+    public static final Identifier JOIN_HIGHLIGHTED_TEXTURE = new Identifier("world_list/join_highlighted");
+    public static final Identifier JOIN_TEXTURE = new Identifier("world_list/join");
 
     private final MinecraftClient client;
     private final SaveListWidget saveList;
@@ -83,8 +84,8 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         if (client.options.getTouchscreen().getValue() || hovered) {
             context.fill(x, y, x + 32, y + 32, -0x5F6F6F70);
             int pixelsBeforeStartButton = mouseX - x;
-            int textureY = pixelsBeforeStartButton <= 32 ? 32 : 0;
-            context.drawTexture(WORLD_SELECTION_LOCATION, x, y, 0.0f, textureY, 32, 32, 256, 256);
+            Identifier texture = pixelsBeforeStartButton <= 32 ? JOIN_HIGHLIGHTED_TEXTURE : JOIN_TEXTURE;
+            context.drawGuiTexture(texture, x, y, 32, 32);
         }
     }
 

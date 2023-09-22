@@ -62,19 +62,18 @@ public class NameSaveScreen extends Screen {
     }
 
     @Override
-    public void tick() {
-        nameBox.tick();
+    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderBackgroundTexture(context);
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBackgroundTexture(context);
+        super.render(context, mouseX, mouseY, delta);
         if (previousName == null || previousName.isEmpty())
             context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.title.new"), width / 2, height / 2 - 45, 0xFFFFFF);
         else
             context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.title.rename"), width / 2, height / 2 - 45, 0xFFFFFF);
         context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, 0x808080);
-        super.render(context, mouseX, mouseY, delta);
     }
 
     @Override

@@ -27,7 +27,7 @@
     "savemod.mixins.json"
   ],
   "depends": {
-    "minecraft": "=1.20.1",
+    "minecraft": "=1.20.2",
     "java": ">=17",
     "fabricloader": ">=0.14.21",
     "fabric-resource-loader-v0": "*",
