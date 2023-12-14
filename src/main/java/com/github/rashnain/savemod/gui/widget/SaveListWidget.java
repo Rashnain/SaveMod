@@ -17,8 +17,8 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
     private List<SaveSummary> saves;
     private String search;
 
-    public SaveListWidget(SelectSaveScreen parent, MinecraftClient client, int width, int height, int top, int bottom, int itemHeight) {
-        super(client, width, height, top, bottom, itemHeight);
+    public SaveListWidget(SelectSaveScreen parent, MinecraftClient client, int width, int height, int top, int itemHeight) {
+        super(client, width, height, top, itemHeight);
         this.parent = parent;
         search = "";
         refresh();

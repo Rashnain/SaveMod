@@ -104,7 +104,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
             try {
                 ZipUtil.unzipFile(zipFile, "saves/");
                 client.setScreenAndRender(new MessageScreen(Text.translatable("selectWorld.data_read")));
-                client.createIntegratedServerLoader().start(saveList.getParent(), worldDir);
+                client.createIntegratedServerLoader().start(worldDir, null);
             } catch (IOException e) {
                 client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.uncompress")));
                 SaveMod.LOGGER.error("Could not extract file '{}' : {}", zipFile, e);

@@ -28,7 +28,7 @@ import static com.github.rashnain.savemod.gui.widget.SaveListEntry.JOIN_TEXTURE;
 @Mixin(WorldListWidget.WorldEntry.class)
 public abstract class WorldEntryMixin extends WorldListWidget.Entry implements AutoCloseable {
 
-    @Shadow @Final private LevelSummary level;
+    @Shadow @Final LevelSummary level;
 
     @Shadow @Final private SelectWorldScreen screen;
 

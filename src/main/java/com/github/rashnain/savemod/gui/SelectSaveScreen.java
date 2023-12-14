@@ -61,7 +61,7 @@ public class SelectSaveScreen extends Screen {
         });
         addDrawableChild(searchBox);
 
-        saveList = new SaveListWidget(this, client, width, height, 48, height - 64, 36);
+        saveList = new SaveListWidget(this, client, width, height - 48 - 64, 48, 36);
         addSelectableChild(saveList);
 
         loadButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.play"), button ->
