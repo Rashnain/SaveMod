@@ -27,9 +27,9 @@ import java.util.Date;
 public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListEntry> {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat();
-    private static final Identifier UNKNOWN_SERVER_LOCATION = new Identifier("textures/misc/unknown_server.png");
-    public static final Identifier JOIN_HIGHLIGHTED_TEXTURE = new Identifier("world_list/join_highlighted");
-    public static final Identifier JOIN_TEXTURE = new Identifier("world_list/join");
+    private static final Identifier UNKNOWN_SERVER_LOCATION = Identifier.ofVanilla("textures/misc/unknown_server.png");
+    public static final Identifier JOIN_HIGHLIGHTED_TEXTURE = Identifier.ofVanilla("world_list/join_highlighted");
+    public static final Identifier JOIN_TEXTURE = Identifier.ofVanilla("world_list/join");
 
     private final MinecraftClient client;
     private final SaveListWidget saveList;
@@ -161,12 +161,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                 }
             }
             client.setScreen(saveList.getParent());
-        }, Text.translatable("savemod.delete.question"), Text.translatable("selectWorld.deleteWarning", save.getSaveName())) {
-            @Override
-            public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-                renderBackgroundTexture(context);
-            }
-        });
+        }, Text.translatable("savemod.delete.question"), Text.translatable("selectWorld.deleteWarning", save.getSaveName())));
     }
 
 }

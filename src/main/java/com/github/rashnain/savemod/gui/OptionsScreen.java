@@ -20,7 +20,7 @@ public class OptionsScreen extends GameOptionsScreen {
 
     @Override
     protected void init() {
-        optionList = new OptionListWidget(client, width, height - 32 - 32, 32, 25);
+        optionList = new OptionListWidget(client, width, this);
         optionList.addSingleOptionEntry(SaveModConfig.gameMenu);
         optionList.addSingleOptionEntry(SaveModConfig.worldEntries);
         optionList.addSingleOptionEntry(SaveModConfig.compression);
@@ -31,9 +31,7 @@ public class OptionsScreen extends GameOptionsScreen {
     }
 
     @Override
-    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBackgroundTexture(context);
-    }
+    protected void addOptions() {}
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
