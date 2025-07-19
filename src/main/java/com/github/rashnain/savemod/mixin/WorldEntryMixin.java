@@ -7,6 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.screen.world.WorldListWidget;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.level.storage.LevelSummary;
 import org.spongepowered.asm.mixin.Final;
@@ -64,7 +65,7 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
             this.entryWidth = entryWidth;
             int pixelsAfterSaveListButton = mouseX - (x + entryWidth - 32);
             Identifier texture = pixelsAfterSaveListButton >= 0 ? JOIN_HIGHLIGHTED_TEXTURE : JOIN_TEXTURE;
-            context.drawGuiTexture(texture, x + entryWidth - 32, y, 32, 32);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, texture, x + entryWidth - 32, y, 32, 32);
         }
     }
 

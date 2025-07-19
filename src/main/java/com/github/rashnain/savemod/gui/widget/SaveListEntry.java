@@ -10,6 +10,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -78,14 +79,14 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         context.drawText(client.textRenderer, fileSize, x + 32 + 3, y + 1 + (2 + client.textRenderer.fontHeight) * 2, 0x808080, false);
 
         RenderSystem.enableBlend();
-        context.drawTexture(UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
+        context.drawTexture(RenderLayer::getGuiTextured, UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
         RenderSystem.disableBlend();
 
         if (client.options.getTouchscreen().getValue() || hovered) {
             context.fill(x, y, x + 32, y + 32, -0x5F6F6F70);
             int pixelsBeforeStartButton = mouseX - x;
             Identifier texture = pixelsBeforeStartButton <= 32 ? JOIN_HIGHLIGHTED_TEXTURE : JOIN_TEXTURE;
-            context.drawGuiTexture(texture, x, y, 32, 32);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, texture, x, y, 32, 32);
         }
     }
 
