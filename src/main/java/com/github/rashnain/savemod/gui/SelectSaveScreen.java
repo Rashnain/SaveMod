@@ -13,7 +13,7 @@ import net.minecraft.client.input.KeyCodes;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
-import net.minecraft.util.PathUtil;
+import net.minecraft.util.path.PathUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;

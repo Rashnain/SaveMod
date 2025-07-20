@@ -4,7 +4,6 @@ import com.github.rashnain.savemod.SaveMod;
 import com.github.rashnain.savemod.SaveSummary;
 import com.github.rashnain.savemod.gui.NameSaveScreen;
 import com.github.rashnain.savemod.util.ZipUtil;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmScreen;
@@ -78,9 +77,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         context.drawText(client.textRenderer, folderNameAndLastPlayedDate, x + 32 + 3, y + 1 + 2 + client.textRenderer.fontHeight, 0x808080, false);
         context.drawText(client.textRenderer, fileSize, x + 32 + 3, y + 1 + (2 + client.textRenderer.fontHeight) * 2, 0x808080, false);
 
-        RenderSystem.enableBlend();
         context.drawTexture(RenderLayer::getGuiTextured, UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
-        RenderSystem.disableBlend();
 
         if (client.options.getTouchscreen().getValue() || hovered) {
             context.fill(x, y, x + 32, y + 32, -0x5F6F6F70);
