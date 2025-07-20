@@ -21,7 +21,7 @@ public abstract class GameMenuScreenMixin extends Screen {
     }
 
     @Inject(method = "initWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget;refreshPositions()V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void initWidgets(CallbackInfo ci, GridWidget gridWidget, GridWidget.Adder adder, Text text) {
+    private void initWidgets(CallbackInfo ci, GridWidget gridWidget, GridWidget.Adder adder) {
         if (SaveModConfig.gameMenu.getValue() && client.isIntegratedServerRunning()) {
             adder.add(ButtonWidget.builder(Text.translatable("savemod.list.title"), button ->
                 client.setScreen(new SelectSaveScreen(this))

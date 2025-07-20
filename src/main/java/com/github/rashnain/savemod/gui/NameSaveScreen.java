@@ -65,10 +65,10 @@ public class NameSaveScreen extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         if (previousName == null || previousName.isEmpty())
-            context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.title.new"), width / 2, height / 2 - 45, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.title.new"), width / 2, height / 2 - 45, -1);
         else
-            context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.title.rename"), width / 2, height / 2 - 45, 0xFFFFFF);
-        context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, 0x808080);
+            context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.title.rename"), width / 2, height / 2 - 45, -1);
+        context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, -0x808080);
     }
 
     @Override

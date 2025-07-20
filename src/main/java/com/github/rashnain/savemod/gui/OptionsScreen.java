@@ -37,7 +37,7 @@ public class OptionsScreen extends GameOptionsScreen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         optionList.render(context, mouseX, mouseY, delta);
-        context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 12, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 12, -1);
     }
 
     @Override

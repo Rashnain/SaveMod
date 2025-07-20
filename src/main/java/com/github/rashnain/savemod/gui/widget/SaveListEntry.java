@@ -5,11 +5,11 @@ import com.github.rashnain.savemod.SaveSummary;
 import com.github.rashnain.savemod.gui.NameSaveScreen;
 import com.github.rashnain.savemod.util.ZipUtil;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -73,24 +73,24 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         String folderNameAndLastPlayedDate = save.getWorldDir() + " (" + DATE_FORMAT.format(new Date(save.getLastPlayed())) + ")";
         String fileSize = save.getSizeInMB() + " MB";
 
-        context.drawText(client.textRenderer, displayName, x + 32 + 3, y + 1, 0xFFFFFF, false);
-        context.drawText(client.textRenderer, folderNameAndLastPlayedDate, x + 32 + 3, y + 1 + 2 + client.textRenderer.fontHeight, 0x808080, false);
-        context.drawText(client.textRenderer, fileSize, x + 32 + 3, y + 1 + (2 + client.textRenderer.fontHeight) * 2, 0x808080, false);
+        context.drawTextWithShadow(client.textRenderer, displayName, x + 32 + 3, y + 1, -1);
+        context.drawTextWithShadow(client.textRenderer, folderNameAndLastPlayedDate, x + 32 + 3, y + 1 + 2 + client.textRenderer.fontHeight, -0x808080);
+        context.drawTextWithShadow(client.textRenderer, fileSize, x + 32 + 3, y + 1 + (2 + client.textRenderer.fontHeight) * 2, -0x808080);
 
-        context.drawTexture(RenderLayer::getGuiTextured, UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
 
         if (client.options.getTouchscreen().getValue() || hovered) {
             context.fill(x, y, x + 32, y + 32, -0x5F6F6F70);
             int pixelsBeforeStartButton = mouseX - x;
             Identifier texture = pixelsBeforeStartButton <= 32 ? JOIN_HIGHLIGHTED_TEXTURE : JOIN_TEXTURE;
-            context.drawGuiTexture(RenderLayer::getGuiTextured, texture, x, y, 32, 32);
+            context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, 32, 32);
         }
     }
 
     public void load() {
         if (client.isIntegratedServerRunning()) {
-            client.world.disconnect();
-            client.disconnect(new MessageScreen(Text.translatable("savemod.message.closing")));
+            client.world.disconnect(Text.translatable("savemod.message.closing"));
+            client.disconnect(new MessageScreen(Text.translatable("savemod.message.closing")), false);
         }
         client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.deleting")));
         String worldDir = save.getWorldDir();
