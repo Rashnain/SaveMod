@@ -1,0 +1,44 @@
+{
+  "savemod.list.title": "Список збережень",
+  "savemod.list.play": "Грати в вибраному збереженні",
+  "savemod.list.create": "Створити нове збереження",
+  "savemod.list.rename": "Перейменувати",
+  "savemod.list.delete": "Видалити",
+  "savemod.list.duplicate": "Клонувати",
+
+  "savemod.message.closing": "Закриття світу...",
+  "savemod.message.deleting": "Видалення минулого світу...",
+  "savemod.message.uncompressing": "Розпакування збереження...",
+  "savemod.message.saving": "Збереження...",
+
+  "savemod.delete.question" : "Ви впевнені що хочете видалити це збереження ?",
+
+  "savemod.name.title.new": "Назвіть своє нове збереження",
+  "savemod.name.title.rename": "Перейменуйте своє збереження",
+  "savemod.name.hint": "Залиште поле порожнім для \"%s\"",
+  "savemod.name.rename": "Перейменувати",
+  "savemod.name.create": "Створити",
+  "savemod.name.copy": "Копіювати",
+
+  "savemod.toast.succesful": "Успішно!",
+  "savemod.toast.succesful.save": "Збереження створено.",
+  "savemod.toast.succesful.duplicate": "Збереження клоновано.",
+  "savemod.toast.failed": "Помилка!",
+  "savemod.toast.failed.name": "Некоректна назва.",
+  "savemod.toast.failed.delete": "Збереження не видалено.",
+  "savemod.toast.failed.load": "Не вдалося завантажити.",
+  "savemod.toast.failed.save": "Не вдалося створити збереження.",
+  "savemod.toast.failed.duplicate": "Збереження не клоновано.",
+  "savemod.toast.failed.uncompress": "Не вдалося розпакувати.",
+
+  "key.savemod.open_list": "Відкрити список збережень",
+  "key.savemod.save": "Відкрити екран збережень",
+
+  "savemod.options": "Налаштування SaveMod",
+  "options.savemod.gameMenu": "Кнопка в ігровому меню",
+  "options.savemod.gameMenu.tooltip": "Додає кнопку в меню паузи гри щоб відкрити список збережень",
+  "options.savemod.worldEntries": "Кнопка при вході в світ",
+  "options.savemod.worldEntries.tooltip": "Додає кнопку входу в список збережень в меню світів при вході в кожен світ",
+  "options.savemod.compression": "Стискати збереження",
+  "options.savemod.compression.tooltip": "Стискання повільніше, але займає на ~20% менше пам'яті"
+}
