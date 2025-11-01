@@ -4,12 +4,10 @@ import com.github.rashnain.savemod.SaveMod;
 import com.github.rashnain.savemod.gui.widget.SaveListEntry;
 import com.github.rashnain.savemod.gui.widget.SaveListWidget;
 import com.github.rashnain.savemod.util.ZipUtil;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.input.KeyCodes;
+import net.minecraft.client.gui.widget.*;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
@@ -26,7 +24,9 @@ import java.util.concurrent.ExecutionException;
 
 public class SelectSaveScreen extends Screen {
 
+    private ThreePartsLayoutWidget layout;
     protected final Screen parent;
+    protected final Runnable actionWhenClosed;
     private SaveListWidget saveList;
     private TextFieldWidget searchBox;
     private ButtonWidget loadButton;
@@ -35,16 +35,21 @@ public class SelectSaveScreen extends Screen {
     private ButtonWidget deleteButton;
 
     public SelectSaveScreen(Screen parent) {
+        this(parent, null);
+    }
+
+    public SelectSaveScreen(Screen parent, Runnable actionWhenClosed) {
         super(Text.translatable("savemod.list.title"));
         this.parent = parent;
+        this.actionWhenClosed = actionWhenClosed;
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (super.keyPressed(keyCode, scanCode, modifiers))
+    public boolean keyPressed(KeyInput input) {
+        if (super.keyPressed(input))
             return true;
 
-        if (KeyCodes.isToggle(keyCode)) {
+        if (input.isEnterOrSpace()) {
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::load);
             return true;
         }
@@ -54,56 +59,64 @@ public class SelectSaveScreen extends Screen {
 
     @Override
     protected void init() {
-        searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, null, Text.empty());
+        layout = new ThreePartsLayoutWidget(this, 8 + 9 + 8 + 20 + 4, 60);
+
+        DirectionalLayoutWidget directionalLayoutWidget = layout.addHeader(DirectionalLayoutWidget.vertical().spacing(4));
+        directionalLayoutWidget.getMainPositioner().alignHorizontalCenter();
+        directionalLayoutWidget.add(new TextWidget(title, textRenderer));
+        DirectionalLayoutWidget directionalLayoutWidget2 = directionalLayoutWidget.add(DirectionalLayoutWidget.horizontal().spacing(4));
+
+        searchBox = directionalLayoutWidget2.add(new TextFieldWidget(textRenderer, 200, 20, Text.empty()));
         searchBox.setChangedListener(search -> {
             saveList.setSearch(search);
             changeButtons(saveList.getSelectedOrNull() != null);
         });
-        addDrawableChild(searchBox);
 
-        saveList = new SaveListWidget(this, client, width, height - 48 - 64, 48, 36);
-        addSelectableChild(saveList);
+        GridWidget gridWidget = layout.addFooter((new GridWidget()).setColumnSpacing(8).setRowSpacing(4));
+        gridWidget.getMainPositioner().alignHorizontalCenter();
+        GridWidget.Adder adder = gridWidget.createAdder(4);
 
-        loadButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.play"), button ->
+        saveList = new SaveListWidget(this, client, width, layout.getContentHeight(), layout.getHeaderHeight(), 36);
+        layout.addBody(saveList);
+
+        loadButton = adder.add(ButtonWidget.builder(Text.translatable("savemod.list.play"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::load)
-        ).dimensions(width / 2 - 154, height - 52, 150, 20).build());
+        ).build(), 2);
         loadButton.active = false;
 
-        addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.create"), button ->
+        adder.add(ButtonWidget.builder(Text.translatable("savemod.list.create"), button ->
             client.setScreen(new NameSaveScreen(this, "", SaveMod.worldDir, this::save))
-        ).dimensions(width / 2 + 4, height - 52, 150, 20).build());
+        ).build(), 2);
 
-        renameButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.rename"), button ->
+        renameButton = adder.add(ButtonWidget.builder(Text.translatable("savemod.list.rename"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::rename)
-        ).dimensions(width / 2 - 154, height - 28, 72, 20).build());
+        ).width(71).build());
         renameButton.active = false;
 
-        deleteButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.delete"), button ->
+        deleteButton = adder.add(ButtonWidget.builder(Text.translatable("savemod.list.delete"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::delete)
-        ).dimensions(width / 2 - 76, height - 28, 72, 20).build());
+        ).width(71).build());
         deleteButton.active = false;
 
-        duplicateButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.duplicate"), button ->
+        duplicateButton = adder.add(ButtonWidget.builder(Text.translatable("savemod.list.duplicate"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::duplicate)
-        ).dimensions(width / 2 + 4, height - 28, 72, 20).build());
+        ).width(71).build());
         duplicateButton.active = false;
 
-        addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> close()
-        ).dimensions(width / 2 + 82, height - 28, 72, 20).build());
+        adder.add(ButtonWidget.builder(ScreenTexts.DONE, button -> close()
+        ).width(71).build());
+
+        layout.forEachChild(this::addDrawableChild);
+        layout.refreshPositions();
 
         setInitialFocus(searchBox);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-        context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 8, -1);
-        saveList.render(context, mouseX, mouseY, delta);
-    }
-
-    @Override
     public void close() {
         client.setScreen(parent);
+        if (actionWhenClosed != null)
+            actionWhenClosed.run();
     }
 
     public void changeButtons(boolean buttonsActive) {

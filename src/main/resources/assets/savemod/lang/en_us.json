@@ -31,6 +31,7 @@
   "savemod.toast.failed.duplicate": "Save not duplicated.",
   "savemod.toast.failed.uncompress": "Could not uncompress.",
 
+  "key.category.savemod.main": "SaveMod",
   "key.savemod.open_list": "Open save list",
   "key.savemod.save": "Open save screen",
 

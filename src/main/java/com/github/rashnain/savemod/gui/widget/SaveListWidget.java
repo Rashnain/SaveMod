@@ -31,8 +31,8 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
     }
 
     @Override
-    public boolean removeEntryWithoutScrolling(SaveListEntry entry) {
-        return super.removeEntryWithoutScrolling(entry);
+    public void removeEntryWithoutScrolling(SaveListEntry entry) {
+        super.removeEntryWithoutScrolling(entry);
     }
 
     public Screen getParent() {

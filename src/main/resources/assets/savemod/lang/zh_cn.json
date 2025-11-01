@@ -29,6 +29,7 @@
   "savemod.toast.failed.duplicate": "存档未复制。",
   "savemod.toast.failed.uncompress": "无法解压。",
 
+  "key.category.savemod.main": "SaveMod",
   "key.savemod.open_list": "打开存档列表",
   "key.savemod.save": "打开存档界面",
 

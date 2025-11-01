@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +25,9 @@ public class SaveMod implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		KeyBinding openList = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.open_list", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "SaveMod"));
-		KeyBinding save = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.save", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "SaveMod"));
+        KeyBinding.Category key_category = KeyBinding.Category.create(Identifier.of("savemod", "main"));
+		KeyBinding openList = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.open_list", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, key_category));
+		KeyBinding save = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.save", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, key_category));
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (openList.isPressed() && client.isIntegratedServerRunning())

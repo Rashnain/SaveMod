@@ -6,6 +6,7 @@ import com.github.rashnain.savemod.gui.NameSaveScreen;
 import com.github.rashnain.savemod.util.ZipUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.MessageScreen;
@@ -52,8 +53,8 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int delta) {
-        if (mouseX - saveList.getRowLeft() <= 32.0) {
+    public boolean mouseClicked(Click click, boolean doubled) {
+        if (click.x() - saveList.getRowLeft() <= 32.0) {
             load();
             return true;
         }
@@ -68,7 +69,9 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     }
 
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        int x = this.getContentX();
+        int y = this.getContentY();
         String displayName = save.getSaveName();
         String folderNameAndLastPlayedDate = save.getWorldDir() + " (" + DATE_FORMAT.format(new Date(save.getLastPlayed())) + ")";
         String fileSize = save.getSizeInMB() + " MB";

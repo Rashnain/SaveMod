@@ -31,6 +31,7 @@
   "savemod.toast.failed.duplicate": "Збереження не клоновано.",
   "savemod.toast.failed.uncompress": "Не вдалося розпакувати.",
 
+  "key.category.savemod.main": "SaveMod",
   "key.savemod.open_list": "Відкрити список збережень",
   "key.savemod.save": "Відкрити екран збережень",
 
