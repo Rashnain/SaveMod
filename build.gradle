@@ -21,8 +21,8 @@ dependencies {
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	compileOnly "org.apache.commons:commons-compress:1.27.1"
-	compileOnly "commons-io:commons-io:2.17.0"
+	compileOnly "org.apache.commons:commons-compress:1.28.0"
+	compileOnly "commons-io:commons-io:2.20.0"
 }
 
 processResources {
