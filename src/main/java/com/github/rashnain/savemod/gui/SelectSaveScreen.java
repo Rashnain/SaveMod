@@ -10,7 +10,7 @@ import net.minecraft.client.gui.widget.*;
 import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.screen.ScreenTexts;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.path.PathUtil;
 
@@ -25,13 +25,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class SelectSaveScreen extends Screen {
-    private static final DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
-            .appendValue(ChronoField.YEAR, 4).appendLiteral('-')
-            .appendValue(ChronoField.MONTH_OF_YEAR, 2).appendLiteral('-')
-            .appendValue(ChronoField.DAY_OF_MONTH, 2).appendLiteral('_')
-            .appendValue(ChronoField.HOUR_OF_DAY, 2).appendLiteral('-')
-            .appendValue(ChronoField.MINUTE_OF_HOUR, 2).appendLiteral('-')
-            .appendValue(ChronoField.SECOND_OF_MINUTE, 2).toFormatter();
 
     private ThreePartsLayoutWidget layout;
     protected final Screen parent;
@@ -136,24 +129,21 @@ public class SelectSaveScreen extends Screen {
     }
 
     public void save(String saveName) {
-       CompletableFuture
-                .runAsync(() -> client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving"))), client)
-                .thenComposeAsync(this::saveServerIfPresent)
-                .thenRunAsync(() -> saveFile(saveName), client)
-                .whenCompleteAsync(this::finishSaving, client);
-    }
-
-    private CompletableFuture<Void> saveServerIfPresent(Void unused) {
-        MinecraftServer server = client.getServer();
-        return server == null
-                ? CompletableFuture.completedFuture(null)
-                : CompletableFuture.runAsync(() -> server.save(true, true, true), server);
-    }
-
-    private void saveFile(String saveName) {
+        client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
+        if (client.isIntegratedServerRunning()) {
+            IntegratedServer server = client.getServer();
+            CompletableFuture.runAsync(() -> server.saveAll(false, true, false), server);
+        }
         String worldDir = SaveMod.worldDir;
-
         try {
+            DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
+                .appendValue(ChronoField.YEAR, 4).appendLiteral('-')
+                .appendValue(ChronoField.MONTH_OF_YEAR, 2).appendLiteral('-')
+                .appendValue(ChronoField.DAY_OF_MONTH, 2).appendLiteral('_')
+                .appendValue(ChronoField.HOUR_OF_DAY, 2).appendLiteral('-')
+                .appendValue(ChronoField.MINUTE_OF_HOUR, 2).appendLiteral('-')
+                .appendValue(ChronoField.SECOND_OF_MINUTE, 2).toFormatter();
+
             String backupName = LocalDateTime.now().format(TIME_FORMATTER) + "_" + worldDir;
             if (!saveName.isEmpty())
                 backupName = backupName.substring(0, 20) + saveName;
@@ -166,20 +156,19 @@ public class SelectSaveScreen extends Screen {
 
             ZipUtil.createBackup("saves/" + worldDir, backupFileName.toString());
 
-            saveList.refresh();
-        } catch (ExecutionException | InterruptedException | IOException e) {
-            throw new RuntimeException("Error occurred while saving", e);
-        }
-    }
-
-    private void finishSaving(Void unused, Throwable throwable) {
-        if(throwable != null) {
-            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.save")));
-            SaveMod.LOGGER.error("Could not save : {}", throwable.getMessage());
-        } else {
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.save")));
-        }
 
-        client.setScreen(client.isIntegratedServerRunning() ? null : this);
+            saveList.refresh();
+
+            if (client.isIntegratedServerRunning()) {
+                client.setScreen(null);
+                return;
+            }
+        } catch (IOException | ExecutionException | InterruptedException e) {
+            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.save")));
+            SaveMod.LOGGER.error("Could not save : {}", e.getMessage());
+        }
+        client.setScreen(this);
     }
+
 }
