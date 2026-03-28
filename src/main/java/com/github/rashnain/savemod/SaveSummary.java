@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.Date;
 
 public class SaveSummary {
-
+    private static final long ONE_MB = 1048576;
     private final String saveFileName;
     private final String worldDir;
     private final long size;
@@ -45,12 +45,6 @@ public class SaveSummary {
     }
 
     public String getSizeInMB() {
-        long megaByte = 1000000;
-
-        if (size < megaByte)
-            return "< 1";
-
-        return String.valueOf(size / megaByte);
+        return size < ONE_MB ? "< 1" : String.valueOf(size / ONE_MB);
     }
-
 }

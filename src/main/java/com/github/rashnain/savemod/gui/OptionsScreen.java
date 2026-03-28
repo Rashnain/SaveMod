@@ -1,43 +1,42 @@
 package com.github.rashnain.savemod.gui;
 
 import com.github.rashnain.savemod.config.SaveModConfig;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.option.GameOptionsScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.OptionListWidget;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.OptionsList;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.options.OptionsSubScreen;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 
-public class OptionsScreen extends GameOptionsScreen {
-
-    private OptionListWidget optionList;
+public class OptionsScreen extends OptionsSubScreen {
+    private OptionsList optionList;
 
     public OptionsScreen(Screen parent) {
-        super(parent, MinecraftClient.getInstance().options, Text.translatable("savemod.options"));
+        super(parent, Minecraft.getInstance().options, Component.translatable("savemod.options"));
     }
 
     @Override
     protected void init() {
-        optionList = new OptionListWidget(client, width, this);
-        optionList.addSingleOptionEntry(SaveModConfig.gameMenu);
-        optionList.addSingleOptionEntry(SaveModConfig.worldEntries);
-        optionList.addSingleOptionEntry(SaveModConfig.compression);
-        addSelectableChild(optionList);
+        optionList = new OptionsList(minecraft, width, this);
+        optionList.addBig(SaveModConfig.gameMenu);
+        optionList.addBig(SaveModConfig.worldEntries);
+        optionList.addBig(SaveModConfig.compression);
+        addWidget(optionList);
 
-        addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> close()
-        ).dimensions(width / 2 - 100, height - 27,200, 20).build());
+        addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, button -> onClose()
+        ).bounds(width / 2 - 100, height - 27,200, 20).build());
     }
 
     @Override
     protected void addOptions() {}
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-        optionList.render(context, mouseX, mouseY, delta);
-        context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 12, -1);
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(context, mouseX, mouseY, delta);
+        optionList.extractRenderState(context, mouseX, mouseY, delta);
+        context.centeredText(font, title, width / 2, 12, -1);
     }
 
     @Override

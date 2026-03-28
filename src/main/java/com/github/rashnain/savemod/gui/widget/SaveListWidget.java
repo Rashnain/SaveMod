@@ -3,21 +3,20 @@ package com.github.rashnain.savemod.gui.widget;
 import com.github.rashnain.savemod.SaveMod;
 import com.github.rashnain.savemod.SaveSummary;
 import com.github.rashnain.savemod.gui.SelectSaveScreen;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
 
-public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry> {
-
+public class SaveListWidget extends ObjectSelectionList<SaveListEntry> {
     private final SelectSaveScreen parent;
     private List<SaveSummary> saves;
     private String search;
 
-    public SaveListWidget(SelectSaveScreen parent, MinecraftClient client, int width, int height, int top, int itemHeight) {
+    public SaveListWidget(SelectSaveScreen parent, Minecraft client, int width, int height, int top, int itemHeight) {
         super(client, width, height, top, itemHeight);
         this.parent = parent;
         search = "";
@@ -31,8 +30,8 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
     }
 
     @Override
-    public void removeEntryWithoutScrolling(SaveListEntry entry) {
-        super.removeEntryWithoutScrolling(entry);
+    public void removeEntryFromTop(SaveListEntry entry) {
+        super.removeEntryFromTop(entry);
     }
 
     public Screen getParent() {
@@ -75,7 +74,7 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
     }
 
     public Optional<SaveListEntry> getSelectedAsOptional() {
-        SaveListEntry entry = getSelectedOrNull();
+        SaveListEntry entry = getSelected();
         if (entry == null)
             return Optional.empty();
         return Optional.of(entry);

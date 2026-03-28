@@ -87,7 +87,7 @@ public class ZipUtil {
 
                 ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry(relativePath);
 
-                if (SaveModConfig.compression.getValue())
+                if (SaveModConfig.compression.get())
                     zipArchiveEntry.setMethod(ZipEntry.DEFLATED);
                 else
                     zipArchiveEntry.setMethod(ZipEntry.STORED);
