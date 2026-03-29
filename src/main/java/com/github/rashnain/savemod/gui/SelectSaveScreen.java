@@ -26,6 +26,14 @@ import java.util.concurrent.ExecutionException;
 
 public class SelectSaveScreen extends Screen {
 
+    private static final DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
+        .appendValue(ChronoField.YEAR, 4).appendLiteral('-')
+        .appendValue(ChronoField.MONTH_OF_YEAR, 2).appendLiteral('-')
+        .appendValue(ChronoField.DAY_OF_MONTH, 2).appendLiteral('_')
+        .appendValue(ChronoField.HOUR_OF_DAY, 2).appendLiteral('-')
+        .appendValue(ChronoField.MINUTE_OF_HOUR, 2).appendLiteral('-')
+        .appendValue(ChronoField.SECOND_OF_MINUTE, 2).toFormatter();
+
     private ThreePartsLayoutWidget layout;
     protected final Screen parent;
     protected final Runnable actionWhenClosed;
@@ -136,14 +144,6 @@ public class SelectSaveScreen extends Screen {
         }
         String worldDir = SaveMod.worldDir;
         try {
-            DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
-                .appendValue(ChronoField.YEAR, 4).appendLiteral('-')
-                .appendValue(ChronoField.MONTH_OF_YEAR, 2).appendLiteral('-')
-                .appendValue(ChronoField.DAY_OF_MONTH, 2).appendLiteral('_')
-                .appendValue(ChronoField.HOUR_OF_DAY, 2).appendLiteral('-')
-                .appendValue(ChronoField.MINUTE_OF_HOUR, 2).appendLiteral('-')
-                .appendValue(ChronoField.SECOND_OF_MINUTE, 2).toFormatter();
-
             String backupName = LocalDateTime.now().format(TIME_FORMATTER) + "_" + worldDir;
             if (!saveName.isEmpty())
                 backupName = backupName.substring(0, 20) + saveName;
@@ -152,7 +152,7 @@ public class SelectSaveScreen extends Screen {
             if (Files.notExists(saveDir))
                 Files.createDirectories(saveDir);
 
-            Path backupFileName = saveDir.resolve(PathUtil.getNextUniqueName(saveDir, backupName, ".zip"));
+            Path backupFileName = saveDir.resolve(backupName + ".zip");
 
             ZipUtil.createBackup("saves/" + worldDir, backupFileName.toString());
 
