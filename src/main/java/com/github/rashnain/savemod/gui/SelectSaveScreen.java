@@ -12,7 +12,6 @@ import net.minecraft.client.toast.SystemToast;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
-import net.minecraft.util.path.PathUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -76,7 +75,7 @@ public class SelectSaveScreen extends Screen {
         directionalLayoutWidget.add(new TextWidget(title, textRenderer));
         DirectionalLayoutWidget directionalLayoutWidget2 = directionalLayoutWidget.add(DirectionalLayoutWidget.horizontal().spacing(4));
 
-        searchBox = directionalLayoutWidget2.add(new TextFieldWidget(textRenderer, 200, 20, Text.empty()));
+        searchBox = directionalLayoutWidget2.add(new TextFieldWidget(textRenderer, 0, 0, 200, 20, searchBox, Text.empty()));
         searchBox.setChangedListener(search -> {
             saveList.setSearch(search);
             changeButtons(saveList.getSelectedOrNull() != null);
@@ -87,6 +86,7 @@ public class SelectSaveScreen extends Screen {
         GridWidget.Adder adder = gridWidget.createAdder(4);
 
         saveList = new SaveListWidget(this, client, width, layout.getContentHeight(), layout.getHeaderHeight(), 36);
+        saveList.setSearch(searchBox.getText());
         layout.addBody(saveList);
 
         loadButton = adder.add(ButtonWidget.builder(Text.translatable("savemod.list.play"), button ->
