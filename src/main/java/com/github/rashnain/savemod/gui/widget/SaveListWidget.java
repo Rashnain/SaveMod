@@ -35,6 +35,11 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
         super.removeEntryWithoutScrolling(entry);
     }
 
+    @Override
+    public int getRowWidth() {
+        return 270;
+    }
+
     public Screen getParent() {
         return parent;
     }
