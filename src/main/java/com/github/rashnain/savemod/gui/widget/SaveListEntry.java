@@ -77,8 +77,8 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         String fileSize = save.getSizeInMB() + " MB";
 
         context.drawTextWithShadow(client.textRenderer, displayName, x + 32 + 3, y + 1, -1);
-        context.drawTextWithShadow(client.textRenderer, folderNameAndLastPlayedDate, x + 32 + 3, y + 1 + 2 + client.textRenderer.fontHeight, -0x808080);
-        context.drawTextWithShadow(client.textRenderer, fileSize, x + 32 + 3, y + 1 + (2 + client.textRenderer.fontHeight) * 2, -0x808080);
+        context.drawTextWithShadow(client.textRenderer, folderNameAndLastPlayedDate, x + 32 + 3, y + 1 + client.textRenderer.fontHeight + 2, -0x808080);
+        context.drawTextWithShadow(client.textRenderer, fileSize, x + 32 + 3, y + 1 + client.textRenderer.fontHeight * 2 + 2, -0x808080);
 
         context.drawTexture(RenderPipelines.GUI_TEXTURED, UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
 
