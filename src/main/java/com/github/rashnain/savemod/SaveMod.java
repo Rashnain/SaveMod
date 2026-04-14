@@ -30,9 +30,9 @@ public class SaveMod implements ClientModInitializer {
 		KeyBinding save = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.savemod.save", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, key_category));
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			if (openList.isPressed() && client.isIntegratedServerRunning())
+			if (openList.isPressed() && client.isIntegratedServerRunning() && !client.getServer().isRemote())
 				client.setScreen(new SelectSaveScreen(null));
-			if (save.isPressed() && client.isIntegratedServerRunning())
+			if (save.isPressed() && client.isIntegratedServerRunning() && !client.getServer().isRemote())
 				client.setScreen(new NameSaveScreen(null, "", SaveMod.worldDir, saveName -> {
 					SelectSaveScreen saveScreen = new SelectSaveScreen(null);
 					client.setScreen(saveScreen);
