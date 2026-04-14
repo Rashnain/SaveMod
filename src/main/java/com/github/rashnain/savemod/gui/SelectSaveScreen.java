@@ -140,8 +140,13 @@ public class SelectSaveScreen extends Screen {
         client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
         if (client.isIntegratedServerRunning()) {
             IntegratedServer server = client.getServer();
-            CompletableFuture.runAsync(() -> server.saveAll(false, true, false), server);
-        }
+            CompletableFuture.runAsync(() -> server.saveAll(false, true, false), server)
+                .thenRunAsync(() -> finishSaving(saveName), client);
+        } else
+            finishSaving(saveName);
+    }
+
+    private void finishSaving(String saveName) {
         String worldDir = SaveMod.worldDir;
         try {
             String backupName = LocalDateTime.now().format(TIME_FORMATTER) + "_" + worldDir;
