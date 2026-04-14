@@ -4,7 +4,7 @@ import com.github.rashnain.savemod.SaveMod;
 import com.github.rashnain.savemod.gui.widget.SaveListEntry;
 import com.github.rashnain.savemod.gui.widget.SaveListWidget;
 import com.github.rashnain.savemod.util.ZipUtil;
-import net.minecraft.client.gui.screen.MessageScreen;
+import net.minecraft.client.gui.screen.ProgressScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.client.input.KeyInput;
@@ -137,13 +137,19 @@ public class SelectSaveScreen extends Screen {
     }
 
     public void save(String saveName) {
-        client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
+        ProgressScreen screen = new ProgressScreen(false);
+        screen.setTitle(Text.translatable("savemod.message.saving"));
+        client.setScreenAndRender(screen);
+
         if (client.isIntegratedServerRunning()) {
             IntegratedServer server = client.getServer();
             CompletableFuture.runAsync(() -> server.saveAll(false, true, false), server)
-                .thenRunAsync(() -> finishSaving(saveName), client);
-        } else
+                .thenRunAsync(() -> finishSaving(saveName), client)
+                .thenRun(screen::setDone);
+        } else {
             finishSaving(saveName);
+            screen.setDone();
+        }
     }
 
     private void finishSaving(String saveName) {
