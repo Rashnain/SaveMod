@@ -33,7 +33,6 @@ public class SelectSaveScreen extends Screen {
         .appendValue(ChronoField.MINUTE_OF_HOUR, 2).appendLiteral('-')
         .appendValue(ChronoField.SECOND_OF_MINUTE, 2).toFormatter();
 
-    private ThreePartsLayoutWidget layout;
     protected final Screen parent;
     protected final Runnable actionWhenClosed;
     private SaveListWidget saveList;
@@ -68,7 +67,7 @@ public class SelectSaveScreen extends Screen {
 
     @Override
     protected void init() {
-        layout = new ThreePartsLayoutWidget(this, 8 + 9 + 8 + 20 + 4, 60);
+        ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this, 8 + 9 + 8 + 20 + 4, 60);
 
         DirectionalLayoutWidget directionalLayoutWidget = layout.addHeader(DirectionalLayoutWidget.vertical().spacing(4));
         directionalLayoutWidget.getMainPositioner().alignHorizontalCenter();
