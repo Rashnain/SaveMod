@@ -28,6 +28,14 @@ import java.util.concurrent.ExecutionException;
 
 public class SelectSaveScreen extends Screen {
 
+    private static final DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
+        .appendValue(ChronoField.YEAR, 4).appendLiteral('-')
+        .appendValue(ChronoField.MONTH_OF_YEAR, 2).appendLiteral('-')
+        .appendValue(ChronoField.DAY_OF_MONTH, 2).appendLiteral('_')
+        .appendValue(ChronoField.HOUR_OF_DAY, 2).appendLiteral('-')
+        .appendValue(ChronoField.MINUTE_OF_HOUR, 2).appendLiteral('-')
+        .appendValue(ChronoField.SECOND_OF_MINUTE, 2).toFormatter();
+
     protected final Screen parent;
     private SaveListWidget saveList;
     private TextFieldWidget searchBox;
@@ -132,13 +140,7 @@ public class SelectSaveScreen extends Screen {
     private void finishSaving(String saveName) {
         String worldDir = SaveMod.worldDir;
         try {
-            DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
-                .appendValue(ChronoField.YEAR, 4).appendLiteral('-')
-                .appendValue(ChronoField.MONTH_OF_YEAR, 2).appendLiteral('-')
-                .appendValue(ChronoField.DAY_OF_MONTH, 2).appendLiteral('_')
-                .appendValue(ChronoField.HOUR_OF_DAY, 2).appendLiteral('-')
-                .appendValue(ChronoField.MINUTE_OF_HOUR, 2).appendLiteral('-')
-                .appendValue(ChronoField.SECOND_OF_MINUTE, 2).toFormatter();
+
 
             String backupName = LocalDateTime.now().format(TIME_FORMATTER) + "_" + worldDir;
             if (!saveName.isEmpty())
@@ -148,7 +150,7 @@ public class SelectSaveScreen extends Screen {
             if (Files.notExists(saveDir))
                 Files.createDirectories(saveDir);
 
-            Path backupFileName = saveDir.resolve(PathUtil.getNextUniqueName(saveDir, backupName, ".zip"));
+            Path backupFileName = saveDir.resolve(backupName + ".zip");
 
             ZipUtil.createBackup("saves/" + worldDir, backupFileName.toString());
 
