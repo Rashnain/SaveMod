@@ -84,6 +84,7 @@ public class SelectSaveScreen extends Screen {
             saveList.setSearch(search);
             changeButtons(saveList.getSelected() != null);
         });
+        searchBox.setHint(Component.translatable("gui.selectWorld.search").setStyle(EditBox.SEARCH_HINT_STYLE));
 
         GridLayout gridWidget = layout.addToFooter((new GridLayout()).columnSpacing(8).rowSpacing(4));
         gridWidget.defaultCellSetting().alignHorizontallyCenter();
