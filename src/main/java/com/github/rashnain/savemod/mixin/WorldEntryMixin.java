@@ -4,14 +4,14 @@ import com.github.rashnain.savemod.SaveMod;
 import com.github.rashnain.savemod.config.SaveModConfig;
 import com.github.rashnain.savemod.gui.SelectSaveScreen;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.world.WorldListWidget;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.level.storage.LevelStorage;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.LevelSummary;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,42 +28,42 @@ import java.nio.file.Files;
 import static com.github.rashnain.savemod.gui.widget.SaveListEntry.JOIN_HIGHLIGHTED_TEXTURE;
 import static com.github.rashnain.savemod.gui.widget.SaveListEntry.JOIN_TEXTURE;
 
-@Mixin(WorldListWidget.WorldEntry.class)
-public abstract class WorldEntryMixin extends WorldListWidget.Entry {
+@Mixin(WorldSelectionList.WorldListEntry.class)
+public abstract class WorldEntryMixin extends WorldSelectionList.Entry {
 
-    @Shadow @Final LevelSummary level;
+    @Shadow @Final LevelSummary summary;
 
-    @Shadow @Final private WorldListWidget parent;
+    @Shadow @Final private WorldSelectionList list;
 
     @Inject(method = "mouseClicked", at = @At(value = "HEAD"))
-    public void mouseClicked(Click click, boolean doubled, CallbackInfoReturnable<Boolean> cir) {
-        if (SaveModConfig.worldEntries.getValue() && click.x() - (getContentX() + getContentWidth() - 32) >= 0) {
-            SaveMod.worldDir = level.getName();
-            MinecraftClient.getInstance().setScreen(new SelectSaveScreen(parent.getParent(), () -> parent.refresh()));
+    public void mouseClicked(MouseButtonEvent mouseButtonEvent, boolean bl, CallbackInfoReturnable<Boolean> cir) {
+        if (SaveModConfig.worldEntries.get() && mouseButtonEvent.x() - (getContentX() + getContentWidth() - 32) >= 0) {
+            SaveMod.worldDir = summary.getLevelId();
+            Minecraft.getInstance().setScreen(new SelectSaveScreen(list.getScreen(), () -> list.returnToScreen()));
         }
     }
 
     @Inject(method = "keyPressed", at = @At(value = "HEAD"), cancellable = true)
-    public void keyPressed(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
-        if (input.getKeycode() == 262) {
-            SaveMod.worldDir = level.getName();
-            MinecraftClient.getInstance().setScreen(new SelectSaveScreen(parent.getParent(), () -> parent.refresh()));
+    public void keyPressed(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
+        if (keyEvent.input() == 262) {
+            SaveMod.worldDir = summary.getLevelId();
+            Minecraft.getInstance().setScreen(new SelectSaveScreen(list.getScreen(), () -> list.returnToScreen()));
             cir.setReturnValue(true);
         }
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V"))
-    public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks, CallbackInfo ci) {
-        if (SaveModConfig.worldEntries.getValue()) {
+    @Inject(method = "renderContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V"))
+    public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo ci) {
+        if (SaveModConfig.worldEntries.get()) {
             int pixelsAfterSaveListButton = mouseX - (getContentX() + getContentWidth() - 32);
             Identifier texture = pixelsAfterSaveListButton >= 0 ? JOIN_HIGHLIGHTED_TEXTURE : JOIN_TEXTURE;
-            context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, texture, getContentX() + getContentWidth() - 32, getContentY(), 32, 32);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, getContentX() + getContentWidth() - 32, getContentY(), 32, 32);
         }
     }
 
-    @Inject(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V"))
-    public void delete(CallbackInfo ci, @Local LevelStorage.Session session) {
-        String worldDir = session.getDirectoryName();
+    @Inject(method = "doDeleteWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;deleteLevel()V"))
+    public void doDeleteWorld(CallbackInfo ci, @Local LevelStorageSource.LevelStorageAccess levelStorageAccess) {
+        String worldDir = levelStorageAccess.getLevelId();
         File saveDir = SaveMod.DIR.resolve(worldDir).toFile();
         try {
             File[] files = saveDir.listFiles(file -> file.isFile() && file.getName().endsWith(".zip") && file.getName().length() > 24);

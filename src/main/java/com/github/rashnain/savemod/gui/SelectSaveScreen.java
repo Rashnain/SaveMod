@@ -4,14 +4,19 @@ import com.github.rashnain.savemod.SaveMod;
 import com.github.rashnain.savemod.gui.widget.SaveListEntry;
 import com.github.rashnain.savemod.gui.widget.SaveListWidget;
 import com.github.rashnain.savemod.util.ZipUtil;
-import net.minecraft.client.gui.screen.ProgressScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.*;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.toast.SystemToast;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.screens.ProgressScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,28 +41,28 @@ public class SelectSaveScreen extends Screen {
     protected final Screen parent;
     protected final Runnable actionWhenClosed;
     private SaveListWidget saveList;
-    private TextFieldWidget searchBox;
-    private ButtonWidget loadButton;
-    private ButtonWidget renameButton;
-    private ButtonWidget duplicateButton;
-    private ButtonWidget deleteButton;
+    private EditBox searchBox;
+    private Button loadButton;
+    private Button renameButton;
+    private Button duplicateButton;
+    private Button deleteButton;
 
     public SelectSaveScreen(Screen parent) {
         this(parent, null);
     }
 
     public SelectSaveScreen(Screen parent, Runnable actionWhenClosed) {
-        super(Text.translatable("savemod.list.title"));
+        super(Component.translatable("savemod.list.title"));
         this.parent = parent;
         this.actionWhenClosed = actionWhenClosed;
     }
 
     @Override
-    public boolean keyPressed(KeyInput input) {
-        if (super.keyPressed(input))
+    public boolean keyPressed(KeyEvent keyEvent) {
+        if (super.keyPressed(keyEvent))
             return true;
 
-        if (input.isEnterOrSpace()) {
+        if (keyEvent.isSelection()) {
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::load);
             return true;
         }
@@ -67,63 +72,63 @@ public class SelectSaveScreen extends Screen {
 
     @Override
     protected void init() {
-        ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this, 8 + 9 + 8 + 20 + 4, 60);
+        HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 8 + 9 + 8 + 20 + 4, 60);
 
-        DirectionalLayoutWidget directionalLayoutWidget = layout.addHeader(DirectionalLayoutWidget.vertical().spacing(4));
-        directionalLayoutWidget.getMainPositioner().alignHorizontalCenter();
-        directionalLayoutWidget.add(new TextWidget(title, textRenderer));
-        DirectionalLayoutWidget directionalLayoutWidget2 = directionalLayoutWidget.add(DirectionalLayoutWidget.horizontal().spacing(4));
+        LinearLayout directionalLayoutWidget = layout.addToHeader(LinearLayout.vertical().spacing(4));
+        directionalLayoutWidget.defaultCellSetting().alignHorizontallyCenter();
+        directionalLayoutWidget.addChild(new StringWidget(title, font));
+        LinearLayout directionalLayoutWidget2 = directionalLayoutWidget.addChild(LinearLayout.horizontal().spacing(4));
 
-        searchBox = directionalLayoutWidget2.add(new TextFieldWidget(textRenderer, 0, 0, 200, 20, searchBox, Text.empty()));
-        searchBox.setChangedListener(search -> {
+        searchBox = directionalLayoutWidget2.addChild(new EditBox(font, 0, 0, 200, 20, searchBox, Component.empty()));
+        searchBox.setResponder(search -> {
             saveList.setSearch(search);
-            changeButtons(saveList.getSelectedOrNull() != null);
+            changeButtons(saveList.getSelected() != null);
         });
 
-        GridWidget gridWidget = layout.addFooter((new GridWidget()).setColumnSpacing(8).setRowSpacing(4));
-        gridWidget.getMainPositioner().alignHorizontalCenter();
-        GridWidget.Adder adder = gridWidget.createAdder(4);
+        GridLayout gridWidget = layout.addToFooter((new GridLayout()).columnSpacing(8).rowSpacing(4));
+        gridWidget.defaultCellSetting().alignHorizontallyCenter();
+        GridLayout.RowHelper adder = gridWidget.createRowHelper(4);
 
-        saveList = new SaveListWidget(this, client, width, layout.getContentHeight(), layout.getHeaderHeight(), 36);
-        saveList.setSearch(searchBox.getText());
-        layout.addBody(saveList);
+        saveList = new SaveListWidget(this, minecraft, width, layout.getContentHeight(), layout.getHeaderHeight(), 36);
+        saveList.setSearch(searchBox.getValue());
+        layout.addToContents(saveList);
 
-        loadButton = adder.add(ButtonWidget.builder(Text.translatable("savemod.list.play"), button ->
+        loadButton = adder.addChild(Button.builder(Component.translatable("savemod.list.play"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::load)
         ).build(), 2);
         loadButton.active = false;
 
-        adder.add(ButtonWidget.builder(Text.translatable("savemod.list.create"), button ->
-            client.setScreen(new NameSaveScreen(this, "", SaveMod.worldDir, this::save))
+        adder.addChild(Button.builder(Component.translatable("savemod.list.create"), button ->
+            minecraft.setScreen(new NameSaveScreen(this, "", SaveMod.worldDir, this::save))
         ).build(), 2);
 
-        renameButton = adder.add(ButtonWidget.builder(Text.translatable("savemod.list.rename"), button ->
+        renameButton = adder.addChild(Button.builder(Component.translatable("savemod.list.rename"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::rename)
         ).width(71).build());
         renameButton.active = false;
 
-        deleteButton = adder.add(ButtonWidget.builder(Text.translatable("savemod.list.delete"), button ->
+        deleteButton = adder.addChild(Button.builder(Component.translatable("savemod.list.delete"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::delete)
         ).width(71).build());
         deleteButton.active = false;
 
-        duplicateButton = adder.add(ButtonWidget.builder(Text.translatable("savemod.list.duplicate"), button ->
+        duplicateButton = adder.addChild(Button.builder(Component.translatable("savemod.list.duplicate"), button ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::duplicate)
         ).width(71).build());
         duplicateButton.active = false;
 
-        adder.add(ButtonWidget.builder(ScreenTexts.DONE, button -> close()
+        adder.addChild(Button.builder(CommonComponents.GUI_DONE, button -> onClose()
         ).width(71).build());
 
-        layout.forEachChild(this::addDrawableChild);
-        layout.refreshPositions();
+        layout.visitWidgets(this::addRenderableWidget);
+        layout.arrangeElements();
 
         setInitialFocus(searchBox);
     }
 
     @Override
-    public void close() {
-        client.setScreen(parent);
+    public void onClose() {
+        minecraft.setScreen(parent);
         if (actionWhenClosed != null)
             actionWhenClosed.run();
     }
@@ -137,17 +142,17 @@ public class SelectSaveScreen extends Screen {
 
     public void save(String saveName) {
         ProgressScreen screen = new ProgressScreen(false);
-        screen.setTitle(Text.translatable("savemod.message.saving"));
-        client.setScreenAndRender(screen);
+        screen.progressStartNoAbort(Component.translatable("savemod.message.saving"));
+        minecraft.setScreenAndShow(screen);
 
-        if (client.isIntegratedServerRunning()) {
-            IntegratedServer server = client.getServer();
-            CompletableFuture.runAsync(() -> server.saveAll(false, true, false), server)
-                .thenRunAsync(() -> finishSaving(saveName), client)
-                .thenRun(screen::setDone);
+        if (minecraft.hasSingleplayerServer()) {
+            IntegratedServer server = minecraft.getSingleplayerServer();
+            CompletableFuture.runAsync(() -> server.saveEverything(false, true, false), server)
+                .thenRunAsync(() -> finishSaving(saveName), minecraft)
+                .thenRun(screen::stop);
         } else {
             finishSaving(saveName);
-            screen.setDone();
+            screen.stop();
         }
     }
 
@@ -166,19 +171,19 @@ public class SelectSaveScreen extends Screen {
 
             ZipUtil.createBackup("saves/" + worldDir, backupFileName.toString());
 
-            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.succesful"), Text.translatable("savemod.toast.succesful.save")));
+            minecraft.getToastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.succesful"), Component.translatable("savemod.toast.succesful.save")));
 
             saveList.refresh();
 
-            if (client.isIntegratedServerRunning()) {
-                client.setScreen(null);
+            if (minecraft.hasSingleplayerServer()) {
+                minecraft.setScreen(null);
                 return;
             }
         } catch (IOException | ExecutionException | InterruptedException e) {
-            client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.save")));
+            minecraft.getToastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.save")));
             SaveMod.LOGGER.error("Could not save : {}", e.getMessage());
         }
-        client.setScreen(this);
+        minecraft.setScreen(this);
     }
 
 }

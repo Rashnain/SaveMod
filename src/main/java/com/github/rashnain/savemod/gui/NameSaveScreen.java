@@ -1,12 +1,12 @@
 package com.github.rashnain.savemod.gui;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 
 import java.util.function.Consumer;
 
@@ -16,10 +16,10 @@ public class NameSaveScreen extends Screen {
     private final String previousName;
     private final String worldName;
     private final Consumer<String> consumer;
-    private TextFieldWidget nameBox;
+    private EditBox nameBox;
 
     public NameSaveScreen(Screen parent, String previousName, String worldName, Consumer<String> consumer) {
-        super(Text.empty());
+        super(Component.empty());
         this.parent = parent;
         this.previousName = previousName;
         this.worldName = worldName;
@@ -27,12 +27,12 @@ public class NameSaveScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(KeyInput input) {
-        if (super.keyPressed(input))
+    public boolean keyPressed(KeyEvent keyEvent) {
+        if (super.keyPressed(keyEvent))
             return true;
 
-        if (getFocused() == nameBox && input.getKeycode() == 257 || input.getKeycode() == 335) {
-            consumer.accept(nameBox.getText());
+        if (getFocused() == nameBox && keyEvent.input() == 257 || keyEvent.input() == 335) {
+            consumer.accept(nameBox.getValue());
             return true;
         }
 
@@ -41,40 +41,40 @@ public class NameSaveScreen extends Screen {
 
     @Override
     protected void init() {
-        nameBox = new TextFieldWidget(textRenderer, width / 2 - 100, height / 2 - 10, 200, 20, null, Text.empty());
-        addDrawableChild(nameBox);
+        nameBox = new EditBox(font, width / 2 - 100, height / 2 - 10, 200, 20, null, Component.empty());
+        addRenderableWidget(nameBox);
 
         if (previousName != null && !previousName.equals(worldName))
-            nameBox.setText(previousName);
+            nameBox.setValue(previousName);
 
-        Text message;
+        Component message;
         if (previousName == null || previousName.isEmpty())
-            message = Text.translatable("savemod.name.create");
+            message = Component.translatable("savemod.name.create");
         else
-            message = Text.translatable("savemod.name.rename");
+            message = Component.translatable("savemod.name.rename");
 
-        addDrawableChild(ButtonWidget.builder(message, button -> consumer.accept(nameBox.getText())
-        ).dimensions(width / 2 - 150 - 5, height / 2 + 25, 150, 20).build());
+        addRenderableWidget(Button.builder(message, button -> consumer.accept(nameBox.getValue())
+        ).bounds(width / 2 - 150 - 5, height / 2 + 25, 150, 20).build());
 
-        addDrawableChild(ButtonWidget.builder(ScreenTexts.CANCEL, button -> close()
-        ).dimensions(width / 2 + 5, height / 2 + 25, 150, 20).build());
+        addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, button -> onClose()
+        ).bounds(width / 2 + 5, height / 2 + 25, 150, 20).build());
 
         setInitialFocus(nameBox);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        super.render(guiGraphics, mouseX, mouseY, delta);
         if (previousName == null || previousName.isEmpty())
-            context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.title.new"), width / 2, height / 2 - 45, -1);
+            guiGraphics.drawCenteredString(font, Component.translatable("savemod.name.title.new"), width / 2, height / 2 - 45, -1);
         else
-            context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.title.rename"), width / 2, height / 2 - 45, -1);
-        context.drawCenteredTextWithShadow(textRenderer, Text.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, -0x808080);
+            guiGraphics.drawCenteredString(font, Component.translatable("savemod.name.title.rename"), width / 2, height / 2 - 45, -1);
+        guiGraphics.drawCenteredString(font, Component.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, -0x808080);
     }
 
     @Override
-    public void close() {
-        client.setScreen(parent);
+    public void onClose() {
+        minecraft.setScreen(parent);
     }
 
 }
