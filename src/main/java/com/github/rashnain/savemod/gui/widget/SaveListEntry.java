@@ -88,8 +88,10 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
     }
 
     public void load() {
-        if (client.isIntegratedServerRunning())
+        if (client.isIntegratedServerRunning()) {
+            client.world.disconnect();
             client.disconnect(new MessageScreen(Text.translatable("savemod.message.closing")));
+        }
         client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.deleting")));
         String worldDir = save.getWorldDir();
 
