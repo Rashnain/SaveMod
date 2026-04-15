@@ -12,6 +12,7 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.input.KeyCodes;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.screen.ScreenTexts;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.PathUtil;
 
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class SelectSaveScreen extends Screen {
@@ -120,8 +122,14 @@ public class SelectSaveScreen extends Screen {
 
     public void save(String saveName) {
         client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.saving")));
-        if (client.isIntegratedServerRunning())
-            client.getServer().saveAll(false, true, false);
+        if (client.isIntegratedServerRunning()) {
+            IntegratedServer server = client.getServer();
+            CompletableFuture.runAsync(() -> server.saveAll(false, true, false), server)
+                .thenRunAsync(() -> finishSaving(saveName), client);
+        }
+    }
+
+    private void finishSaving(String saveName) {
         String worldDir = SaveMod.worldDir;
         try {
             DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
