@@ -2,11 +2,10 @@ plugins {
 	id "fabric-loom" version "${loom_version}"
 }
 
-version = project.mod_version
 group = project.maven_group
 
 base {
-	archivesName = project.archives_base_name
+	archivesName = project.name + "-" + project.mod_version + "-fabric-mc" + project.minecraft_version
 }
 
 repositories {
@@ -26,10 +25,10 @@ dependencies {
 }
 
 processResources {
-	inputs.property "version", project.version
+	inputs.property "version", project.mod_version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand "version": project.mod_version
 	}
 }
 
