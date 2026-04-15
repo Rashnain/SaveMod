@@ -2,6 +2,7 @@ package com.github.rashnain.savemod.mixin;
 
 import com.github.rashnain.savemod.config.SaveModConfig;
 import com.github.rashnain.savemod.gui.SelectSaveScreen;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -11,7 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(GameMenuScreen.class)
 public abstract class GameMenuScreenMixin extends Screen {
@@ -20,8 +20,8 @@ public abstract class GameMenuScreenMixin extends Screen {
         super(title);
     }
 
-    @Inject(method = "initWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget;refreshPositions()V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void initWidgets(CallbackInfo ci, GridWidget gridWidget, GridWidget.Adder adder, Text text) {
+    @Inject(method = "initWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget;refreshPositions()V"))
+    private void initWidgets(CallbackInfo ci, @Local GridWidget.Adder adder) {
         if (SaveModConfig.gameMenu.getValue() && client.isIntegratedServerRunning() && !client.getServer().isRemote()) {
             adder.add(ButtonWidget.builder(Text.translatable("savemod.list.title"), button ->
                 client.setScreen(new SelectSaveScreen(this))

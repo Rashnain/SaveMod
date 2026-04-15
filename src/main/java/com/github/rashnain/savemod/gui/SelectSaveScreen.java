@@ -128,7 +128,7 @@ public class SelectSaveScreen extends Screen {
         if (client.isIntegratedServerRunning()) {
             IntegratedServer server = client.getServer();
             CompletableFuture.runAsync(() -> server.saveAll(false, true, false), server)
-                .thenRunAsync(() -> finishSaving(saveName));
+                .thenRunAsync(() -> finishSaving(saveName), client);
         } else
             finishSaving(saveName);
     }

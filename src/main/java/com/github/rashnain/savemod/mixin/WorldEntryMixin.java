@@ -3,11 +3,13 @@ package com.github.rashnain.savemod.mixin;
 import com.github.rashnain.savemod.SaveMod;
 import com.github.rashnain.savemod.config.SaveModConfig;
 import com.github.rashnain.savemod.gui.SelectSaveScreen;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.screen.world.WorldListWidget;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.level.storage.LevelStorage;
 import net.minecraft.world.level.storage.LevelSummary;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,15 +34,16 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
 
     @Shadow @Final private SelectWorldScreen screen;
 
-    @Unique private int x = 80;
+    @Unique private int x;
 
-    @Unique private int entryWidth = 270;
+    @Unique private int entryWidth;
 
-    @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/WorldListWidget;setSelected(Lnet/minecraft/client/gui/screen/world/WorldListWidget$Entry;)V", shift = At.Shift.AFTER))
+    @Inject(method = "mouseClicked", at = @At(value = "HEAD"))
     public void mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
-        SaveMod.worldDir = level.getName();
-        if (mouseX - (x + entryWidth - 32) >= 0 && SaveModConfig.worldEntries.getValue())
+        if (SaveModConfig.worldEntries.getValue() && mouseX - (x + entryWidth - 32) >= 0) {
+            SaveMod.worldDir = level.getName();
             MinecraftClient.getInstance().setScreen(new SelectSaveScreen(screen));
+        }
     }
 
     @Override @Unique
@@ -48,7 +51,7 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
         if (super.keyPressed(keyCode, scanCode, modifiers))
             return true;
 
-        if (keyCode == 262 || keyCode == 326) {
+        if (keyCode == 262) {
             SaveMod.worldDir = level.getName();
             MinecraftClient.getInstance().setScreen(new SelectSaveScreen(screen));
             return true;
@@ -57,7 +60,7 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
         return false;
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V", shift = At.Shift.AFTER))
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V"))
     public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta, CallbackInfo ci) {
         if (SaveModConfig.worldEntries.getValue()) {
             this.x = x;
@@ -68,9 +71,10 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
         }
     }
 
-    @Inject(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V", shift = At.Shift.AFTER))
-    public void delete(CallbackInfo ci) {
-        File saveDir = SaveMod.DIR.resolve(SaveMod.worldDir).toFile();
+    @Inject(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V"))
+    public void delete(CallbackInfo ci, @Local LevelStorage.Session session) {
+        String worldDir = session.getDirectoryName();
+        File saveDir = SaveMod.DIR.resolve(worldDir).toFile();
         try {
             File[] files = saveDir.listFiles(file -> file.isFile() && file.getName().endsWith(".zip") && file.getName().length() > 24);
             if (files != null) {
@@ -82,7 +86,7 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
                 } catch (IOException ignored) {}
             }
         } catch (IOException e) {
-            SaveMod.LOGGER.error("Could not delete save folder '{}' : {}", SaveMod.worldDir, e);
+            SaveMod.LOGGER.error("Could not delete save folder '{}' : {}", worldDir, e);
         }
     }
 
