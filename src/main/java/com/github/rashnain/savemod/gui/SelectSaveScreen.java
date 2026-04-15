@@ -141,8 +141,6 @@ public class SelectSaveScreen extends Screen {
     private void finishSaving(String saveName) {
         String worldDir = SaveMod.worldDir;
         try {
-
-
             String backupName = LocalDateTime.now().format(TIME_FORMATTER) + "_" + worldDir;
             if (!saveName.isEmpty())
                 backupName = backupName.substring(0, 20) + saveName;

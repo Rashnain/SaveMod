@@ -35,7 +35,7 @@ public abstract class WorldEntryMixin extends WorldListWidget.Entry implements A
 
     @Unique private int entryWidth;
 
-    @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/WorldListWidget;setSelected(Lnet/minecraft/client/gui/screen/world/WorldListWidget$Entry;)V", shift = At.Shift.AFTER))
+    @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/WorldListWidget;setSelected(Lnet/minecraft/client/gui/screen/world/WorldListWidget$Entry;)V"))
     public void mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
         if (SaveModConfig.worldEntries.getValue() && mouseX - (x + entryWidth - 32) >= 0) {
             SaveMod.worldDir = level.getName();
