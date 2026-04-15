@@ -14,7 +14,6 @@ import net.minecraft.client.toast.SystemToast;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
-import net.minecraft.util.PathUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -64,7 +63,7 @@ public class SelectSaveScreen extends Screen {
 
     @Override
     protected void init() {
-        searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, null, Text.empty());
+        searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, searchBox, Text.empty());
         searchBox.setChangedListener(search -> {
             saveList.setSearch(search);
             changeButtons(saveList.getSelectedOrNull() != null);
@@ -72,6 +71,7 @@ public class SelectSaveScreen extends Screen {
         addDrawableChild(searchBox);
 
         saveList = new SaveListWidget(this, client, width, height, 48, height - 64, 36);
+        saveList.setSearch(searchBox.getText());
         addSelectableChild(saveList);
 
         loadButton = addDrawableChild(ButtonWidget.builder(Text.translatable("savemod.list.play"), button ->
