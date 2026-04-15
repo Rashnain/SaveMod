@@ -36,8 +36,13 @@ public class SaveListWidget extends AlwaysSelectedEntryListWidget<SaveListEntry>
     }
 
     @Override
+    protected int getScrollbarPositionX() {
+        return super.getScrollbarPositionX() + 20;
+    }
+
+    @Override
     public int getRowWidth() {
-        return 270;
+        return super.getRowWidth() + 50;
     }
 
     public Screen getParent() {
