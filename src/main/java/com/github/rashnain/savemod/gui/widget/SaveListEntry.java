@@ -14,8 +14,7 @@ import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
-import net.minecraft.util.path.SymlinkValidationException;
-import net.minecraft.world.level.storage.LevelStorage;
+import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -96,8 +95,8 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
         client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.deleting")));
         String worldDir = save.getWorldDir();
 
-        try (LevelStorage.Session session = client.getLevelStorage().createSession(worldDir)) {
-            session.deleteSessionLock();
+        try {
+            FileUtils.deleteDirectory(Path.of("saves").resolve(worldDir).toFile());
             client.setScreenAndRender(new MessageScreen(Text.translatable("savemod.message.uncompressing")));
             String zipFile = saveDir.resolve(save.getSaveFileName()).toString();
             try {
@@ -109,7 +108,7 @@ public class SaveListEntry extends AlwaysSelectedEntryListWidget.Entry<SaveListE
                 SaveMod.LOGGER.error("Could not extract file '{}' : {}", zipFile, e);
                 client.setScreen(saveList.getParent());
             }
-        } catch (IOException | SymlinkValidationException e) {
+        } catch (IOException e) {
             client.getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, Text.translatable("savemod.toast.failed"), Text.translatable("savemod.toast.failed.load")));
             SaveMod.LOGGER.error("Could not delete world '{}' : {}", worldDir, e);
             client.setScreen(saveList.getParent());
