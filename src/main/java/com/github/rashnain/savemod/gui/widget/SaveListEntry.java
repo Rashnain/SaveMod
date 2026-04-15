@@ -5,7 +5,7 @@ import com.github.rashnain.savemod.SaveSummary;
 import com.github.rashnain.savemod.gui.NameSaveScreen;
 import com.github.rashnain.savemod.util.ZipUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.screens.ConfirmScreen;
@@ -68,24 +68,24 @@ public class SaveListEntry extends ObjectSelectionList.Entry<SaveListEntry> {
     }
 
     @Override
-    public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float delta) {
+    public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float delta) {
         int x = this.getContentX();
         int y = this.getContentY();
         String displayName = save.getSaveName();
         String folderNameAndLastPlayedDate = save.getWorldDir() + " (" + DATE_FORMAT.format(new Date(save.getLastPlayed())) + ")";
         String fileSize = save.getSizeInMB() + " MB";
 
-        guiGraphics.drawString(client.font, displayName, x + 32 + 3, y + 1, -1);
-        guiGraphics.drawString(client.font, folderNameAndLastPlayedDate, x + 32 + 3, y + 1 + client.font.lineHeight + 2, -0x808080);
-        guiGraphics.drawString(client.font, fileSize, x + 32 + 3, y + 1 + client.font.lineHeight * 2 + 2, -0x808080);
+        graphics.text(client.font, displayName, x + 32 + 3, y + 1, -1);
+        graphics.text(client.font, folderNameAndLastPlayedDate, x + 32 + 3, y + 1 + client.font.lineHeight + 2, -0x808080);
+        graphics.text(client.font, fileSize, x + 32 + 3, y + 1 + client.font.lineHeight * 2 + 2, -0x808080);
 
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
 
         if (client.options.touchscreen().get() || hovered) {
-            guiGraphics.fill(x, y, x + 32, y + 32, -0x5F6F6F70);
+            graphics.fill(x, y, x + 32, y + 32, -0x5F6F6F70);
             int pixelsBeforeStartButton = mouseX - x;
             Identifier texture = pixelsBeforeStartButton <= 32 ? JOIN_HIGHLIGHTED_TEXTURE : JOIN_TEXTURE;
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, x, y, 32, 32);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, x, y, 32, 32);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.github.rashnain.savemod.gui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -63,13 +63,13 @@ public class NameSaveScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        super.render(guiGraphics, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, delta);
         if (previousName == null || previousName.isEmpty())
-            guiGraphics.drawCenteredString(font, Component.translatable("savemod.name.title.new"), width / 2, height / 2 - 45, -1);
+            guiGraphics.centeredText(font, Component.translatable("savemod.name.title.new"), width / 2, height / 2 - 45, -1);
         else
-            guiGraphics.drawCenteredString(font, Component.translatable("savemod.name.title.rename"), width / 2, height / 2 - 45, -1);
-        guiGraphics.drawCenteredString(font, Component.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, -0x808080);
+            guiGraphics.centeredText(font, Component.translatable("savemod.name.title.rename"), width / 2, height / 2 - 45, -1);
+        guiGraphics.centeredText(font, Component.translatable("savemod.name.hint", worldName), width / 2, height / 2 - 30, -0x808080);
     }
 
     @Override

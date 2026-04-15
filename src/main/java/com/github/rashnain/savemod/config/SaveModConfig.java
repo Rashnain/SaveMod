@@ -13,9 +13,9 @@ import java.util.Properties;
 
 public class SaveModConfig {
 
-    public static final OptionInstance<Boolean> gameMenu = OptionInstance.createBoolean("options.savemod.gameMenu", value -> Tooltip.create(Component.translatable("options.savemod.gameMenu.tooltip")), true);
-    public static final OptionInstance<Boolean> worldEntries = OptionInstance.createBoolean("options.savemod.worldEntries", value -> Tooltip.create(Component.translatable("options.savemod.worldEntries.tooltip")), false);
-    public static final OptionInstance<Boolean> compression = OptionInstance.createBoolean("options.savemod.compression", value -> Tooltip.create(Component.translatable("options.savemod.compression.tooltip")), true);
+    public static final OptionInstance<Boolean> gameMenu = OptionInstance.createBoolean("options.savemod.gameMenu", _ -> Tooltip.create(Component.translatable("options.savemod.gameMenu.tooltip")), true);
+    public static final OptionInstance<Boolean> worldEntries = OptionInstance.createBoolean("options.savemod.worldEntries", _ -> Tooltip.create(Component.translatable("options.savemod.worldEntries.tooltip")), false);
+    public static final OptionInstance<Boolean> compression = OptionInstance.createBoolean("options.savemod.compression", _ -> Tooltip.create(Component.translatable("options.savemod.compression.tooltip")), true);
 
     private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve("savemod.properties");
     private static final Properties properties = new Properties();

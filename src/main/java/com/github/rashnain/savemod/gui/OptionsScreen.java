@@ -2,7 +2,7 @@ package com.github.rashnain.savemod.gui;
 
 import com.github.rashnain.savemod.config.SaveModConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.OptionsList;
 import net.minecraft.client.gui.screens.Screen;
@@ -34,10 +34,10 @@ public class OptionsScreen extends OptionsSubScreen {
     protected void addOptions() {}
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        super.render(guiGraphics, mouseX, mouseY, delta);
-        optionList.render(guiGraphics, mouseX, mouseY, delta);
-        guiGraphics.drawCenteredString(font, title, width / 2, 12, -1);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(graphics, mouseX, mouseY, delta);
+        optionList.extractRenderState(graphics, mouseX, mouseY, delta);
+        graphics.centeredText(font, title, width / 2, 12, -1);
     }
 
     @Override

@@ -93,31 +93,31 @@ public class SelectSaveScreen extends Screen {
         saveList.setSearch(searchBox.getValue());
         layout.addToContents(saveList);
 
-        loadButton = adder.addChild(Button.builder(Component.translatable("savemod.list.play"), button ->
+        loadButton = adder.addChild(Button.builder(Component.translatable("savemod.list.play"), _ ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::load)
         ).build(), 2);
         loadButton.active = false;
 
-        adder.addChild(Button.builder(Component.translatable("savemod.list.create"), button ->
+        adder.addChild(Button.builder(Component.translatable("savemod.list.create"), _ ->
             minecraft.setScreen(new NameSaveScreen(this, "", SaveMod.worldDir, this::save))
         ).build(), 2);
 
-        renameButton = adder.addChild(Button.builder(Component.translatable("savemod.list.rename"), button ->
+        renameButton = adder.addChild(Button.builder(Component.translatable("savemod.list.rename"), _ ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::rename)
         ).width(71).build());
         renameButton.active = false;
 
-        deleteButton = adder.addChild(Button.builder(Component.translatable("savemod.list.delete"), button ->
+        deleteButton = adder.addChild(Button.builder(Component.translatable("savemod.list.delete"), _ ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::delete)
         ).width(71).build());
         deleteButton.active = false;
 
-        duplicateButton = adder.addChild(Button.builder(Component.translatable("savemod.list.duplicate"), button ->
+        duplicateButton = adder.addChild(Button.builder(Component.translatable("savemod.list.duplicate"), _ ->
             saveList.getSelectedAsOptional().ifPresent(SaveListEntry::duplicate)
         ).width(71).build());
         duplicateButton.active = false;
 
-        adder.addChild(Button.builder(CommonComponents.GUI_DONE, button -> onClose()
+        adder.addChild(Button.builder(CommonComponents.GUI_DONE, _ -> onClose()
         ).width(71).build());
 
         layout.visitWidgets(this::addRenderableWidget);
