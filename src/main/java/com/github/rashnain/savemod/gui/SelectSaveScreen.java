@@ -100,7 +100,7 @@ public class SelectSaveScreen extends Screen {
         loadButton.active = false;
 
         adder.addChild(Button.builder(Component.translatable("savemod.list.create"), _ ->
-            minecraft.setScreen(new NameSaveScreen(this, "", SaveMod.worldDir, this::save))
+            minecraft.gui.setScreen(new NameSaveScreen(this, "", SaveMod.worldDir, this::save))
         ).build(), 2);
 
         renameButton = adder.addChild(Button.builder(Component.translatable("savemod.list.rename"), _ ->
@@ -129,7 +129,7 @@ public class SelectSaveScreen extends Screen {
 
     @Override
     public void onClose() {
-        minecraft.setScreen(parent);
+        minecraft.gui.setScreen(parent);
         if (actionWhenClosed != null)
             actionWhenClosed.run();
     }
@@ -172,19 +172,19 @@ public class SelectSaveScreen extends Screen {
 
             ZipUtil.createBackup("saves/" + worldDir, backupFileName.toString());
 
-            minecraft.getToastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.succesful"), Component.translatable("savemod.toast.succesful.save")));
+            minecraft.gui.toastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.succesful"), Component.translatable("savemod.toast.succesful.save")));
 
             saveList.refresh();
 
             if (minecraft.hasSingleplayerServer()) {
-                minecraft.setScreen(null);
+                minecraft.gui.setScreen(null);
                 return;
             }
         } catch (IOException | ExecutionException | InterruptedException e) {
-            minecraft.getToastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.save")));
+            minecraft.gui.toastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.save")));
             SaveMod.LOGGER.error("Could not save : {}", e.getMessage());
         }
-        minecraft.setScreen(this);
+        minecraft.gui.setScreen(this);
     }
 
 }

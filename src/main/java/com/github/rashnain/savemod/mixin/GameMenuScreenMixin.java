@@ -24,7 +24,7 @@ public abstract class GameMenuScreenMixin extends Screen {
     private void createPauseMenu(CallbackInfo ci, @Local(name = "helper") GridLayout.RowHelper helper) {
         if (SaveModConfig.gameMenu.get() && minecraft.hasSingleplayerServer() && !minecraft.getSingleplayerServer().isPublished()) {
             helper.addChild(Button.builder(Component.translatable("savemod.list.title"), _ ->
-                minecraft.setScreen(new SelectSaveScreen(this))
+                minecraft.gui.setScreen(new SelectSaveScreen(this))
             ).width(204).build(), 2);
         }
     }

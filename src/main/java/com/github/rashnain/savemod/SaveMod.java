@@ -31,11 +31,11 @@ public class SaveMod implements ClientModInitializer {
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (openList.isDown() && client.hasSingleplayerServer() && !client.getSingleplayerServer().isPublished())
-				client.setScreen(new SelectSaveScreen(null));
+				client.gui.setScreen(new SelectSaveScreen(null));
 			if (save.isDown() && client.hasSingleplayerServer() && !client.getSingleplayerServer().isPublished())
-				client.setScreen(new NameSaveScreen(null, "", SaveMod.worldDir, saveName -> {
+				client.gui.setScreen(new NameSaveScreen(null, "", SaveMod.worldDir, saveName -> {
 					SelectSaveScreen saveScreen = new SelectSaveScreen(null);
-					client.setScreen(saveScreen);
+					client.gui.setScreen(saveScreen);
 					saveScreen.save(saveName);
 				}));
 		});

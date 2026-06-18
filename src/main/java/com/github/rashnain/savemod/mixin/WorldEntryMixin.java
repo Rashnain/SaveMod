@@ -39,7 +39,7 @@ public abstract class WorldEntryMixin extends WorldSelectionList.Entry {
     public void mouseClicked(final MouseButtonEvent event, final boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {
         if (SaveModConfig.worldEntries.get() && event.x() - (getContentX() + getContentWidth() - 32) >= 0) {
             SaveMod.worldDir = summary.getLevelId();
-            Minecraft.getInstance().setScreen(new SelectSaveScreen(list.getScreen(), () -> list.returnToScreen()));
+            Minecraft.getInstance().gui.setScreen(new SelectSaveScreen(list.getScreen(), () -> list.returnToScreen()));
         }
     }
 
@@ -47,7 +47,7 @@ public abstract class WorldEntryMixin extends WorldSelectionList.Entry {
     public void keyPressed(final KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
         if (event.input() == 262) {
             SaveMod.worldDir = summary.getLevelId();
-            Minecraft.getInstance().setScreen(new SelectSaveScreen(list.getScreen(), () -> list.returnToScreen()));
+            Minecraft.getInstance().gui.setScreen(new SelectSaveScreen(list.getScreen(), () -> list.returnToScreen()));
             cir.setReturnValue(true);
         }
     }

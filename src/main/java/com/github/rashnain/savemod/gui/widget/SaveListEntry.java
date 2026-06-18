@@ -81,7 +81,7 @@ public class SaveListEntry extends ObjectSelectionList.Entry<SaveListEntry> {
 
         graphics.blit(RenderPipelines.GUI_TEXTURED, UNKNOWN_SERVER_LOCATION, x, y, 0.0f, 0.0f, 32, 32, 32, 32);
 
-        if (client.options.touchscreen().get() || hovered) {
+        if (hovered) {
             graphics.fill(x, y, x + 32, y + 32, -0x5F6F6F70);
             int pixelsBeforeStartButton = mouseX - x;
             Identifier texture = pixelsBeforeStartButton <= 32 ? JOIN_HIGHLIGHTED_TEXTURE : JOIN_TEXTURE;
@@ -104,19 +104,19 @@ public class SaveListEntry extends ObjectSelectionList.Entry<SaveListEntry> {
                 client.setScreenAndShow(new GenericMessageScreen(Component.translatable("selectWorld.data_read")));
                 client.createWorldOpenFlows().openWorld(worldDir, () -> {});
             } catch (IOException e) {
-                client.getToastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.uncompress")));
+                client.gui.toastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.uncompress")));
                 SaveMod.LOGGER.error("Could not extract file '{}' : {}", zipFile, e);
-                client.setScreen(saveList.getParent());
+                client.gui.setScreen(saveList.getParent());
             }
         } catch (IOException e) {
-            client.getToastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.load")));
+            client.gui.toastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.load")));
             SaveMod.LOGGER.error("Could not delete world '{}' : {}", worldDir, e);
-            client.setScreen(saveList.getParent());
+            client.gui.setScreen(saveList.getParent());
         }
     }
 
     public void rename() {
-        client.setScreen(new NameSaveScreen(saveList.getParent(), save.getSaveName(), saveDir.getFileName().toString(), newName -> {
+        client.gui.setScreen(new NameSaveScreen(saveList.getParent(), save.getSaveName(), saveDir.getFileName().toString(), newName -> {
             String saveFileName = saveFile.getFileName().toString();
             if (newName.isEmpty())
                 newName = save.getWorldDir();
@@ -124,10 +124,10 @@ public class SaveListEntry extends ObjectSelectionList.Entry<SaveListEntry> {
             try {
                 Files.move(saveFile, saveDir.resolve(saveFileName));
             } catch (IOException e) {
-                client.getToastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.name")));
+                client.gui.toastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.name")));
                 SaveMod.LOGGER.error("Could not rename save '{}' : {}", saveFile, e);
             }
-            client.setScreen(saveList.getParent());
+            client.gui.setScreen(saveList.getParent());
         }));
     }
 
@@ -136,15 +136,15 @@ public class SaveListEntry extends ObjectSelectionList.Entry<SaveListEntry> {
         try {
             Files.copy(saveFile, saveDir.resolve(newSaveName));
             saveList.refresh();
-            client.getToastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.succesful"), Component.translatable("savemod.toast.succesful.duplicate")));
+            client.gui.toastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.succesful"), Component.translatable("savemod.toast.succesful.duplicate")));
         } catch (IOException e) {
-            client.getToastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.duplicate")));
+            client.gui.toastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.duplicate")));
             SaveMod.LOGGER.error("Could not duplicate save '{}' : {}", saveFile, e);
         }
     }
 
     public void delete() {
-        client.setScreen(new ConfirmScreen(confirmed -> {
+        client.gui.setScreen(new ConfirmScreen(confirmed -> {
             if (confirmed) {
                 try {
                     Files.delete(saveFile);
@@ -154,11 +154,11 @@ public class SaveListEntry extends ObjectSelectionList.Entry<SaveListEntry> {
                     } catch (IOException ignored) {}
                     saveList.removeEntryFromTop(this);
                 } catch (IOException e) {
-                    client.getToastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.delete")));
+                    client.gui.toastManager().addToast(new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.translatable("savemod.toast.failed"), Component.translatable("savemod.toast.failed.delete")));
                     SaveMod.LOGGER.error("Could not delete save '{}' : {}", saveFile, e);
                 }
             }
-            client.setScreen(saveList.getParent());
+            client.gui.setScreen(saveList.getParent());
         }, Component.translatable("savemod.delete.question"), Component.translatable("selectWorld.deleteWarning", save.getSaveName())));
     }
 
